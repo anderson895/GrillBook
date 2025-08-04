@@ -15,7 +15,7 @@
     <!-- Logo and Title -->
     <div class="flex items-center space-x-3">
       <img src="static/logo.jpg" alt="GrillBook Logo" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-yellow-400">
-      <h1 class="text-xl sm:text-2xl font-extrabold text-yellow-400 tracking-wide">GrillBook</h1>
+      <a href="admin/../" > <h1 class="text-xl sm:text-2xl font-extrabold text-yellow-400 tracking-wide">GrillBook</h1></a>
     </div>
 
     <!-- Desktop Navigation Links -->
