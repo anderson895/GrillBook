@@ -14,8 +14,15 @@ include "src/components/header.php";
       <h1 class="text-3xl font-extrabold text-yellow-300 tracking-wide">GrillBook Register</h1>
     </div>
 
+
+    
+    <!-- Spinner Overlay -->
+    <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50" style="display:none; background-color: rgba(255, 255, 255, 0.7);">
+      <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
     <!-- Register Form -->
-    <form action="#" method="POST" class="space-y-5">
+    <form id="frmRegister" method="POST" class="space-y-5">
 
       <!-- First Name -->
       <div>
@@ -72,3 +79,4 @@ include "src/components/header.php";
 <?php
 include "src/components/footer.php";
 ?>
+<script src="static/js/register.js"></script>

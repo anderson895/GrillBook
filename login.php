@@ -15,7 +15,7 @@ include "src/components/header.php";
     </div>
 
     <!-- Login Form -->
-    <form action="#" method="POST" class="space-y-5">
+    <form id="frmLogin" method="POST" class="space-y-5">
       <div>
         <label for="email" class="block text-yellow-400 font-semibold mb-1">Email</label>
         <input type="email" id="email" name="email" required
@@ -47,3 +47,4 @@ include "src/components/header.php";
 <?php
 include "src/components/footer.php";
 ?>
+<script src="static/js/login.js"></script>
