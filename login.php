@@ -37,7 +37,7 @@ include "src/components/header.php";
     <!-- Footer / Links -->
     <div class="text-center text-sm text-yellow-400">
       Don't have an account?
-      <a href="register.php" class="text-yellow-300 font-bold hover:underline">Register</a>
+      <a href="register" class="text-yellow-300 font-bold hover:underline">Register</a>
     </div>
 
   </div>

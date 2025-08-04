@@ -62,7 +62,7 @@ include "src/components/header.php";
     <!-- Footer / Links -->
     <div class="text-center text-sm text-yellow-400">
       Already have an account?
-      <a href="login.php" class="text-yellow-300 font-bold hover:underline">Login</a>
+      <a href="login" class="text-yellow-300 font-bold hover:underline">Login</a>
     </div>
 
   </div>
