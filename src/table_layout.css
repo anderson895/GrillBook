@@ -1,0 +1,167 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .seating-chart {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      gap: 15px;
+      height: 80vh;
+      min-height: 600px;
+    }
+
+    .table {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .table:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-color: #26a69a;
+    }
+
+    .table-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .table-orders {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .has-orders {
+      background: #fff3e0;
+      border-color: #ff9800;
+    }
+
+    .has-orders .table-name {
+      color: #e65100;
+    }
+
+    .has-orders .table-orders {
+      color: #f57c00;
+      font-weight: 500;
+    }
+
+    /* Grid positioning for each table */
+    .g6 { grid-column: 1; grid-row: 1; }
+    .g5 { grid-column: 2; grid-row: 1; }
+    .f3 { grid-column: 10; grid-row: 1; }
+    .f4 { grid-column: 11; grid-row: 1; }
+
+    .g4 { grid-column: 1; grid-row: 2; }
+    .g3 { grid-column: 2; grid-row: 2; }
+    .e4 { grid-column: 3; grid-row: 2; }
+    .e8 { grid-column: 4; grid-row: 2; }
+    .f1 { grid-column: 10; grid-row: 2; }
+    .f2 { grid-column: 11; grid-row: 2; }
+
+    .g2 { grid-column: 1; grid-row: 3; }
+    .g1 { grid-column: 2; grid-row: 3; }
+    .e3 { grid-column: 3; grid-row: 3; }
+    .e7 { grid-column: 4; grid-row: 3; }
+
+    .e2 { grid-column: 3; grid-row: 4; }
+    .e6 { grid-column: 4; grid-row: 4; }
+    .takeout1 { grid-column: 6; grid-row: 1; }
+    .takeout2 { grid-column: 7; grid-row: 1; }
+    .c6 { grid-column: 6; grid-row: 3; }
+    .d6 { grid-column: 7; grid-row: 3; }
+    .dj { grid-column: 10/12; grid-row: 3; }
+
+    .a5 { grid-column: 1; grid-row: 5; }
+    .b6 { grid-column: 2; grid-row: 5; }
+    .e1 { grid-column: 3; grid-row: 5; }
+    .e5 { grid-column: 4; grid-row: 5; }
+    .c5 { grid-column: 6; grid-row: 4; }
+    .d5 { grid-column: 7; grid-row: 4; }
+    .soundect { grid-column: 10/12; grid-row: 4; }
+
+    .a4 { grid-column: 1; grid-row: 6; }
+    .b5 { grid-column: 2; grid-row: 6; }
+    .c4 { grid-column: 6; grid-row: 5; }
+    .d4 { grid-column: 7; grid-row: 5; }
+    .acoustic { grid-column: 10/12; grid-row: 5; }
+
+    .a3 { grid-column: 1; grid-row: 7; }
+    .b4 { grid-column: 2; grid-row: 7; }
+    .reserv { grid-column: 3/5; grid-row: 7; }
+    .c3 { grid-column: 6; grid-row: 6; }
+    .d3 { grid-column: 7; grid-row: 6; }
+    .vip3 { grid-column: 10; grid-row: 6; }
+    .vip2 { grid-column: 11; grid-row: 6; }
+
+    .a2 { grid-column: 1; grid-row: 8; }
+    .b3 { grid-column: 2; grid-row: 8; }
+    .meeting { grid-column: 3/5; grid-row: 8; }
+    .c2 { grid-column: 6; grid-row: 7; }
+    .d2 { grid-column: 7; grid-row: 7; }
+    .billiards { grid-column: 10/12; grid-row: 7; }
+
+    .a1 { grid-column: 1; grid-row: 9; }
+    .b2 { grid-column: 2; grid-row: 9; }
+    .compli { grid-column: 3/5; grid-row: 9; }
+    .c1 { grid-column: 6; grid-row: 8; }
+    .d1 { grid-column: 7; grid-row: 8; }
+    .vip1 { grid-column: 10/12; grid-row: 8; }
+
+    .b1 { grid-column: 2; grid-row: 10; }
+
+    .special-section {
+      background: #f5f5f5;
+      border: 2px dashed #999;
+    }
+
+    .takeout {
+      background: #e8f5e8;
+      border-color: #4caf50;
+    }
+
+    .takeout .table-name {
+      color: #2e7d32;
+    }
+
+    @media (max-width: 768px) {
+      .seating-chart {
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(15, 1fr);
+        gap: 10px;
+      }
+      
+      .table {
+        padding: 8px;
+      }
+      
+      .table-name {
+        font-size: 12px;
+      }
+      
+      .table-orders {
+        font-size: 10px;
+      }
+    }
