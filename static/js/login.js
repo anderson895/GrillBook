@@ -29,7 +29,7 @@ $("#frmLogin").submit(function (e) {
             if (position === "admin") {
                 window.location.href = "admin/dashboard";
             } else if (position === "customer") {
-                window.location.href = "customer/dashboard";
+                window.location.href = "customer/home";
             }
             }, 1000);
 

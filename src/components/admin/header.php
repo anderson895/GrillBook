@@ -1,31 +1,3 @@
-<?php 
-// include "auth.php";
-
-session_start();
-// $db = new auth_class();
-
-
-// if (isset($_SESSION['id'])) {
-//     $id = intval($_SESSION['id']);
-
-   
-//     $On_Session = $db->check_account($id);
-
-//    //  echo "<pre>";
-//    //  print_r($On_Session);
-//    //  echo "</pre>";
-
-   
-  
-//     if (!empty($On_Session)) {
-
-//     } else {
-//        header('location: ../admin/');
-//     }
-// } else {
-//    header('location: ../admin/');
-// }
-?>
 
 
 <!DOCTYPE html>
