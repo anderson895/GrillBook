@@ -179,7 +179,7 @@
   // Search filter
   $('#searchInput').on('input', function () {
     const term = $(this).val().toLowerCase();
-    $('#eventTableBody tr').each(function () {
+    $('#menuTableBody tr').each(function () {
       $(this).toggle($(this).text().toLowerCase().includes(term));
     });
   });
