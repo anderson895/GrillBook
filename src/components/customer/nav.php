@@ -10,13 +10,13 @@
 
     <!-- Centered Navigation Links -->
     <div class="hidden md:flex flex-1 justify-center space-x-6 items-center">
-      <a href="about" class="text-yellow-400 hover:text-white transition duration-300 font-medium">About Us</a>
-      <a href="contact" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Contact Us</a>
+      <a href="home" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Home</a>
+      <a href="reservation" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Reservation</a>
     </div>
 
     <!-- Login/Register (Right Side) -->
     <div class="hidden md:flex space-x-6 items-center">
-      <a href="register" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300"><?=$_SESSION['user_fname'];?></a>
+      <a href="#" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300"><?=$_SESSION['user_fname'];?></a>
       <a href="login" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Logout</a>
     
     </div>
@@ -48,10 +48,10 @@
   </div>
 
   <!-- Navigation Buttons (Centered by default on mobile) -->
-  <a href="about" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">About Us</a>
-  <a href="contact" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Contact Us</a>
-  <a href="login" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Login</a>
-  <a href="register" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Register</a>
+  <a href="home" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Home</a>
+  <a href="reservation" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a>
+  <a href="#" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=$_SESSION['user_fname'];?></a>
+  <a href="logout" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Logout</a>
 </div>
 
 <!-- JS toggle -->
