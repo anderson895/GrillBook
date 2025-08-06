@@ -266,6 +266,12 @@
   .col-start-7 {
     grid-column-start: 7;
   }
+  .col-start-8 {
+    grid-column-start: 8;
+  }
+  .col-start-9 {
+    grid-column-start: 9;
+  }
   .col-start-10 {
     grid-column-start: 10;
   }
@@ -274,6 +280,9 @@
   }
   .col-end-5 {
     grid-column-end: 5;
+  }
+  .col-end-6 {
+    grid-column-end: 6;
   }
   .col-end-12 {
     grid-column-end: 12;
@@ -400,6 +409,15 @@
   }
   .w-20 {
     width: calc(var(--spacing) * 20);
+  }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
+  .w-\[100px\] {
+    width: 100px;
+  }
+  .w-\[150px\] {
+    width: 150px;
   }
   .w-full {
     width: 100%;
