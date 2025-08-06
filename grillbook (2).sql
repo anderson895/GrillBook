@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 06, 2025 at 05:52 PM
+-- Generation Time: Aug 06, 2025 at 05:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `grillbook`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deals`
+--
+
+CREATE TABLE `deals` (
+  `deal_id` int(11) NOT NULL,
+  `deal_name` varchar(60) NOT NULL,
+  `deal_type` enum('group_deals','promo_deals','','') NOT NULL,
+  `deal_menu` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`deal_menu`)),
+  `deal_status` int(11) NOT NULL COMMENT '0=deleted,1=active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,6 +78,12 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_p
 --
 
 --
+-- Indexes for table `deals`
+--
+ALTER TABLE `deals`
+  ADD PRIMARY KEY (`deal_id`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -78,6 +98,12 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `deals`
+--
+ALTER TABLE `deals`
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `menu`
