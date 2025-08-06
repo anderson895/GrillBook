@@ -16,8 +16,8 @@
 
     <!-- Login/Register (Right Side) -->
     <div class="hidden md:flex space-x-6 items-center">
-      <a href="#" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300"><?=$_SESSION['user_fname'];?></a>
-      <a href="login" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Logout</a>
+      <a href="settings" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300"><?=$_SESSION['user_fname'];?></a>
+      <a href="logout" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Logout</a>
     
     </div>
 
@@ -50,7 +50,7 @@
   <!-- Navigation Buttons (Centered by default on mobile) -->
   <a href="home" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Home</a>
   <a href="reservation" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a>
-  <a href="#" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=$_SESSION['user_fname'];?></a>
+  <a href="settings" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=$_SESSION['user_fname'];?></a>
   <a href="logout" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Logout</a>
 </div>
 
@@ -68,3 +68,8 @@
     menu.classList.add('hidden');
   });
 </script>
+
+
+
+
+
