@@ -7,6 +7,5 @@ include "../src/components/admin/nav.php";
 include "../src/components/admin/footer.php";
 ?>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<script src="../static/js/admin/dashboard.js"></script>
+<script src="../static/js/admin/all_reserved.js"></script>

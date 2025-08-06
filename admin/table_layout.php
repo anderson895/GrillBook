@@ -1,0 +1,126 @@
+<?php
+include "../src/components/admin/header.php";
+include "../src/components/admin/nav.php";
+?>
+<div class="overflow-auto">
+  <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] max-w-7xl mx-auto h-[80vh] min-h-[600px]">
+ 
+    
+    <!-- Utility class for all tables -->
+    <template id="table-template">
+      <div class="flex flex-col items-center justify-center p-2 bg-white rounded-md shadow hover:-translate-y-1 hover:shadow-lg hover:border-teal-500 border-2 border-transparent transition-all duration-200 cursor-pointer">
+        <div class="font-semibold text-sm text-gray-800 table-name">TABLE</div>
+        <div class="text-xs text-gray-500 table-orders">Orders: 0</div>
+      </div>
+    </template>
+
+    <!-- Add tables manually using Tailwind grid positioning -->
+
+    <!-- Row 1 -->
+    <div class="col-start-1 row-start-1">G6</div>
+    <div class="col-start-2 row-start-1">G5</div>
+    <div class="col-start-7 row-start-1">Take out 1</div>
+    <div class="col-start-8 row-start-1">Take out 2</div>
+    <div class="col-start-10 row-start-1">F3</div>
+    <div class="col-start-11 row-start-1">F4</div>
+
+    <!-- Row 2 -->
+    <div class="col-start-1 row-start-2">G4</div>
+    <div class="col-start-2 row-start-2">G3</div>
+    <div class="col-start-4 row-start-2">E4</div>
+    <div class="col-start-5 row-start-2">E8</div>
+    <div class="col-start-10 row-start-2">F1</div>
+    <div class="col-start-11 row-start-2">F2</div>
+
+    <!-- Row 3 -->
+    <div class="col-start-1 row-start-3">G2</div>
+    <div class="col-start-2 row-start-3">G1</div>
+    <div class="col-start-4 row-start-3">E3</div>
+    <div class="col-start-5 row-start-3">E7</div>
+    <div class="col-start-7 row-start-3">C6</div>
+    <div class="col-start-8 row-start-3">D6</div>
+    <div class="col-start-10 col-end-12 row-start-3">DJ</div>
+
+    <!-- Row 4 -->
+    <div class="col-start-4 row-start-4">E2</div>
+    <div class="col-start-5 row-start-4">E6</div>
+    <div class="col-start-7 row-start-4">C5</div>
+    <div class="col-start-8 row-start-4">D5</div>
+    <div class="col-start-10 col-end-12 row-start-4">SOUNDECT</div>
+
+    <!-- Row 5 -->
+    <div class="col-start-1 row-start-5">A5</div>
+    <div class="col-start-2 row-start-5">B6</div>
+    <div class="col-start-4 row-start-5">E1</div>
+    <div class="col-start-5 row-start-5">E5</div>
+    <div class="col-start-7 row-start-5">C4</div>
+    <div class="col-start-8 row-start-5">D4</div>
+    <div class="col-start-10 col-end-12 row-start-5">ACOUSTIC</div>
+
+    <!-- Row 6 -->
+    <div class="col-start-1 row-start-6">A4</div>
+    <div class="col-start-2 row-start-6">B5</div>
+    <div class="col-start-7 row-start-6">C3</div>
+    <div class="col-start-8 row-start-6">D3</div>
+    <div class="col-start-10 row-start-6">VIP 3</div>
+    <div class="col-start-11 row-start-6">VIP 2</div>
+
+    <!-- Row 7 -->
+    <div class="col-start-1 row-start-7">A3</div>
+    <div class="col-start-2 row-start-7">B4</div>
+    <div class="col-start-4 col-end-6 row-start-7">RESERV.</div>
+    <div class="col-start-7 row-start-7 border-amber-500 text-amber-900 font-semibold">C2</div>
+    <div class="col-start-8 row-start-7">D2</div>
+    <div class="col-start-10 col-end-12 row-start-7">BILLIARDS</div>
+
+    <!-- Row 8 -->
+    <div class="col-start-1 row-start-8 border-amber-500 text-amber-900 font-semibold">A2</div>
+    <div class="col-start-2 row-start-8">B3</div>
+    <div class="col-start-4 col-end-6 row-start-8">MEETING</div>
+    <div class="col-start-7 row-start-8">C1</div>
+    <div class="col-start-8 row-start-8">D1</div>
+    <div class="col-start-10 col-end-12 row-start-8">VIP 1</div>
+
+    <!-- Row 9 -->
+    <div class="col-start-1 row-start-9">A1</div>
+    <div class="col-start-2 row-start-9">B2</div>
+    <div class="col-start-4 col-end-6 row-start-9">COMPLI</div>
+
+    <!-- Row 10 -->
+    <div class="col-start-2 row-start-10 border-amber-500 text-amber-900 font-semibold">B1</div>
+
+  </div>
+</div>
+
+  <script>
+    const template = document.getElementById('table-template');
+    const cells = document.querySelectorAll('.grid > div');
+
+    cells.forEach((cell) => {
+      const node = template.content.cloneNode(true);
+      const name = cell.textContent.trim();
+      const orders = name === 'C2' || name === 'A2' || name === 'B1' ? 1 : 0;
+
+      node.querySelector('.table-name').textContent = name;
+      // node.querySelector('.table-orders').textContent = `Orders: ${orders}`;
+      node.querySelector('.table-orders').textContent = ``;
+      
+      if (orders > 0) {
+        node.querySelector('div').classList.add('bg-amber-100', 'border-amber-500');
+        node.querySelector('.table-name').classList.add('text-orange-800');
+        node.querySelector('.table-orders').classList.add('text-orange-500', 'font-semibold');
+      }
+
+      cell.textContent = '';
+      cell.appendChild(node);
+    });
+  </script>
+
+
+<?php
+include "../src/components/admin/footer.php";
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script src="../static/js/admin/dashboard.js"></script>

@@ -21,35 +21,48 @@
         <span>Dashboard</span>
       </a>
 
-      <!-- Bullies Dropdown Button -->
-      <button id="toggleAssets" class="w-full flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <!--  Dropdown Button -->
+      <button id="toggleDeals" class="w-full flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
-          <span class="material-icons">pets</span>
-          <span>Bullies</span>
+          <span class="material-icons">sell</span>
+          <span>Deals</span>
         </div>
-        <span id="dropdownIcon" class="material-icons transition-transform duration-300">expand_more</span>
+        <span id="deals_dropdownIcon" class="material-icons transition-transform duration-300">expand_more</span>
       </button>
 
       <!-- Dropdown Menu -->
-      <div id="assetsDropdown" class="ml-8 space-y-2" style="display: none;">
-        <a href="registration" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Registration</a>
-        <a href="registered" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Registered</a>
+      <div id="dealsDropdown" class="ml-8 space-y-2" style="display: none;">
+        <a href="group_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Group Deals</a>
+        <a href="promo_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Promo Deals</a>
       </div>
 
-      <a href="gettable" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-        <span class="material-icons">storefront</span>
-        <span>Gettable</span>
+
+    
+      <!--  Dropdown Button -->
+      <button id="toggleReservation" class="w-full flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+        <div class="flex items-center space-x-3">
+          <span class="material-icons">event</span>
+          <span>Reservation</span>
+        </div>
+        <span id="reserve_dropdownIcon" class="material-icons transition-transform duration-300">expand_more</span>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div id="reserveDropdown" class="ml-8 space-y-2" style="display: none;">
+        <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Request</a>
+        <a href="all_reserved" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All Reserved</a>
+      </div>
+
+
+      <a href="menu" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+        <span class="material-icons">local_dining</span>
+        <span>Menu</span>
       </a>
 
-      <a href="events" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-        <span class="material-icons">event</span>
-        <span>Events</span>
-      </a>
 
-
-    <a href="pointchart" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-      <span class="material-icons">bar_chart</span>
-      <span>Points Chart</span>
+    <a href="manage_users" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <span class="material-icons">group</span>
+      <span>Users</span>
     </a>
 
 
@@ -87,11 +100,22 @@
 <!-- JavaScript -->
 <script>
   // Dropdown toggle logic
-  $("#toggleAssets").click(function () {
-    $("#assetsDropdown").slideToggle(300);
-    const icon = $("#dropdownIcon");
+  $("#toggleDeals").click(function () {
+    $("#dealsDropdown").slideToggle(300);
+    const icon = $("#deals_dropdownIcon");
     icon.text(icon.text() === "expand_more" ? "expand_less" : "expand_more");
   });
+
+
+
+   $("#toggleReservation").click(function () {
+    $("#reserveDropdown").slideToggle(300);
+    const icon = $("#reserve_dropdownIcon");
+    icon.text(icon.text() === "expand_more" ? "expand_less" : "expand_more");
+  });
+
+
+  
 
   // Mobile menu logic
   const menuButton = document.getElementById('menuButton');
@@ -118,9 +142,14 @@
       link.classList.add('text-[#FFD700]', 'bg-white/10');
 
       // Auto-expand Bullies dropdown if a child link is active
-      if (link.closest('#assetsDropdown')) {
-        document.getElementById('assetsDropdown').style.display = 'block';
-        document.getElementById('dropdownIcon').textContent = 'expand_less';
+      if (link.closest('#dealsDropdown')) {
+        document.getElementById('dealsDropdown').style.display = 'block';
+        document.getElementById('deals_dropdownIcon').textContent = 'expand_less';
+      }
+
+      if (link.closest('#reserveDropdown')) {
+        document.getElementById('reserveDropdown').style.display = 'block';
+        document.getElementById('reserve_dropdownIcon').textContent = 'expand_less';
       }
     }
   });
