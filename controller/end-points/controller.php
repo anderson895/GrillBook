@@ -49,6 +49,113 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                
 
+        }else if ($_POST['requestType'] == 'AddMenu') {
+
+                $menuName  = $_POST['menuName'];
+                $menuDescription = $_POST['menuDescription'];
+                $menuPrice  = $_POST['menuPrice'];
+                // FILES
+                $menuImage = $_FILES['menuImage'];
+                $uploadDir = '../../static/upload/';
+                $menuImageFileName = ''; 
+                if (isset($menuImage) && $menuImage['error'] === UPLOAD_ERR_OK) {
+                    $bannerExtension = pathinfo($menuImage['name'], PATHINFO_EXTENSION);
+                    $menuImageFileName = uniqid('menu_', true) . '.' . $bannerExtension;
+                    $bannerPath = $uploadDir . $menuImageFileName;
+
+                    $bannerUploaded = move_uploaded_file($menuImage['tmp_name'], $bannerPath);
+
+                    if (!$bannerUploaded) {
+                        echo json_encode([
+                            'status' => 500,
+                            'message' => 'Error uploading menuImage image.'
+                        ]);
+                        exit;
+                    }
+                } elseif ($menuImage['error'] !== UPLOAD_ERR_NO_FILE && $menuImage['error'] !== 0) {
+                    echo json_encode([
+                        'status' => 400,
+                        'message' => 'Invalid image upload.'
+                    ]);
+                    exit;
+                }
+                $result = $db->AddMenu(
+                    $menuName,
+                    $menuDescription,
+                    $menuPrice,
+                    $menuImageFileName 
+                );
+
+                if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'Posted Successfully.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'Error saving data.'
+                    ]);
+                }
+
+               
+
+        }else if ($_POST['requestType'] == 'UpdatMenu') {
+
+            $menu_id = $_POST['menu_id'];
+            $menu_name = $_POST['menu_name'];
+            $menu_description = $_POST['menu_description'];
+            $menu_price = $_POST['menu_price'];
+
+            // Handle Banner Image Upload
+            $uniqueBannerFileName = null;
+            if (isset($_FILES['menu_image']) && $_FILES['menu_image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '../../static/upload/';
+                $fileExtension = pathinfo($_FILES['menu_image']['name'], PATHINFO_EXTENSION);
+                $uniqueBannerFileName = uniqid('menu_', true) . '.' . $fileExtension;
+
+                move_uploaded_file($_FILES['menu_image']['tmp_name'], $uploadDir . $uniqueBannerFileName);
+            }
+
+            // Update
+            $result = $db->UpdateMenu(
+                $menu_id,
+                $menu_name,
+                $menu_description,
+                $menu_price,
+                $uniqueBannerFileName 
+            );
+
+            if ($result['status']) {
+                echo json_encode([
+                    'status' => 200,
+                    'message' => $result['message']
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 500,
+                    'message' => $result['message']
+                ]);
+            }
+
+            exit;
+
+
+        }else if ($_POST['requestType'] == 'removeMenu') {
+
+            $menu_id=$_POST['menu_id'];
+            $result = $db->removeMenu($menu_id);
+            if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'Remove successfully.'
+                    ]);
+            } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'No changes made or error updating data.'
+                    ]);
+            }
         }else {
             echo '404';
         }
@@ -58,8 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
    if (isset($_GET['requestType'])) {
-        if ($_GET['requestType'] == 'fetch_all_registered_dogs') {
-            $result = $db->fetch_all_registered_dogs();
+        if ($_GET['requestType'] == 'fetch_all_menu') {
+            $result = $db->fetch_all_menu();
             echo json_encode([
                 'status' => 200,
                 'data' => $result
