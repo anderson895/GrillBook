@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Seating Chart</title>
-  <link rel="stylesheet" href="../src/output.css">
+<?php
+include "../src/components/admin/header.php";
+include "../src/components/admin/nav.php";
+?>
+<div class="overflow-auto">
+  <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] max-w-7xl mx-auto h-[80vh] min-h-[600px]">
  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  
-</head>
-<body class="bg-gradient-to-br from-teal-100 to-teal-300 min-h-screen p-5 font-sans">
-
-  <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-4 max-w-7xl mx-auto h-[80vh] min-h-[600px]">
     
     <!-- Utility class for all tables -->
     <template id="table-template">
@@ -97,6 +90,7 @@
     <div class="col-start-2 row-start-10 border-amber-500 text-amber-900 font-semibold">B1</div>
 
   </div>
+</div>
 
   <script>
     const template = document.getElementById('table-template');
@@ -108,7 +102,8 @@
       const orders = name === 'C2' || name === 'A2' || name === 'B1' ? 1 : 0;
 
       node.querySelector('.table-name').textContent = name;
-      node.querySelector('.table-orders').textContent = `Orders: ${orders}`;
+      // node.querySelector('.table-orders').textContent = `Orders: ${orders}`;
+      node.querySelector('.table-orders').textContent = ``;
       
       if (orders > 0) {
         node.querySelector('div').classList.add('bg-amber-100', 'border-amber-500');
@@ -121,5 +116,11 @@
     });
   </script>
 
-</body>
-</html>
+
+<?php
+include "../src/components/admin/footer.php";
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script src="../static/js/admin/dashboard.js"></script>
