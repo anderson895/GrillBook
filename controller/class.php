@@ -31,16 +31,16 @@ class global_class extends db_connect
 
 
 
-     public function AddMenu($menuName,$menuDescription,$menuPrice,$menuImageFileName ) {
-            $query = "INSERT INTO `menu` (`menu_name`, `menu_description`, `menu_price`, `menu_image_banner`) 
-                    VALUES (?,?,?,?)";
+     public function AddMenu($menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName ) {
+            $query = "INSERT INTO `menu` (`menu_name`,`menu_category`, `menu_description`, `menu_price`, `menu_image_banner`) 
+                    VALUES (?,?,?,?,?)";
 
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 die("Prepare failed: " . $this->conn->error);
             }
 
-            $stmt->bind_param("ssss", $menuName,$menuDescription,$menuPrice,$menuImageFileName);
+            $stmt->bind_param("sssss", $menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName);
 
             $result = $stmt->execute();
 
@@ -157,6 +157,7 @@ class global_class extends db_connect
 public function UpdateMenu(
                 $menu_id,
                 $menu_name,
+                $menu_category,
                 $menu_description,
                 $menu_price,
                 $menu_image_banner = null) {
@@ -181,9 +182,9 @@ public function UpdateMenu(
     }
 
     // Build query
-    $query = "UPDATE menu SET menu_name = ?, menu_description = ?, menu_price = ?";
-    $types = "sss";
-    $params = [$menu_name, $menu_description, $menu_price];
+    $query = "UPDATE menu SET menu_name = ?,menu_category=?, menu_description = ?, menu_price = ?";
+    $types = "ssss";
+    $params = [$menu_name,$menu_category, $menu_description, $menu_price];
 
     if ($menu_image_banner) {
         $query .= ", menu_image_banner = ?";

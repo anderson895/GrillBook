@@ -47,6 +47,7 @@ include "../src/components/admin/nav.php";
 
           <th class="p-3">#</th>
           <th class="p-3 text-center">Name</th>
+          <th class="p-3 text-center">Category</th>
           <th class="p-3 text-center">Description</th>
           <th class="p-3 text-center">Price</th>
           <th class="p-3 text-center">Image</th>
@@ -104,6 +105,21 @@ include "../src/components/admin/nav.php";
           <textarea id="menuDescription" name="menuDescription" rows="3" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]"></textarea>
         </div>
 
+        <div>
+          <label for="menuCategory" class="block text-sm font-medium text-[#FFD700]">Category</label>
+          <select id="menuCategory" name="menuCategory" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
+            <option value="">-- Select category --</option>
+            <option value="dessert">Dessert</option>
+            <option value="appetizer">Appetizer</option>
+            <option value="soup">Soup</option>
+            <option value="salad">Salad</option>
+            <option value="main course">Main Course</option>
+            <option value="side dish">Side Dish</option>
+            <option value="beverages">Beverages</option>
+          </select>
+        </div>
+
+
         <!-- Upload Banner -->
         <div>
           <label for="menuImage" class="block text-sm font-medium text-[#FFD700]">Upload Image</label>
@@ -151,10 +167,24 @@ include "../src/components/admin/nav.php";
 
 
         <input type="hidden" id="menu_id" name="menu_id">
-        <!-- Event Name -->
+        <!-- Menu Name -->
         <div>
           <label for="menu_name_update" class="block text-sm font-medium text-[#FFD700]">Menu Name</label>
           <input type="text" id="menu_name_update" name="menu_name" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
+        </div>
+        <!-- Menu Category -->
+         <div>
+          <label for="menu_category_update" class="block text-sm font-medium text-[#FFD700]">Category</label>
+          <select id="menu_category_update" name="menuCategory" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
+            <option value="">-- Select category --</option>
+            <option value="dessert">Dessert</option>
+            <option value="appetizer">Appetizer</option>
+            <option value="soup">Soup</option>
+            <option value="salad">Salad</option>
+            <option value="main course">Main Course</option>
+            <option value="side dish">Side Dish</option>
+            <option value="beverages">Beverages</option>
+          </select>
         </div>
 
         <!-- Description -->

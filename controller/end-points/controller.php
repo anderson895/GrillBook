@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }else if ($_POST['requestType'] == 'AddMenu') {
 
                 $menuName  = $_POST['menuName'];
+                $menuCategory  = $_POST['menuCategory'];
                 $menuDescription = $_POST['menuDescription'];
                 $menuPrice  = $_POST['menuPrice'];
                 // FILES
@@ -81,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $result = $db->AddMenu(
                     $menuName,
+                    $menuCategory,
                     $menuDescription,
                     $menuPrice,
                     $menuImageFileName 
@@ -104,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $menu_id = $_POST['menu_id'];
             $menu_name = $_POST['menu_name'];
+            $menu_category = $_POST['menuCategory'];
             $menu_description = $_POST['menu_description'];
             $menu_price = $_POST['menu_price'];
 
@@ -121,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $db->UpdateMenu(
                 $menu_id,
                 $menu_name,
+                $menu_category,
                 $menu_description,
                 $menu_price,
                 $uniqueBannerFileName 

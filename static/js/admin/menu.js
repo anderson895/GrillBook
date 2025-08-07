@@ -26,6 +26,12 @@
             return;
         }
 
+        var menuCategory = $('#menuCategory').val().trim();
+        if (!menuCategory) {
+            alertify.error("Please enter select category.");
+            return;
+        }
+
         var menuDescription = $('#menuDescription').val().trim();
         if (!menuDescription) {
             alertify.error("Please enter description.");
@@ -128,6 +134,8 @@
                         <tr class="hover:bg-[#2B2B2B] transition-colors">
                             <td class="p-3 text-center font-mono">${count++}</td>
                             <td class="p-3 text-center font-mono">${menu.menu_name}</td>
+                           <td class="p-3 text-center font-mono capitalize">${menu.menu_category}</td>
+
                             <td class="p-3 text-center font-semibold">
                             ${menu.menu_description.length > 60 ? menu.menu_description.substring(0, 60) + '...' : menu.menu_description}
                             </td>
@@ -149,6 +157,7 @@
                                 <button class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                                 data-menu_id ='${menu.menu_id}'
                                 data-menu_name='${menu.menu_name}'
+                                data-menu_category='${menu.menu_category}'
                                 data-menu_description='${menu.menu_description}'
                                 data-menu_price='${menu.menu_price}'
                                 
@@ -194,10 +203,12 @@ $(document).on("click", ".viewDetailsBtn", function () {
   const menu_name = $(this).data("menu_name");
   const menu_description = $(this).data("menu_description");
   const menu_price = $(this).data("menu_price");
+  const menu_category = $(this).data("menu_category");
 
 
   $("#menu_id").val(menu_id);
   $("#menu_name_update").val(menu_name);
+  $("#menu_category_update").val(menu_category);
   $("#menu_description_update").val(menu_description);
   $("#menu_price_update").val(menu_price);
 
