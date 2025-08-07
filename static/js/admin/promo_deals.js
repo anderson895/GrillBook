@@ -12,11 +12,11 @@ $(document).ready(function () {
   // REMOVE ENTRY
   $(document).on('click', '.removeBtn', function (e) {
     e.preventDefault();
-    var entry_id = $(this).data('deal_id');
-    var entry_name = $(this).data('deal_name');
+    var deal_id = $(this).data('deal_id');
+    var deal_name = $(this).data('deal_name');
 
     Swal.fire({
-      title: `Are you sure to Remove <span style="color:red;">${entry_name}</span> ?`,
+      title: `Are you sure to Remove <span style="color:red;">${deal_name}</span> ?`,
       text: 'You won\'t be able to revert this!',
       icon: 'warning',
       showCancelButton: true,
@@ -27,7 +27,7 @@ $(document).ready(function () {
         $.ajax({
           url: "../controller/end-points/controller.php",
           type: 'POST',
-          data: { deal_id: entry_id, requestType: 'removeEntry' },
+          data: { deal_id: deal_id, requestType: 'removeDeals' },
           dataType: 'json',
           success: function (response) {
             if (response.status === 200) {
@@ -56,11 +56,7 @@ $(document).ready(function () {
       return;
     }
 
-    var entryDescription = $('#entryDescription').val();
-    if (entryDescription === "") {
-      alertify.error("Please enter a description.");
-      return;
-    }
+  
 
     var entryImage = $('#entryImage').val();
     if (entryImage === "") {

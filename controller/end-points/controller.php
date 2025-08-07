@@ -179,6 +179,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'message' => 'No changes made or error updating data.'
                     ]);
             }
+        }else if ($_POST['requestType'] == 'removeDeals') {
+
+            $deal_id=$_POST['deal_id'];
+            $result = $db->removeDeals($deal_id);
+            if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'Remove successfully.'
+                    ]);
+            } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'No changes made or error updating data.'
+                    ]);
+            }
         }else if ($_POST['requestType'] == 'CreatDeals') {
 
             $entryName = $_POST['entryName'];

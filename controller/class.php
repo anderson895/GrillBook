@@ -393,7 +393,7 @@ public function UpdateMenu(
             $menuQuery = "SELECT * FROM menu WHERE menu_id IN ($placeholders)";
             $menuStmt = $this->conn->prepare($menuQuery);
 
-            $types = str_repeat('i', count($deal_ids)); // assuming menu_id is INT
+            $types = str_repeat('i', count($deal_ids)); 
             $menuStmt->bind_param($types, ...$deal_ids);
 
             $menuStmt->execute();
@@ -414,14 +414,57 @@ public function UpdateMenu(
         }
 
         $stmt->close();
-        return $deal; // ✅ return only the data
+        return $deal; 
     }
 
     $stmt->close();
-    return null; // ✅ return null if not found
+    return null; 
 }
 
 
+
+
+
+
+
+
+
+
+ public function removeDeals($deal_id) {
+        // Step 1: Get the banner filename from the database
+        $selectQuery = "SELECT deal_img_banner FROM deals WHERE deal_id = ?";
+        $stmt = $this->conn->prepare($selectQuery);
+        if (!$stmt) {
+            return 'Prepare failed (select): ' . $this->conn->error;
+        }
+
+        $stmt->bind_param("i", $deal_id);
+        $stmt->execute();
+        $stmt->bind_result($bannerFile);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Step 2: Delete the record from the database
+        $deleteQuery = "DELETE FROM deals WHERE deal_id = ?";
+        $stmt = $this->conn->prepare($deleteQuery);
+        if (!$stmt) {
+            return 'Prepare failed (delete): ' . $this->conn->error;
+        }
+
+        $stmt->bind_param("i", $deal_id);
+        $result = $stmt->execute();
+        $stmt->close();
+
+        // Step 3: Delete the file from the filesystem
+        if ($result && $bannerFile) {
+            $filePath = __DIR__ . "../../static/upload/" . $bannerFile;
+            if (file_exists($filePath)) {
+                unlink($filePath); // deletes the image file
+            }
+        }
+
+        return $result ? 'success' : 'Error deleting event';
+    }
 
 
 
