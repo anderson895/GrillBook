@@ -31,7 +31,7 @@ class global_class extends db_connect
 
 
 
-     public function AddMenu($menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName ) {
+    public function AddMenu($menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName ) {
             $query = "INSERT INTO `menu` (`menu_name`,`menu_category`, `menu_description`, `menu_price`, `menu_image_banner`) 
                     VALUES (?,?,?,?,?)";
 
@@ -41,6 +41,39 @@ class global_class extends db_connect
             }
 
             $stmt->bind_param("sssss", $menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName);
+
+            $result = $stmt->execute();
+
+            if (!$result) {
+                $stmt->close();
+                return false;
+            }
+
+            $inserted_id = $this->conn->insert_id; 
+            $stmt->close();
+
+            return $inserted_id; 
+        }
+
+
+
+
+
+
+
+
+
+
+    public function createDeals($groupName,$groupDescription,$deal_type,$groupImageFileName) {
+            $query = "INSERT INTO `deals` (`deal_name`,`deal_description`,`deal_img_banner`,`deal_type`) 
+                    VALUES (?,?,?,?)";
+
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                die("Prepare failed: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("ssss", $groupName,$groupDescription,$groupImageFileName,$deal_type);
 
             $result = $stmt->execute();
 
@@ -256,6 +289,123 @@ public function UpdateMenu(
 
         return $result ? 'success' : 'Error deleting event';
     }
+
+
+
+
+
+
+    public function fetch_all_deals($deal_type) {
+        $query = $this->conn->prepare("SELECT * FROM deals where deal_type ='$deal_type' ORDER BY deal_id DESC");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            $data = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+
+            return $data;
+        }
+        return []; 
+    }
+
+
+
+     public function AddMenuDeals($menu_id, $deal_id) {
+            // Step 1: Kunin ang existing deal_ids
+            $query = "SELECT deal_ids FROM deals WHERE deal_id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("s", $deal_id);
+            $stmt->execute();
+            $stmt->bind_result($deal_ids_json);
+            $stmt->fetch();
+            $stmt->close();
+
+            // Step 2: Convert JSON to array
+            $deal_ids = json_decode($deal_ids_json, true);
+
+            // If null or not an array, initialize as array
+            if (!is_array($deal_ids)) {
+                $deal_ids = [];
+            }
+
+            // Step 3: Append menu_id if not yet in the array
+            if (!in_array($menu_id, $deal_ids)) {
+                $deal_ids[] = $menu_id;
+            }
+
+            // Step 4: Encode back to JSON
+            $new_deal_ids_json = json_encode($deal_ids);
+
+            // Step 5: Update query
+            $updateQuery = "UPDATE deals SET deal_ids = ? WHERE deal_id = ?";
+            $updateStmt = $this->conn->prepare($updateQuery);
+            $updateStmt->bind_param("ss", $new_deal_ids_json, $deal_id);
+
+            $result = $updateStmt->execute();
+            $updateStmt->close();
+
+            return $result;
+        }
+
+
+  public function GetAllDealsWithMenus_byId($dealId) {
+    $query = "SELECT deal_id, deal_name, deal_ids FROM deals WHERE deal_id = ?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bind_param("s", $dealId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $deal_ids = json_decode($row['deal_ids'], true);
+        if (!is_array($deal_ids)) {
+            $deal_ids = [];
+        }
+
+        $deal = [
+            'deal_id' => $row['deal_id'],
+            'deal_name' => $row['deal_name'],
+            'deal_ids' => $deal_ids,
+            'menus' => []
+        ];
+
+        if (count($deal_ids) > 0) {
+            $placeholders = implode(',', array_fill(0, count($deal_ids), '?'));
+            $menuQuery = "SELECT * FROM menu WHERE menu_id IN ($placeholders)";
+            $menuStmt = $this->conn->prepare($menuQuery);
+
+            $types = str_repeat('i', count($deal_ids)); // assuming menu_id is INT
+            $menuStmt->bind_param($types, ...$deal_ids);
+
+            $menuStmt->execute();
+            $menuResult = $menuStmt->get_result();
+
+            $menus = [];
+            while ($menuRow = $menuResult->fetch_assoc()) {
+                $menus[$menuRow['menu_id']] = $menuRow;
+            }
+
+            foreach ($deal_ids as $id) {
+                if (isset($menus[$id])) {
+                    $deal['menus'][] = $menus[$id];
+                }
+            }
+
+            $menuStmt->close();
+        }
+
+        $stmt->close();
+        return $deal; // ✅ return only the data
+    }
+
+    $stmt->close();
+    return null; // ✅ return null if not found
+}
+
+
+
 
 
 

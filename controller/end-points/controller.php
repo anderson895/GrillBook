@@ -145,6 +145,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
 
 
+        }else if ($_POST['requestType'] == 'AddMenuDeals') {
+
+            $menu_id=$_POST['menu'];
+            $deal_id=$_POST['deal_id'];
+
+            
+            $result = $db->AddMenuDeals($menu_id,$deal_id);
+            if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'successfully Added.'
+                    ]);
+            } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'No changes made or error updating data.'
+                    ]);
+            }
+
         }else if ($_POST['requestType'] == 'removeMenu') {
 
             $menu_id=$_POST['menu_id'];
@@ -160,6 +179,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'message' => 'No changes made or error updating data.'
                     ]);
             }
+        }else if ($_POST['requestType'] == 'CreatDeals') {
+
+            $entryName = $_POST['entryName'];
+            $entryDescription = $_POST['entryDescription'];
+            $deal_type = $_POST['deal_type'];
+
+            $entryImage = $_FILES['entryImage'];
+            $uploadDir = '../../static/upload/';
+            $entryImageFileName = '';
+
+            if (isset($entryImage) && $entryImage['error'] === UPLOAD_ERR_OK) {
+                $bannerExtension = pathinfo($entryImage['name'], PATHINFO_EXTENSION);
+                $entryImageFileName = uniqid('deals_', true) . '.' . $bannerExtension;
+                $bannerPath = $uploadDir . $entryImageFileName;
+
+                $bannerUploaded = move_uploaded_file($entryImage['tmp_name'], $bannerPath);
+
+                if (!$bannerUploaded) {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'Error uploading image.'
+                    ]);
+                    exit;
+                }
+            } elseif ($entryImage['error'] !== UPLOAD_ERR_NO_FILE && $entryImage['error'] !== 0) {
+                echo json_encode([
+                    'status' => 400,
+                    'message' => 'Invalid image upload.'
+                ]);
+                exit;
+            }
+
+            // Generic function call (update to match actual method name in your DB class)
+            $result = $db->createDeals($entryName, $entryDescription, $deal_type, $entryImageFileName);
+
+            if ($result) {
+                echo json_encode([
+                    'status' => 200,
+                    'message' => 'Added successfully.'
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 500,
+                    'message' => 'No changes made or error updating data.'
+                ]);
+            }
+
+
         }else {
             echo '404';
         }
@@ -171,6 +238,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    if (isset($_GET['requestType'])) {
         if ($_GET['requestType'] == 'fetch_all_menu') {
             $result = $db->fetch_all_menu();
+            echo json_encode([
+                'status' => 200,
+                'data' => $result
+            ]);
+        }else if ($_GET['requestType'] == 'fetch_all_deals') {
+            $deal_type=$_GET["deal_type"];
+            $result = $db->fetch_all_deals($deal_type);
+            echo json_encode([
+                'status' => 200,
+                'data' => $result
+            ]);
+        }else if ($_GET['requestType'] == 'GetAllDealsWithMenus_byId') {
+            $dealId=$_GET['deal_id'];
+
+
+            $result = $db->GetAllDealsWithMenus_byId($dealId);
             echo json_encode([
                 'status' => 200,
                 'data' => $result

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2025 at 03:56 AM
+-- Generation Time: Aug 07, 2025 at 02:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,10 +30,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `deals` (
   `deal_id` int(11) NOT NULL,
   `deal_name` varchar(60) NOT NULL,
-  `deal_type` enum('group_deals','promo_deals','','') NOT NULL,
-  `deal_menu` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`deal_menu`)),
-  `deal_status` int(11) NOT NULL COMMENT '0=deleted,1=active'
+  `deal_description` text NOT NULL,
+  `deal_img_banner` varchar(255) NOT NULL,
+  `deal_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `deal_type` enum('group_deals','promo_deals','','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `deals`
+--
+
+INSERT INTO `deals` (`deal_id`, `deal_name`, `deal_description`, `deal_img_banner`, `deal_ids`, `deal_type`) VALUES
+(1, 'esfse', 'grrdgrdg', 'group_689477e2c7c2b6.67001920.jpg', '[\"4\",\"2\",\"5\"]', 'group_deals'),
+(2, 'esegf', 'egdrg', 'deals_68949b3bcb2726.00859835.webp', NULL, 'group_deals'),
+(3, 'esegf', 'awdawd', 'deals_68949b7dc31438.97537131.webp', '[\"3\",\"4\"]', 'promo_deals');
 
 -- --------------------------------------------------------
 
@@ -114,7 +124,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `deals`
 --
 ALTER TABLE `deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `menu`

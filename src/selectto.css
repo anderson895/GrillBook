@@ -1,0 +1,21 @@
+.select2-container--default .select2-selection--single {
+    background-color: #0D0D0D;
+    border: 1px solid #4B5563; /* gray-600 */
+    border-radius: 0.375rem; /* rounded-md */
+    padding: 0.5rem;
+    color: #D1D5DB; /* text-gray-300 */
+    height: auto;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #D1D5DB;
+    line-height: 1.5rem;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.5);
+  }
