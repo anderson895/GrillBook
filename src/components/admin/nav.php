@@ -145,10 +145,11 @@
 
   links.forEach(link => {
     const linkHref = link.getAttribute('href');
-    if (currentPath.includes(linkHref)) {
+    if (currentPath === linkHref || currentPath.endsWith(linkHref)) {
       link.classList.add('text-[#FFD700]', 'bg-white/10');
 
-      // Auto-expand Bullies dropdown if a child link is active
+      
+
       if (link.closest('#dealsDropdown')) {
         document.getElementById('dealsDropdown').style.display = 'block';
         document.getElementById('deals_dropdownIcon').textContent = 'expand_less';
@@ -158,6 +159,9 @@
         document.getElementById('reserveDropdown').style.display = 'block';
         document.getElementById('reserve_dropdownIcon').textContent = 'expand_less';
       }
+
+      console.log(linkHref);
+   
     }
   });
 </script>

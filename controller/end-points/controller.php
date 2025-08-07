@@ -179,6 +179,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'message' => 'No changes made or error updating data.'
                     ]);
             }
+        }else if ($_POST['requestType'] == 'remove_deal_ids') {
+
+            $deal_id =$_POST['dealId'];
+            $menu_id=$_POST['menu_id'];
+            $result = $db->remove_deal_ids($menu_id,$deal_id );
+            if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'Remove successfully.'
+                    ]);
+            } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'No changes made or error updating data.'
+                    ]);
+            }
         }else if ($_POST['requestType'] == 'removeDeals') {
 
             $deal_id=$_POST['deal_id'];

@@ -368,6 +368,50 @@ public function UpdateMenu(
         }
 
 
+   public function remove_deal_ids($menu_id, $deal_id) {
+        // Step 1: Kunin ang existing deal_ids
+        $query = "SELECT deal_ids FROM deals WHERE deal_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("s", $deal_id);
+        $stmt->execute();
+        $stmt->bind_result($deal_ids_json);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Step 2: Convert JSON to array
+        $deal_ids = json_decode($deal_ids_json, true);
+
+        // If null or not an array, initialize as array
+        if (!is_array($deal_ids)) {
+            $deal_ids = [];
+        }
+
+        // Step 3: Remove menu_id from array if present
+        if (in_array($menu_id, $deal_ids)) {
+            $deal_ids = array_filter($deal_ids, function($id) use ($menu_id) {
+                return $id != $menu_id;
+            });
+
+            // Re-index array to maintain proper JSON format
+            $deal_ids = array_values($deal_ids);
+        }
+
+        // Step 4: Encode back to JSON
+        $new_deal_ids_json = json_encode($deal_ids);
+
+        // Step 5: Update query
+        $updateQuery = "UPDATE deals SET deal_ids = ? WHERE deal_id = ?";
+        $updateStmt = $this->conn->prepare($updateQuery);
+        $updateStmt->bind_param("ss", $new_deal_ids_json, $deal_id);
+
+        $result = $updateStmt->execute();
+        $updateStmt->close();
+
+        return $result;
+    }
+
+
+
   public function GetAllDealsWithMenus_byId($dealId) {
     $query = "SELECT deal_id, deal_name, deal_ids FROM deals WHERE deal_id = ?";
     $stmt = $this->conn->prepare($query);
