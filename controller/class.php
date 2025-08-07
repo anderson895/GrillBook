@@ -296,7 +296,22 @@ public function UpdateMenu(
 
 
     public function fetch_all_deals($deal_type) {
-        $query = $this->conn->prepare("SELECT * FROM deals where deal_type ='$deal_type' ORDER BY deal_id DESC");
+        // Base query
+        $queryStr = "SELECT * FROM deals";
+
+        // Check if deal_type is not null, then add WHERE clause
+        if (!is_null($deal_type)) {
+            $queryStr .= " WHERE deal_type = ?";
+        }
+
+        // Always add ORDER BY
+        $queryStr .= " ORDER BY deal_id DESC";
+
+        $query = $this->conn->prepare($queryStr);
+
+        if (!is_null($deal_type)) {
+            $query->bind_param("s", $deal_type);
+        }
 
         if ($query->execute()) {
             $result = $query->get_result();
@@ -308,8 +323,10 @@ public function UpdateMenu(
 
             return $data;
         }
-        return []; 
+
+        return [];
     }
+
 
 
 

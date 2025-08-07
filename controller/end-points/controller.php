@@ -243,12 +243,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'data' => $result
             ]);
         }else if ($_GET['requestType'] == 'fetch_all_deals') {
-            $deal_type=$_GET["deal_type"];
+            $deal_type = isset($_GET["deal_type"]) && $_GET["deal_type"] !== '' ? $_GET["deal_type"] : null;
             $result = $db->fetch_all_deals($deal_type);
             echo json_encode([
                 'status' => 200,
                 'data' => $result
             ]);
+
         }else if ($_GET['requestType'] == 'GetAllDealsWithMenus_byId') {
             $dealId=$_GET['deal_id'];
 
