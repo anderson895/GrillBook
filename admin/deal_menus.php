@@ -17,7 +17,7 @@ $deal_id=$_GET['deal_id'];
 
   <!-- Admin Initial Circle -->
   <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white font-semibold shadow-md">
-    <?= strtoupper(substr($_SESSION['admin_fullname'], 0, 1)); ?>
+    <?= strtoupper(substr($_SESSION['user_fname'], 0, 1)); ?>
   </div>
 </div>
 
