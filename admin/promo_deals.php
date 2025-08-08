@@ -53,6 +53,7 @@ include "../src/components/admin/nav.php";
         <th class="p-3">Promo Name</th>
         <th class="p-3">Description</th>
         <th class="p-3">Banner</th>
+        <th class="p-3">Expiration</th>
         <th class="p-3 text-center">Action</th>
       </tr>
     </thead>
@@ -79,6 +80,12 @@ include "../src/components/admin/nav.php";
           <textarea id="entryDescription" name="entryDescription" class="w-full px-3 py-2 rounded-md bg-[#0D0D0D] border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"></textarea>
         </div>
 
+        <!-- Expiration Date -->
+        <div>
+          <label for="entryExpiration" class="block text-sm font-medium">Expiration Date</label>
+          <input type="date" id="entryExpiration" name="entryExpiration" class="w-full px-3 py-2 rounded-md bg-[#0D0D0D] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
+        </div>
+
         <!-- Upload Banner -->
         <div>
           <label for="entryImage" class="block text-sm font-medium text-[#FFD700]">Upload Image</label>
@@ -92,6 +99,7 @@ include "../src/components/admin/nav.php";
     </div>
   </div>
 </div>
+
 
 
 

@@ -56,6 +56,12 @@ $(document).ready(function () {
       return;
     }
 
+
+    var entryExpiration = $('#entryExpiration').val();
+    if (entryExpiration === "") {
+      alertify.error("Please set expiration.");
+      return;
+    }
   
 
     var entryImage = $('#entryImage').val();
@@ -119,6 +125,7 @@ $(document).ready(function () {
                 <td class="p-3">
                   <img src="../static/upload/${deal.deal_img_banner}" alt="${deal.deal_img_banner}" class="w-12 h-12 rounded object-cover border border-gray-600">
                 </td>
+                 <td class="p-3 font-semibold">${deal.deal_expiration}</td>
                 <td class="p-3 text-center">
                   <a href="deal_menus?deal_id=${deal.deal_id}&&deal_name=${deal.deal_name}" 
                     class="inline-block bg-[#FFD700] hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition">

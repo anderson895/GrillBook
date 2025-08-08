@@ -64,16 +64,16 @@ class global_class extends db_connect
 
 
 
-    public function createDeals($groupName,$groupDescription,$deal_type,$groupImageFileName) {
-            $query = "INSERT INTO `deals` (`deal_name`,`deal_description`,`deal_img_banner`,`deal_type`) 
-                    VALUES (?,?,?,?)";
+    public function createDeals($groupName,$groupDescription,$deal_type,$groupImageFileName,$entryExpiration) {
+            $query = "INSERT INTO `deals` (`deal_name`,`deal_description`,`deal_img_banner`,`deal_type`,`deal_expiration`) 
+                    VALUES (?,?,?,?,?)";
 
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 die("Prepare failed: " . $this->conn->error);
             }
 
-            $stmt->bind_param("ssss", $groupName,$groupDescription,$groupImageFileName,$deal_type);
+            $stmt->bind_param("sssss", $groupName,$groupDescription,$groupImageFileName,$deal_type,$entryExpiration);
 
             $result = $stmt->execute();
 

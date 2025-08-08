@@ -215,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $entryName = $_POST['entryName'];
             $entryDescription = $_POST['entryDescription'];
             $deal_type = $_POST['deal_type'];
+            $entryExpiration = $_POST['entryExpiration'] ?? null;
 
             $entryImage = $_FILES['entryImage'];
             $uploadDir = '../../static/upload/';
@@ -243,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Generic function call (update to match actual method name in your DB class)
-            $result = $db->createDeals($entryName, $entryDescription, $deal_type, $entryImageFileName);
+            $result = $db->createDeals($entryName, $entryDescription, $deal_type, $entryImageFileName,$entryExpiration);
 
             if ($result) {
                 echo json_encode([
