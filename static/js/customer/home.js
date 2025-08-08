@@ -3,6 +3,7 @@ $(function () {
   $(document).on("click", ".setSchedule", function () {
     const table_code = $(this).data("value");
     $("#table_code").val(table_code);
+    $("#table_code_label").text(table_code);
 
     fetchMenus();
     fetchPromos();
@@ -114,88 +115,178 @@ function fetchPromos() {
   $.ajax({
     url: "../controller/end-points/controller.php",
     method: "GET",
-    data: { requestType: "fetch_all_deals", deal_type: "promo_deals" },
+    data: { requestType: "fetch_all_deals_and_menu", deal_type: "promo_deals" },
     dataType: "json",
     success: function (res) {
       const container = $("#promoContainer").empty();
 
       if (res.status === 200 && res.data.length > 0) {
         res.data.forEach(deal => {
+
+          // Build menu list HTML (hidden by default)
+          let menusHTML = '';
+          if (deal.menus && deal.menus.length > 0) {
+            menusHTML = `
+              <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
+                ${deal.menus.map(menu => `
+                  <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
+                    <img src="../static/upload/${menu.menu_image_banner}" 
+                         alt="${menu.menu_name}" 
+                         class="w-12 h-12 object-cover rounded-md mr-3" />
+                    <div class="flex-1">
+                      <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
+                      <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          // Append deal card
           container.append(`
             <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-  
-                <!-- Checkbox -->
-                <input type="checkbox" 
-                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                    value="${deal.deal_id}" />
 
-                <!-- Button instead of link -->
-                <button type="button" 
-                    class="w-full text-left focus:outline-none" 
-                    data-id="${deal.deal_id}">
-                    <img src="../static/upload/${deal.deal_img_banner}" 
-                        alt="${deal.deal_name}" 
-                        class="w-full h-40 object-cover rounded-lg mb-4" />
-                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                    <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
-                </button>
+              <!-- Checkbox -->
+              <input type="checkbox" 
+                  class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                  value="${deal.deal_id}" />
 
-                </div>
+              <!-- Deal Info -->
+              <button type="button" 
+                  class="w-full text-left focus:outline-none" 
+                  data-id="${deal.deal_id}">
+                  <img src="../static/upload/${deal.deal_img_banner}" 
+                      alt="${deal.deal_name}" 
+                      class="w-full h-40 object-cover rounded-lg mb-4" />
+                  <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                  <p class="text-[#CCCCCC] text-sm mb-1">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
+              </button>
 
+              <!-- Toggle Button -->
+              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
+                  data-id="${deal.deal_id}">
+                  Show Menu
+              </button>
+
+              ${menusHTML}
+            </div>
           `);
         });
 
+        // Init Swiper after append
         initSwiper(".promoSwiper");
+
+        // Attach Toggle Event
+        $(".toggle-menu-btn").off("click").on("click", function () {
+          const id = $(this).data("id");
+          const menuList = $(`#menuList-${id}`);
+          const isHidden = menuList.hasClass("hidden");
+
+          if (isHidden) {
+            menuList.removeClass("hidden");
+            $(this).text("Hide Menu");
+          } else {
+            menuList.addClass("hidden");
+            $(this).text("Show Menu");
+          }
+        });
+
       } else {
-        container.html('<p class="text-gray-400">No promo deals found.</p>');
+        $("#promo_section").hide();
       }
     }
   });
 }
 
-// ====== Fetch Group Deals ======
+
 function fetchGroups() {
   $.ajax({
     url: "../controller/end-points/controller.php",
     method: "GET",
-    data: { requestType: "fetch_all_deals", deal_type: "group_deals" },
+    data: { requestType: "fetch_all_deals_and_menu", deal_type: "group_deals" },
     dataType: "json",
     success: function (res) {
       const container = $("#groupContainer").empty();
 
       if (res.status === 200 && res.data.length > 0) {
         res.data.forEach(deal => {
+
+          // Build menu list HTML (hidden by default)
+          let menusHTML = '';
+          if (deal.menus && deal.menus.length > 0) {
+            menusHTML = `
+              <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
+                ${deal.menus.map(menu => `
+                  <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
+                    <img src="../static/upload/${menu.menu_image_banner}" 
+                         alt="${menu.menu_name}" 
+                         class="w-12 h-12 object-cover rounded-md mr-3" />
+                    <div class="flex-1">
+                      <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
+                      <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
           container.append(`
-           <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-  
-                <!-- Checkbox -->
-                <input type="checkbox" 
-                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                    value="${deal.deal_id}" />
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
 
-                <!-- Button instead of link -->
-                <button type="button" 
-                    class="w-full text-left focus:outline-none" 
-                    data-id="${deal.deal_id}">
-                    <img src="../static/upload/${deal.deal_img_banner}" 
-                        alt="${deal.deal_name}" 
-                        class="w-full h-40 object-cover rounded-lg mb-4" />
-                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                    <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
-                </button>
+              <!-- Checkbox -->
+              <input type="checkbox" 
+                  class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                  value="${deal.deal_id}" />
 
-                </div>
+              <!-- Deal Info -->
+              <button type="button" 
+                  class="w-full text-left focus:outline-none" 
+                  data-id="${deal.deal_id}">
+                  <img src="../static/upload/${deal.deal_img_banner}" 
+                      alt="${deal.deal_name}" 
+                      class="w-full h-40 object-cover rounded-lg mb-4" />
+                  <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                  <p class="text-[#CCCCCC] text-sm mb-1">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
+              </button>
 
+              <!-- Toggle Button -->
+              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
+                  data-id="${deal.deal_id}">
+                  Show Menu
+              </button>
+
+              ${menusHTML}
+            </div>
           `);
         });
 
         initSwiper(".groupSwiper");
+
+        // Attach Toggle Event
+        $(".toggle-menu-btn").off("click").on("click", function () {
+          const id = $(this).data("id");
+          const menuList = $(`#menuList-${id}`);
+          const isHidden = menuList.hasClass("hidden");
+
+          if (isHidden) {
+            menuList.removeClass("hidden");
+            $(this).text("Hide Menu");
+          } else {
+            menuList.addClass("hidden");
+            $(this).text("Show Menu");
+          }
+        });
+
       } else {
         container.html('<p class="text-gray-400">No group deals found.</p>');
       }
     }
   });
 }
+
+
 
 
 

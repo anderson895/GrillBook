@@ -330,6 +330,75 @@ public function UpdateMenu(
 
 
 
+
+
+
+
+
+    public function fetch_all_deals_and_menu($deal_type) {
+    $queryStr = "SELECT * FROM deals";
+    if (!is_null($deal_type)) {
+        $queryStr .= " WHERE deal_type = ?";
+    }
+    $queryStr .= " ORDER BY deal_id DESC";
+
+    $query = $this->conn->prepare($queryStr);
+    if (!is_null($deal_type)) {
+        $query->bind_param("s", $deal_type);
+    }
+
+    if ($query->execute()) {
+        $result = $query->get_result();
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $dealIds = json_decode($row['deal_ids'], true);
+
+            // Skip deals na walang laman o walang array
+            if (empty($dealIds) || !is_array($dealIds)) {
+                continue;
+            }
+
+            $totalPrice = 0;
+            $menus = [];
+
+            // Prepare IN clause
+            $placeholders = implode(',', array_fill(0, count($dealIds), '?'));
+            $types = str_repeat('i', count($dealIds));
+            
+            $sqlMenu = "SELECT * FROM menu WHERE menu_id IN ($placeholders)";
+            $stmtMenu = $this->conn->prepare($sqlMenu);
+            $stmtMenu->bind_param($types, ...$dealIds);
+            $stmtMenu->execute();
+            $resMenu = $stmtMenu->get_result();
+
+            while ($menu = $resMenu->fetch_assoc()) {
+                $menus[] = $menu;
+                $totalPrice += $menu['menu_price'];
+            }
+
+            // Add menus and total price to deal data
+            $row['menus'] = $menus;
+            $row['total_price'] = $totalPrice;
+
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    return [];
+}
+
+
+
+
+
+
+
+
+
+
      public function AddMenuDeals($menu_id, $deal_id) {
             // Step 1: Kunin ang existing deal_ids
             $query = "SELECT deal_ids FROM deals WHERE deal_id = ?";

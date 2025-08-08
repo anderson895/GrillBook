@@ -117,7 +117,10 @@ include "../src/components/customer/footer.php";
   >
     <!-- Sticky Header -->
     <div class=" top-0 bg-[#1A1A1A]/95 backdrop-blur-lg z-10 flex justify-between items-center pb-3 border-b border-gray-700 mb-6">
-      <h2 id="modalTitle" class="text-2xl font-bold text-yellow-400">Reservation Form</h2>
+      <h2 id="modalTitle" class="text-2xl font-bold text-yellow-400 whitespace-nowrap">
+        Reservation for Table:<span id="table_code_label" class="ml-1 text-white"></span>
+      </h2>
+
       <button 
         id="closeAddModal" 
         aria-label="Close modal" 
@@ -177,7 +180,6 @@ include "../src/components/customer/footer.php";
         </button>
       </div>
 
-    <!-- Menu Section -->
 <!-- Menu Section -->
 <section class="py-16 px-6 bg-[#1A1A1A]">
   <div class="max-w-6xl mx-auto">
@@ -191,7 +193,7 @@ include "../src/components/customer/footer.php";
 </section>
 
 <!-- Promo Deals Section -->
-<section class="py-16 px-6 bg-[#1A1A1A]">
+<section class="py-16 px-6 bg-[#1A1A1A]" id="promo_section">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl text-center font-bold text-[#FFD700] uppercase mb-10">Promo Deals</h2>
     <div class="swiper promoSwiper">
@@ -226,7 +228,7 @@ include "../src/components/customer/footer.php";
           class="mt-1 rounded text-yellow-400 focus:ring-yellow-400 w-5 h-5" 
         />
         <label for="terms" class="text-sm select-none">
-          I agree to the <a href="/terms.pdf" target="_blank" download class="underline text-yellow-400 hover:text-yellow-300">Terms and Conditions</a>
+          I agree to the <a href="../static/resources/terms_and_condition.pdf" target="_blank" download class="underline text-yellow-400 hover:text-yellow-300">Terms and Conditions</a>
         </label>
       </div>
 
