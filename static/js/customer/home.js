@@ -71,13 +71,29 @@ function fetchMenus() {
 
         response.data.forEach(menu => {
           container.append(`
-            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-              <a href="generation?dog_id=${menu.menu_id}">
-                <img src="../static/upload/${menu.menu_image_banner}" alt="${menu.menu_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
+          <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+  
+            <!-- Checkbox -->
+            <div class="absolute top-4 left-4">
+                <input type="checkbox" 
+                class="w-5 h-5 accent-[#FFD700] cursor-pointer"
+                value="${menu.menu_id}" 
+                name="menu_select[]" />
+            </div>
+
+            <!-- Button instead of link -->
+            <button type="button" 
+                class="w-full text-left focus:outline-none" 
+                data-id="${menu.menu_id}">
+                <img src="../static/upload/${menu.menu_image_banner}" 
+                    alt="${menu.menu_name}" 
+                    class="w-full h-40 object-cover rounded-lg mb-4" />
                 <h3 class="text-xl font-bold text-[#FFD700] mb-1">${menu.menu_name}</h3>
                 <p class="text-[#CCCCCC] text-sm mb-1">Price: ${menu.menu_price}</p>
-              </a>
+            </button>
+
             </div>
+
           `);
         });
 
@@ -91,6 +107,7 @@ function fetchMenus() {
     }
   });
 }
+
 
 // ====== Fetch Promo Deals ======
 function fetchPromos() {
@@ -106,12 +123,25 @@ function fetchPromos() {
         res.data.forEach(deal => {
           container.append(`
             <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-              <a href="promo?deal_id=${deal.deal_id}">
-                <img src="../static/upload/${deal.deal_img_banner}" alt="${deal.deal_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
-                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
-              </a>
-            </div>
+  
+                <!-- Checkbox -->
+                <input type="checkbox" 
+                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                    value="${deal.deal_id}" />
+
+                <!-- Button instead of link -->
+                <button type="button" 
+                    class="w-full text-left focus:outline-none" 
+                    data-id="${deal.deal_id}">
+                    <img src="../static/upload/${deal.deal_img_banner}" 
+                        alt="${deal.deal_name}" 
+                        class="w-full h-40 object-cover rounded-lg mb-4" />
+                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                    <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
+                </button>
+
+                </div>
+
           `);
         });
 
@@ -136,13 +166,26 @@ function fetchGroups() {
       if (res.status === 200 && res.data.length > 0) {
         res.data.forEach(deal => {
           container.append(`
-            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-              <a href="group?deal_id=${deal.deal_id}">
-                <img src="../static/upload/${deal.deal_img_banner}" alt="${deal.deal_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
-                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
-              </a>
-            </div>
+           <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+  
+                <!-- Checkbox -->
+                <input type="checkbox" 
+                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                    value="${deal.deal_id}" />
+
+                <!-- Button instead of link -->
+                <button type="button" 
+                    class="w-full text-left focus:outline-none" 
+                    data-id="${deal.deal_id}">
+                    <img src="../static/upload/${deal.deal_img_banner}" 
+                        alt="${deal.deal_name}" 
+                        class="w-full h-40 object-cover rounded-lg mb-4" />
+                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                    <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
+                </button>
+
+                </div>
+
           `);
         });
 
@@ -153,6 +196,7 @@ function fetchGroups() {
     }
   });
 }
+
 
 
 
