@@ -1,0 +1,222 @@
+$(function () {
+  // ===== Open Modal & Load All Data =====
+  $(document).on("click", ".setSchedule", function () {
+    const table_code = $(this).data("value");
+    $("#table_code").val(table_code);
+
+    fetchMenus();
+    fetchPromos();
+    fetchGroups();
+
+    $("#scheduleModal").fadeIn();
+  });
+
+  // ===== Close Modal =====
+  $("#closeAddModal").click(function () {
+    closeModal();
+  });
+
+  $(window).click(function (e) {
+    if ($(e.target).is("#scheduleModal")) {
+      closeModal();
+    }
+  });
+
+  function closeModal() {
+    $("#scheduleModal").fadeOut();
+    $("#frmRequestReservation")[0].reset();
+    $("#fileNamePreview").text("");
+    $("#payment_proof")
+      .prop("disabled", true)
+      .addClass("cursor-not-allowed")
+      .removeClass("cursor-pointer");
+    $("#submitBtn")
+      .prop("disabled", true)
+      .addClass("cursor-not-allowed opacity-50")
+      .removeClass("opacity-100 cursor-pointer");
+  }
+
+
+
+  // ===== Fetch Menus =====
+// ====== Helper: Initialize Swiper ======
+function initSwiper(selector) {
+  return new Swiper(selector, {
+    loop: true,
+    slidesPerView: 1.2,
+    spaceBetween: 20,
+    breakpoints: {
+      640: { slidesPerView: 1.5 },
+      768: { slidesPerView: 2.5 },
+      1024: { slidesPerView: 3 },
+    },
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+  });
+}
+
+
+// ====== Fetch Menus ======
+function fetchMenus() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_menu" },
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200 && response.data.length > 0) {
+        const container = $("#menuContainer").empty();
+
+        response.data.forEach(menu => {
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+              <a href="generation?dog_id=${menu.menu_id}">
+                <img src="../static/upload/${menu.menu_image_banner}" alt="${menu.menu_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${menu.menu_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${menu.menu_price}</p>
+              </a>
+            </div>
+          `);
+        });
+
+        initSwiper(".menuSwiper");
+      } else {
+        console.error("No menu found or bad response.");
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error:", status, error);
+    }
+  });
+}
+
+// ====== Fetch Promo Deals ======
+function fetchPromos() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_deals", deal_type: "promo_deals" },
+    dataType: "json",
+    success: function (res) {
+      const container = $("#promoContainer").empty();
+
+      if (res.status === 200 && res.data.length > 0) {
+        res.data.forEach(deal => {
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+              <a href="promo?deal_id=${deal.deal_id}">
+                <img src="../static/upload/${deal.deal_img_banner}" alt="${deal.deal_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
+              </a>
+            </div>
+          `);
+        });
+
+        initSwiper(".promoSwiper");
+      } else {
+        container.html('<p class="text-gray-400">No promo deals found.</p>');
+      }
+    }
+  });
+}
+
+// ====== Fetch Group Deals ======
+function fetchGroups() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_deals", deal_type: "group_deals" },
+    dataType: "json",
+    success: function (res) {
+      const container = $("#groupContainer").empty();
+
+      if (res.status === 200 && res.data.length > 0) {
+        res.data.forEach(deal => {
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+              <a href="group?deal_id=${deal.deal_id}">
+                <img src="../static/upload/${deal.deal_img_banner}" alt="${deal.deal_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${deal.deal_price}</p>
+              </a>
+            </div>
+          `);
+        });
+
+        initSwiper(".groupSwiper");
+      } else {
+        container.html('<p class="text-gray-400">No group deals found.</p>');
+      }
+    }
+  });
+}
+
+
+
+
+
+  // ===== File Upload Preview =====
+  $("#payment_proof").on("change", function () {
+    const fileName = $(this).val().split("\\").pop();
+    $("#fileNamePreview").text(fileName ? `Selected file: ${fileName}` : "");
+  });
+
+  // ===== Terms Checkbox Handling =====
+  $("#terms").on("change", function () {
+    const checked = $(this).is(":checked");
+
+    $("#payment_proof")
+      .prop("disabled", !checked)
+      .toggleClass("cursor-not-allowed", !checked)
+      .toggleClass("cursor-pointer", checked);
+
+    $("#submitBtn")
+      .prop("disabled", !checked)
+      .toggleClass("cursor-not-allowed opacity-50", !checked)
+      .toggleClass("opacity-100 cursor-pointer", checked);
+  });
+
+  // ===== Check Availability =====
+  $("#btnCheckAvailability").on("click", function () {
+    const seats = $("#seats").val();
+    const date = $("#date_schedule").val();
+    const time = $("#time_schedule").val();
+
+    if (!seats || !date || !time) {
+      alert("Please fill in seats, date, and time before checking availability.");
+      return;
+    }
+
+    // Example check - replace with AJAX to backend
+    alert(`Checking availability for:\nSeats: ${seats}\nDate: ${date}\nTime: ${time}`);
+  });
+
+  // ===== Submit Form =====
+  $("#frmRequestReservation").on("submit", function (e) {
+    e.preventDefault();
+
+    if ($('input[name="menus[]"]:checked').length === 0 &&
+        $('input[name="promos[]"]:checked').length === 0 &&
+        $('input[name="groups[]"]:checked').length === 0) {
+      alert("Please select at least one menu, promo, or group deal.");
+      return;
+    }
+
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: "../controller/end-points/controller.php",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (res) {
+        alert(res);
+        closeModal();
+      }
+    });
+  });
+});

@@ -4,7 +4,8 @@
     cells.forEach((cell) => {
       const node = template.content.cloneNode(true);
       const name = cell.textContent.trim();
-      const orders = name === 'C2' || name === 'A2' || name === 'B1' ? 1 : 0;
+      // const orders = name === 'C2' || name === 'A2' || name === 'B1' ? 1 : 0;
+      const orders = 0;
 
       node.querySelector('.table-name').textContent = name;
       // node.querySelector('.table-orders').textContent = `Orders: ${orders}`;
