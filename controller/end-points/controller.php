@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $deal_id =$_POST['dealId'];
             $menu_id=$_POST['menu_id'];
-            $result = $db->remove_deal_ids($menu_id,$deal_id );
+            $result = $db->remove_deal_ids($menu_id,$deal_id);
             if ($result) {
                     echo json_encode([
                         'status' => 200,
