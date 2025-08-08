@@ -79,7 +79,7 @@ include "../src/components/admin/nav.php";
     <button id="closeAddModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
 
     <div id="modalContent" class="space-y-2">
-      <h3 class="text-lg font-bold text-[#FFD700]">Create Entry</h3>
+      <h3 class="text-lg font-bold text-[#FFD700]">Create Group Deals</h3>
       <form id="frmCreateEntry" class="space-y-4">
         <div>
           <label for="entryName" class="block text-sm font-medium">Name</label>
