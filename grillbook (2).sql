@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2025 at 02:12 PM
+-- Generation Time: Aug 10, 2025 at 04:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,8 +42,11 @@ CREATE TABLE `deals` (
 --
 
 INSERT INTO `deals` (`deal_id`, `deal_name`, `deal_description`, `deal_img_banner`, `deal_ids`, `deal_type`, `deal_expiration`) VALUES
-(6, 'Family', 'Elevate the taste by combining it with cheese tomato that adds a tangy twist to the meal. To make the serving big and appetizing, go for aloo gobhi with raita. You can complete the serving with jeera rice/ butter roti/ naan/laccha parantha (whichever you may prefer).', 'deals_6895dcc68fc2d8.99769476.jpg', '[\"6\",\"5\",\"3\"]', 'group_deals', NULL),
-(8, 'esegf', 'awd', 'deals_6895fa60369090.53081367.jpeg', '[\"5\",\"3\",\"2\"]', 'promo_deals', '2025-08-08');
+(9, 'Food Platters', '', 'deals_6898a931cbe2a3.19899718.jpg', '[\"5\",\"9\",\"3\"]', 'group_deals', NULL),
+(10, 'Barkada Promo', '', 'deals_6898a991cbd749.55023147.jpg', '[\"2\",\"5\"]', 'promo_deals', '2025-12-25'),
+(11, 'Bar & Grill', '', 'deals_6898a9da07bbe1.86171904.jpg', '[\"8\",\"7\"]', 'group_deals', NULL),
+(12, 'Ultimate Mixed Drinks', '', 'deals_6898a9f92f09c1.25099592.jpg', '[\"9\",\"8\",\"7\"]', 'group_deals', NULL),
+(13, 'Christmass Sale', '', 'deals_6898ab32964117.30991192.jpg', '[\"8\",\"3\",\"2\"]', 'promo_deals', '2025-09-25');
 
 -- --------------------------------------------------------
 
@@ -69,7 +72,10 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `menu_category`, `menu_description`,
 (3, 'Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant ', 'main course', 'If you love ginataan dishes, this Creamy Coconut Milk Fish Stew is one recipe you’ll want to cook again and again. The combination of fried round scad simmered in coconut milk with eggplant and bok choy creates a satisfying dish that works beautifully for everyday meals. It is rich, savory, and naturally creamy, but still balanced thanks to the mild bitterness of the vegetables and a touch of vinegar. This is one of those dishes I used to enjoy back in the province. And now I still make it at home to relive those familiar flavors.', 150.00, 'menu_6894022b750d15.74182083.jpg'),
 (4, 'Sarciado', 'main course', 'Sarciado is one of those comforting dishes that remind me of home. Whether made from leftover fried fish or cooked fresh, it delivers the kind of flavor that satisfies. I grew up enjoying this with hot rice and a splash of fish sauce on the side. The soft eggs mixed with tomatoes, onions, and garlic create a rich sauce that clings to the crispy fish. It is the kind of meal that proves you do not need much to make something truly delicious.', 20.00, 'menu_689402519a94a6.13433280.jpg'),
 (5, 'Brazo de Mercedes', 'dessert', 'What I like most about Brazo de Mercedes is the sponge-like texture of the meringue that literally melts in my mouth. The light flavor of the meringue is balanced by the flavor of the rich custard filling. This is truly amazing!', 70.00, 'menu_6894054a55d6d5.49125553.jpg'),
-(6, 'Ginisang Sitaw with Bell Pepper', 'main course', 'Ginisang sitaw with bell pepper is one of my go-to recipes when I want something hearty but simple. It brings me back to those everyday meals we often had growing up—where one good stir-fry, a bowl of rice, and maybe a fried egg made everything feel complete. The mix of tender pork, crisp vegetables, and that tasty sauce is just what you need on a busy day.', 250.00, 'menu_6895dc5c9c72e4.34679803.jpg');
+(6, 'Ginisang Sitaw with Bell Pepper', 'main course', 'Ginisang sitaw with bell pepper is one of my go-to recipes when I want something hearty but simple. It brings me back to those everyday meals we often had growing up—where one good stir-fry, a bowl of rice, and maybe a fried egg made everything feel complete. The mix of tender pork, crisp vegetables, and that tasty sauce is just what you need on a busy day.', 250.00, 'menu_6895dc5c9c72e4.34679803.jpg'),
+(7, 'Strawbery Shake', 'beverages', '', 150.00, 'menu_6898aa95390134.00193313.webp'),
+(8, 'Manggo Shake', 'beverages', '', 200.00, 'menu_6898aaa8bba6e8.29857636.webp'),
+(9, 'Green apple Shake', 'beverages', '', 180.00, 'menu_6898aac9d15837.68526775.webp');
 
 -- --------------------------------------------------------
 
@@ -93,15 +99,8 @@ CREATE TABLE `reservations` (
   `proof_of_payment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('pending','confirmed','cancelled','completed') DEFAULT 'pending'
+  `status` enum('pending','confirmed','cancelled','completed','archived') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reservations`
---
-
-INSERT INTO `reservations` (`id`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
-(4, 'BILLIARDS', 5, '2025-08-10', '10:00:00', 0.00, 420.00, 0.00, 420.00, '[]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[]', 'proof_68988c83e49df2.20107684.png', '2025-08-10 12:11:47', '2025-08-10 12:11:47', 'pending');
 
 -- --------------------------------------------------------
 
@@ -164,19 +163,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `deals`
 --
 ALTER TABLE `deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
