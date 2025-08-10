@@ -284,9 +284,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }else if ($_POST['requestType'] == 'RequestReservation') {
 
-            // echo "<pre>";
-            // print_r($_POST);
-            // echo "</pre>";
+            session_start();
+            $user_id=$_SESSION['user_id'];
            // Extract all POST variables
             $table_code = $_POST['table_code'];
             $seats = $_POST['seats'];
@@ -347,7 +346,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $promo_total,
                 $group_total,
                 $grand_total,
-                $entryImageFileName
+                $entryImageFileName,
+                $user_id
             );
 
             if ($result) {
@@ -436,6 +436,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $data  = $db->fetch_all_reserved($limit, $offset);
             $total = $db->count_all_reserved();
+
+            echo json_encode([
+                'status' => 200,
+                'total'  => $total,
+                'data'   => $data
+            ]);
+            exit;
+
+        }else if ($_GET['requestType'] == 'fetch_all_customer_reservation') {
+
+            session_start();
+            $user_id=$_SESSION['user_id'];
+
+            $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+            $offset = ($page - 1) * $limit;
+
+            $data  = $db->fetch_all_customer_reservation($limit, $offset,$user_id);
+            $total = $db->count_all_customer_reservation($user_id);
 
             echo json_encode([
                 'status' => 200,

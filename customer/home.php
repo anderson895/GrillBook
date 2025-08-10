@@ -17,16 +17,16 @@ include "../src/components/customer/nav.php";
 </style>
 
 <!-- Page Container -->
-<div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-24">
+<div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-24 ">
   <!-- Main content wrapper -->
-  <div class="w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 " >
     
     <!-- Card -->
-    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+    <div class="bg-[#1A1A1A] rounded-xl shadow-lg p-4 sm:p-6 ">
       
       <!-- Scrollable Grid Only -->
-      <div class="overflow-auto scrollbar-hidden">
-        <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] h-[80vh] min-h-[600px]">
+      <div class="overflow-auto scrollbar-hidden ">
+        <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] h-[80vh] min-h-[600px] ">
           
           <!-- Template -->
           <template id="table-template">
