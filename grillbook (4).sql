@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2025 at 06:34 PM
+-- Generation Time: Aug 10, 2025 at 06:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -74,6 +74,39 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `menu_category`, `menu_description`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reservations`
+--
+
+CREATE TABLE `reservations` (
+  `id` int(11) NOT NULL,
+  `table_code` varchar(10) NOT NULL,
+  `seats` int(11) NOT NULL,
+  `date_schedule` date NOT NULL,
+  `time_schedule` time NOT NULL,
+  `request_type` varchar(50) DEFAULT 'RequestReservation',
+  `menu_total` decimal(10,2) DEFAULT 0.00,
+  `promo_total` decimal(10,2) DEFAULT 0.00,
+  `group_total` decimal(10,2) DEFAULT 0.00,
+  `grand_total` decimal(10,2) NOT NULL,
+  `selected_menus` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_menus`)),
+  `selected_promos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_promos`)),
+  `selected_groups` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_groups`)),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` enum('pending','confirmed','cancelled','completed') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `request_type`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `created_at`, `updated_at`, `status`) VALUES
+(1, 'DJ', 5, '2025-08-11', '09:13:00', 'RequestReservation', 320.00, 420.00, 470.00, 1210.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[{\"id\":\"6\",\"name\":\"Family\",\"price\":470,\"type\":\"group_deal\"}]', '2025-08-10 01:16:46', '2025-08-10 03:45:18', 'confirmed'),
+(2, 'E5', 5, '2025-08-10', '09:18:00', 'RequestReservation', 220.00, 420.00, 470.00, 1110.00, '[{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"}]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[{\"id\":\"6\",\"name\":\"Family\",\"price\":470,\"type\":\"group_deal\"}]', '2025-08-10 01:19:03', '2025-08-10 01:19:03', 'pending');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -113,6 +146,12 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`menu_id`);
 
 --
+-- Indexes for table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -133,6 +172,12 @@ ALTER TABLE `deals`
 --
 ALTER TABLE `menu`
   MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
