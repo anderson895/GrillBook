@@ -259,6 +259,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
 
+        }else if ($_POST['requestType'] == 'RequestReservation') {
+
+            echo "<pre>";
+            print_r($_POST);
+            echo "</pre>";
+
+            
+            // Generic function call (update to match actual method name in your DB class)
+            // $result = $db->createDeals($entryName, $entryDescription, $deal_type, $entryImageFileName,$entryExpiration);
+
+            // if ($result) {
+            //     echo json_encode([
+            //         'status' => 200,
+            //         'message' => 'Added successfully.'
+            //     ]);
+            // } else {
+            //     echo json_encode([
+            //         'status' => 500,
+            //         'message' => 'No changes made or error updating data.'
+            //     ]);
+            // }
+
+
         }else {
             echo '404';
         }

@@ -111,6 +111,7 @@ function fetchMenus() {
 
 
 // ====== Fetch Promo Deals ======
+// ====== Updated Fetch Promo Deals ======
 function fetchPromos() {
   $.ajax({
     url: "../controller/end-points/controller.php",
@@ -147,10 +148,11 @@ function fetchPromos() {
           container.append(`
             <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
 
-              <!-- Checkbox -->
+              <!-- Checkbox with proper name attribute -->
               <input type="checkbox" 
                   class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                  value="${deal.deal_id}" />
+                  value="${deal.deal_id}" 
+                  name="promo_select[]" />
 
               <!-- Deal Info -->
               <button type="button" 
@@ -195,11 +197,14 @@ function fetchPromos() {
       } else {
         $("#promo_section").hide();
       }
+    },
+    error: function(xhr, status, error) {
+      console.error("Error fetching promos:", status, error);
     }
   });
 }
 
-
+// ====== Updated Fetch Group Deals ======
 function fetchGroups() {
   $.ajax({
     url: "../controller/end-points/controller.php",
@@ -235,10 +240,11 @@ function fetchGroups() {
           container.append(`
             <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
 
-              <!-- Checkbox -->
+              <!-- Checkbox with proper name attribute -->
               <input type="checkbox" 
                   class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                  value="${deal.deal_id}" />
+                  value="${deal.deal_id}" 
+                  name="group_select[]" />
 
               <!-- Deal Info -->
               <button type="button" 
@@ -282,6 +288,9 @@ function fetchGroups() {
       } else {
         container.html('<p class="text-gray-400">No group deals found.</p>');
       }
+    },
+    error: function(xhr, status, error) {
+      console.error("Error fetching group deals:", status, error);
     }
   });
 }
@@ -329,18 +338,115 @@ function fetchGroups() {
     alert(`Checking availability for:\nSeats: ${seats}\nDate: ${date}\nTime: ${time}`);
   });
 
+
+
   // ===== Submit Form =====
   $("#frmRequestReservation").on("submit", function (e) {
     e.preventDefault();
 
-    if ($('input[name="menus[]"]:checked').length === 0 &&
-        $('input[name="promos[]"]:checked').length === 0 &&
-        $('input[name="groups[]"]:checked').length === 0) {
-      alert("Please select at least one menu, promo, or group deal.");
-      return;
-    }
-
     const formData = new FormData(this);
+    formData.append("requestType", "RequestReservation");
+
+    // Collect selected menu items
+    const selectedMenus = [];
+    $('input[name="menu_select[]"]:checked').each(function() {
+      const menuId = $(this).val();
+      const menuCard = $(this).closest('.swiper-slide');
+      const menuName = menuCard.find('h3').text();
+      const menuPriceText = menuCard.find('p:contains("Price:")').text();
+      const menuPrice = menuPriceText.replace('Price: ₱', '').replace('Price: ', '');
+      
+      selectedMenus.push({
+        id: menuId,
+        name: menuName,
+        price: parseFloat(menuPrice) || 0,
+        type: 'menu'
+      });
+    });
+
+    // Collect selected promo deals
+    const selectedPromos = [];
+    $('#promoContainer input[type="checkbox"]:checked').each(function() {
+      const dealId = $(this).val();
+      const dealCard = $(this).closest('.swiper-slide');
+      const dealName = dealCard.find('h3').text();
+      const dealPriceText = dealCard.find('p:contains("Total Price:")').text();
+      const dealPrice = dealPriceText.replace('Total Price: ₱', '').replace('Total Price: ', '');
+      
+      selectedPromos.push({
+        id: dealId,
+        name: dealName,
+        price: parseFloat(dealPrice) || 0,
+        type: 'promo_deal'
+      });
+    });
+
+    // Collect selected group deals
+    const selectedGroups = [];
+    $('#groupContainer input[type="checkbox"]:checked').each(function() {
+      const dealId = $(this).val();
+      const dealCard = $(this).closest('.swiper-slide');
+      const dealName = dealCard.find('h3').text();
+      const dealPriceText = dealCard.find('p:contains("Total Price:")').text();
+      const dealPrice = dealPriceText.replace('Total Price: ₱', '').replace('Total Price: ', '');
+      
+      selectedGroups.push({
+        id: dealId,
+        name: dealName,
+        price: parseFloat(dealPrice) || 0,
+        type: 'group_deal'
+      });
+    });
+
+    // Calculate total price
+    const totalMenuPrice = selectedMenus.reduce((sum, item) => sum + item.price, 0);
+    const totalPromoPrice = selectedPromos.reduce((sum, item) => sum + item.price, 0);
+    const totalGroupPrice = selectedGroups.reduce((sum, item) => sum + item.price, 0);
+    const grandTotal = totalMenuPrice + totalPromoPrice + totalGroupPrice;
+
+    // Add selected items data to form
+    formData.append("selected_menus", JSON.stringify(selectedMenus));
+    formData.append("selected_promos", JSON.stringify(selectedPromos));
+    formData.append("selected_groups", JSON.stringify(selectedGroups));
+    formData.append("menu_total", totalMenuPrice.toFixed(2));
+    formData.append("promo_total", totalPromoPrice.toFixed(2));
+    formData.append("group_total", totalGroupPrice.toFixed(2));
+    formData.append("grand_total", grandTotal.toFixed(2));
+
+    // Optional: Show summary before submitting
+    if (selectedMenus.length > 0 || selectedPromos.length > 0 || selectedGroups.length > 0) {
+      let summary = "Selected Items:\n\n";
+      
+      if (selectedMenus.length > 0) {
+        summary += "Menus:\n";
+        selectedMenus.forEach(item => {
+          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
+        });
+        summary += `Menu Total: ₱${totalMenuPrice.toFixed(2)}\n\n`;
+      }
+      
+      if (selectedPromos.length > 0) {
+        summary += "Promo Deals:\n";
+        selectedPromos.forEach(item => {
+          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
+        });
+        summary += `Promo Total: ₱${totalPromoPrice.toFixed(2)}\n\n`;
+      }
+      
+      if (selectedGroups.length > 0) {
+        summary += "Group Deals:\n";
+        selectedGroups.forEach(item => {
+          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
+        });
+        summary += `Group Total: ₱${totalGroupPrice.toFixed(2)}\n\n`;
+      }
+      
+      summary += `Grand Total: ₱${grandTotal.toFixed(2)}`;
+      
+      if (!confirm(summary + "\n\nProceed with reservation?")) {
+        return;
+      }
+    }
 
     $.ajax({
       url: "../controller/end-points/controller.php",
@@ -349,9 +455,16 @@ function fetchGroups() {
       processData: false,
       contentType: false,
       success: function (res) {
-        alert(res);
-        closeModal();
+        // alert(res);
+        // closeModal();
+      },
+      error: function(xhr, status, error) {
+        console.error("Submission Error:", status, error);
+        alert("Error submitting reservation. Please try again.");
       }
     });
   });
+
+
+
 });
