@@ -599,7 +599,8 @@ public function UpdateMenu(
             $menu_total,
             $promo_total,
             $group_total,
-            $grand_total
+            $grand_total,
+            $entryImageFileName
         ) {
             $sql = "INSERT INTO reservations (
                 table_code,        -- 1
@@ -612,8 +613,9 @@ public function UpdateMenu(
                 menu_total,       -- 10
                 promo_total,      -- 11
                 group_total,      -- 12
-                grand_total       -- 13
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                grand_total,       -- 13
+                proof_of_payment       -- 13
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
             
             $stmt = $this->conn->prepare($sql);
             
@@ -624,7 +626,7 @@ public function UpdateMenu(
             // CORRECTED: 13 type definitions for 13 parameters
             // s = string, i = integer, d = decimal/double
             $stmt->bind_param(
-                "sissssssddd",  // FIXED: 13 characters for 13 parameters
+                "sissssssddds",  // FIXED: 13 characters for 13 parameters
                 $table_code,     // s - string
                 $seats,          // i - integer  
                 $date_schedule,  // s - string
@@ -634,8 +636,9 @@ public function UpdateMenu(
                 $selected_groups,// s - string (JSON)
                 $menu_total,     // d - decimal
                 $promo_total,    // d - decimal
-                $group_total,    // d - decimal
-                $grand_total     // d - decimal - ADDED MISSING PARAMETER
+                $group_total,    
+                $grand_total,     
+                $entryImageFileName     
             );
             
             $result = $stmt->execute();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2025 at 06:14 AM
+-- Generation Time: Aug 10, 2025 at 02:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -90,6 +90,7 @@ CREATE TABLE `reservations` (
   `selected_menus` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_menus`)),
   `selected_promos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_promos`)),
   `selected_groups` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_groups`)),
+  `proof_of_payment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` enum('pending','confirmed','cancelled','completed') DEFAULT 'pending'
@@ -99,10 +100,8 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'DJ', 5, '2025-08-11', '09:13:00', 320.00, 420.00, 470.00, 1210.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[{\"id\":\"6\",\"name\":\"Family\",\"price\":470,\"type\":\"group_deal\"}]', '2025-08-10 01:16:46', '2025-08-10 03:45:18', 'confirmed'),
-(2, 'E5', 5, '2025-08-10', '09:18:00', 220.00, 420.00, 470.00, 1110.00, '[{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"}]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[{\"id\":\"6\",\"name\":\"Family\",\"price\":470,\"type\":\"group_deal\"}]', '2025-08-10 01:19:03', '2025-08-10 01:19:03', 'pending'),
-(3, 'G6', 10, '2025-08-10', '00:13:00', 0.00, 420.00, 0.00, 420.00, '[]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[]', '2025-08-10 04:13:56', '2025-08-10 04:13:56', 'pending');
+INSERT INTO `reservations` (`id`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
+(4, 'BILLIARDS', 5, '2025-08-10', '10:00:00', 0.00, 420.00, 0.00, 420.00, '[]', '[{\"id\":\"8\",\"name\":\"esegf\",\"price\":420,\"type\":\"promo_deal\"}]', '[]', 'proof_68988c83e49df2.20107684.png', '2025-08-10 12:11:47', '2025-08-10 12:11:47', 'pending');
 
 -- --------------------------------------------------------
 
@@ -177,7 +176,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`

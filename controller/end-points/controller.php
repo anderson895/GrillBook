@@ -261,9 +261,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }else if ($_POST['requestType'] == 'RequestReservation') {
 
-            echo "<pre>";
-            print_r($_POST);
-            echo "</pre>";
+            // echo "<pre>";
+            // print_r($_POST);
+            // echo "</pre>";
            // Extract all POST variables
             $table_code = $_POST['table_code'];
             $seats = $_POST['seats'];
@@ -280,6 +280,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $group_total = $_POST['group_total'];
             $grand_total = $_POST['grand_total'];
 
+            
+            $entryImage = $_FILES['payment_proof'];
+            $uploadDir = '../../static/upload/';
+            $entryImageFileName = '';
+
+            if (isset($entryImage) && $entryImage['error'] === UPLOAD_ERR_OK) {
+                $bannerExtension = pathinfo($entryImage['name'], PATHINFO_EXTENSION);
+                $entryImageFileName = uniqid('proof_', true) . '.' . $bannerExtension;
+                $bannerPath = $uploadDir . $entryImageFileName;
+
+                $bannerUploaded = move_uploaded_file($entryImage['tmp_name'], $bannerPath);
+
+                if (!$bannerUploaded) {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'Error uploading image.'
+                    ]);
+                    exit;
+                }
+            } elseif ($entryImage['error'] !== UPLOAD_ERR_NO_FILE && $entryImage['error'] !== 0) {
+                echo json_encode([
+                    'status' => 400,
+                    'message' => 'Invalid image upload.'
+                ]);
+                exit;
+            }
+            
+
             // Call the database method with all parameters
             $result = $db->RequestReservation(
                 $table_code,
@@ -295,7 +323,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $menu_total,
                 $promo_total,
                 $group_total,
-                $grand_total
+                $grand_total,
+                $entryImageFileName
             );
 
             if ($result) {
