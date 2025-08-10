@@ -429,6 +429,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             exit;
 
+        }else if ($_GET['requestType'] == 'fetch_all_reserved') {
+            $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+            $offset = ($page - 1) * $limit;
+
+            $data  = $db->fetch_all_reserved($limit, $offset);
+            $total = $db->count_all_reserved();
+
+            echo json_encode([
+                'status' => 200,
+                'total'  => $total,
+                'data'   => $data
+            ]);
+            exit;
+
         }else{
             echo "404";
         }

@@ -835,6 +835,137 @@ public function count_all_reserve_request() {
     return (int)$row['total'];
 } 
 
+
+
+// ALL RESERVED
+
+
+public function fetch_all_reserved($limit, $offset) {
+    // Step 1: Get reservations only
+    $query = $this->conn->prepare("
+        SELECT * FROM reservations
+        WHERE status = 'confirmed' || status = 'complete'
+        ORDER BY id DESC
+        LIMIT ? OFFSET ?
+    ");
+    $query->bind_param("ii", $limit, $offset);
+    $query->execute();
+    $result = $query->get_result();
+    $reservations = $result->fetch_all(MYSQLI_ASSOC);
+
+    if (!$reservations) return [];
+
+    // Step 2: Collect all unique menu, promo, and group IDs
+    $menu_ids = [];
+    $promo_ids = [];
+    $group_ids = [];
+
+    foreach ($reservations as $res) {
+        $menus = json_decode($res['selected_menus'], true) ?: [];
+        $promos = json_decode($res['selected_promos'], true) ?: [];
+        $groups = json_decode($res['selected_groups'], true) ?: [];
+
+        foreach ($menus as $m) {
+            $id = (int)$m['id'];
+            if (!in_array($id, $menu_ids, true)) $menu_ids[] = $id;
+        }
+        foreach ($promos as $p) {
+            $id = (int)$p['id'];
+            if (!in_array($id, $promo_ids, true)) $promo_ids[] = $id;
+        }
+        foreach ($groups as $g) {
+            $id = (int)$g['id'];
+            if (!in_array($id, $group_ids, true)) $group_ids[] = $id;
+        }
+    }
+
+    // Step 3: Fetch menus
+    $menus = [];
+    if ($menu_ids) {
+        $placeholders = implode(',', array_fill(0, count($menu_ids), '?'));
+        $types = str_repeat('i', count($menu_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM menu WHERE menu_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$menu_ids);
+        $stmt->execute();
+        $resMenus = $stmt->get_result();
+        while ($row = $resMenus->fetch_assoc()) {
+            $menus[$row['menu_id']] = $row;
+        }
+    }
+
+    // Step 4: Fetch promos
+    $promos = [];
+    if ($promo_ids) {
+        $placeholders = implode(',', array_fill(0, count($promo_ids), '?'));
+        $types = str_repeat('i', count($promo_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$promo_ids);
+        $stmt->execute();
+        $resPromos = $stmt->get_result();
+        while ($row = $resPromos->fetch_assoc()) {
+            $promos[$row['deal_id']] = $row;
+        }
+    }
+
+    // Step 5: Fetch groups (assuming groups are stored in `deals` table like promos)
+    $groups = [];
+    if ($group_ids) {
+        $placeholders = implode(',', array_fill(0, count($group_ids), '?'));
+        $types = str_repeat('i', count($group_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$group_ids);
+        $stmt->execute();
+        $resGroups = $stmt->get_result();
+        while ($row = $resGroups->fetch_assoc()) {
+            $groups[$row['deal_id']] = $row;
+        }
+    }
+
+    // Step 6: Attach full menu, promo, and group details to reservations
+    foreach ($reservations as &$res) {
+        $resMenus = json_decode($res['selected_menus'], true) ?: [];
+        foreach ($resMenus as &$menuItem) {
+            $menuId = (int)$menuItem['id'];
+            if (isset($menus[$menuId])) {
+                $menuItem['details'] = $menus[$menuId];
+            }
+        }
+        $res['menus_details'] = $resMenus;
+
+        $resPromos = json_decode($res['selected_promos'], true) ?: [];
+        foreach ($resPromos as &$promoItem) {
+            $promoId = (int)$promoItem['id'];
+            if (isset($promos[$promoId])) {
+                $promoItem['details'] = $promos[$promoId];
+            }
+        }
+        $res['promos_details'] = $resPromos;
+
+        $resGroups = json_decode($res['selected_groups'], true) ?: [];
+        foreach ($resGroups as &$groupItem) {
+            $groupId = (int)$groupItem['id'];
+            if (isset($groups[$groupId])) {
+                $groupItem['details'] = $groups[$groupId];
+            }
+        }
+        $res['groups_details'] = $resGroups;
+    }
+
+    return $reservations;
+}
+
+
+
+
+public function count_all_reserved() {
+    $result = $this->conn->query("
+        SELECT COUNT(*) as total 
+        FROM reservations where status = 'confirmed' || status = 'complete'
+    ");
+    $row = $result->fetch_assoc();
+    return (int)$row['total'];
+} 
+
       
 
 
