@@ -585,4 +585,118 @@ public function UpdateMenu(
 
 
 
+       public function RequestReservation(
+            $table_code,
+            $seats,
+            $date_schedule,
+            $time_schedule,
+            $menu_select,
+            $promo_select,
+            $group_select,
+            $request_type,
+            $selected_menus,
+            $selected_promos,
+            $selected_groups,
+            $menu_total,
+            $promo_total,
+            $group_total,
+            $grand_total
+        ) {
+            $sql = "INSERT INTO reservations (
+                table_code,        -- 1
+                seats,            -- 2 
+                date_schedule,    -- 3
+                time_schedule,    -- 4
+                request_type,     -- 6
+                selected_menus,   -- 7
+                selected_promos,  -- 8
+                selected_groups,  -- 9
+                menu_total,       -- 10
+                promo_total,      -- 11
+                group_total,      -- 12
+                grand_total       -- 13
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            $stmt = $this->conn->prepare($sql);
+            
+            if (!$stmt) {
+                die("Prepare failed: " . $this->conn->error);
+            }
+            
+            // CORRECTED: 13 type definitions for 13 parameters
+            // s = string, i = integer, d = decimal/double
+            $stmt->bind_param(
+                "sisssssssddd",  // FIXED: 13 characters for 13 parameters
+                $table_code,     // s - string
+                $seats,          // i - integer  
+                $date_schedule,  // s - string
+                $time_schedule,  // s - string
+                $request_type,   // s - string
+                $selected_menus, // s - string (JSON)
+                $selected_promos,// s - string (JSON)
+                $selected_groups,// s - string (JSON)
+                $menu_total,     // d - decimal
+                $promo_total,    // d - decimal
+                $group_total,    // d - decimal
+                $grand_total     // d - decimal - ADDED MISSING PARAMETER
+            );
+            
+            $result = $stmt->execute();
+            
+            if (!$result) {
+                die("Execute failed: " . $stmt->error);
+            }
+            
+            $stmt->close();
+            return $result;
+        }
+
+
+
+
+
+
+
+
+        
+    public function checkTableAvailability($table_code, $date_schedule) {
+        $query = $this->conn->prepare("
+            SELECT * FROM reservations 
+            WHERE table_code = ? 
+            AND date_schedule = ? 
+            AND status = 'confirmed'
+        ");
+    $query->bind_param("ss", $table_code, $date_schedule);
+
+    if ($query->execute()) {
+        $result = $query->get_result();
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        // If there are confirmed reservations, table is NOT available
+        if (count($data) > 0) {
+            return false; // NOT available
+        } else {
+            return true;  // available
+        }
+    }
+
+    // If query fails, treat as not available or handle differently
+    return false;
+}
+
+
+
+      
+
+
+
+
+
+
+
+
 }

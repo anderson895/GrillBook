@@ -264,22 +264,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<pre>";
             print_r($_POST);
             echo "</pre>";
+           // Extract all POST variables
+            $table_code = $_POST['table_code'];
+            $seats = $_POST['seats'];
+            $date_schedule = $_POST['date_schedule'];
+            $time_schedule = $_POST['time_schedule'];
+            $menu_select = isset($_POST['menu_select']) ? $_POST['menu_select'] : [];
+            $promo_select = isset($_POST['promo_select']) ? $_POST['promo_select'] : [];
+            $group_select = isset($_POST['group_select']) ? $_POST['group_select'] : [];
+            $request_type = $_POST['requestType'];
+            $selected_menus = $_POST['selected_menus'];
+            $selected_promos = $_POST['selected_promos'];
+            $selected_groups = $_POST['selected_groups'];
+            $menu_total = $_POST['menu_total'];
+            $promo_total = $_POST['promo_total'];
+            $group_total = $_POST['group_total'];
+            $grand_total = $_POST['grand_total'];
 
-            
-            // Generic function call (update to match actual method name in your DB class)
-            // $result = $db->createDeals($entryName, $entryDescription, $deal_type, $entryImageFileName,$entryExpiration);
+            // Call the database method with all parameters
+            $result = $db->RequestReservation(
+                $table_code,
+                $seats,
+                $date_schedule,
+                $time_schedule,
+                $menu_select,
+                $promo_select,
+                $group_select,
+                $request_type,
+                $selected_menus,
+                $selected_promos,
+                $selected_groups,
+                $menu_total,
+                $promo_total,
+                $group_total,
+                $grand_total
+            );
 
-            // if ($result) {
-            //     echo json_encode([
-            //         'status' => 200,
-            //         'message' => 'Added successfully.'
-            //     ]);
-            // } else {
-            //     echo json_encode([
-            //         'status' => 500,
-            //         'message' => 'No changes made or error updating data.'
-            //     ]);
-            // }
+            if ($result) {
+                echo json_encode([
+                    'status' => 200,
+                    'message' => 'Added successfully.'
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 500,
+                    'message' => 'No changes made or error updating data.'
+                ]);
+            }
 
 
         }else {
@@ -322,6 +353,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'status' => 200,
                 'data' => $result
             ]);
+        }else if ($_GET['requestType'] == 'checkAvailability') {
+            $table_code = $_GET['table_code'];
+            $date_schedule = $_GET['date_schedule'];
+
+            // echo "Table Code: " . htmlspecialchars($table_code) . "<br>";
+            // echo "Date Schedule: " . htmlspecialchars($date_schedule) . "<br>";
+
+ 
+
+           $availability = $db->checkTableAvailability($table_code, $date_schedule);
+
+            echo json_encode([
+                'status' => 200,
+                'availability' => $availability
+            ]);
+
         }else{
             echo "404";
         }
