@@ -3,6 +3,19 @@ include "../src/components/customer/header.php";
 include "../src/components/customer/nav.php";
 ?>
 
+
+<style>
+  /* Hide scrollbar but keep scroll */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+</style>
+
 <!-- Page Container -->
 <div class="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-24">
   <!-- Main content wrapper -->
@@ -12,7 +25,7 @@ include "../src/components/customer/nav.php";
     <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
       
       <!-- Scrollable Grid Only -->
-      <div class="overflow-auto">
+      <div class="overflow-auto scrollbar-hidden">
         <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] h-[80vh] min-h-[600px]">
           
           <!-- Template -->
@@ -112,7 +125,7 @@ include "../src/components/customer/footer.php";
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden"
 >
     <div 
-        class="bg-[#1A1A1A]/95 backdrop-blur-lg rounded-xl shadow-2xl w-full max-w-4xl mx-auto p-8 text-[#E0E0E0] relative max-h-[95vh] overflow-y-auto hide-scrollbar"
+        class="bg-[#1A1A1A]/95 backdrop-blur-lg rounded-xl shadow-2xl w-full max-w-4xl mx-auto p-8 text-[#E0E0E0] relative max-h-[95vh] overflow-y-auto scrollbar-hidden"
         role="document"
     >
     <!-- Sticky Header -->

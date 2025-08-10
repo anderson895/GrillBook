@@ -3,6 +3,17 @@ include "../src/components/admin/header.php";
 include "../src/components/admin/nav.php";
 ?>
 
+<style>
+  /* Hide scrollbar but keep scroll */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+</style>
 
 <!-- Top Bar -->
 <div class="flex justify-between items-center bg-[#0D0D0D] p-4 mb-6 rounded-md shadow-lg">
@@ -61,6 +72,57 @@ include "../src/components/admin/nav.php";
 <!-- Spinner Overlay -->
 <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50" style="display:none; background-color: rgba(255, 255, 255, 0.7);">
     <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+</div>
+
+<!-- Modal background -->
+<div id="detailsModal" 
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm hidden">
+
+  <!-- Modal content -->
+  <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-2xl mx-4 p-8
+              text-[#CCCCCC] relative max-h-[90vh] overflow-y-auto scrollbar-hidden
+              border border-gray-700">
+
+    <!-- Close button -->
+    <button id="closeModal" 
+      class="absolute top-4 right-4 text-[#FFD700] hover:text-yellow-400 text-3xl font-bold transition
+             focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded"
+      aria-label="Close modal">&times;</button>
+
+    <h2 class="text-3xl font-extrabold mb-6 text-[#FFD700] tracking-wide select-none">Reservation Details</h2>
+    
+    <hr class="border-gray-600 mb-6">
+
+    <div id="modalContent" class="space-y-6 text-base leading-relaxed max-w-full">
+      <!-- Dynamic content injected here -->
+    </div>
+
+    <hr class="border-gray-600 mt-6 mb-8">
+
+   
+      <input type="hidden" id="reservation_id" name="reservation_id">
+
+      <!-- Action buttons -->
+      <div class="flex justify-end space-x-4">
+        <button type="submit" id="btnApprove" 
+          class="px-8 py-3 bg-[#FFD700] text-black rounded-md font-semibold shadow-lg
+                 hover:bg-yellow-400 transition duration-200 ease-in-out
+                 focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-offset-2"
+                 data-action="confirmed"
+                 >
+          Approve
+        </button>
+        <button type="button" id="btnCancel" 
+          class="px-8 py-3 bg-red-700 text-[#F3F3F3] rounded-md font-semibold shadow-lg
+                 hover:bg-red-600 transition duration-200 ease-in-out
+                 focus:outline-none focus:ring-4 focus:ring-red-600 focus:ring-offset-2""
+                 data-action="cancelled"
+                 >
+          Decline
+        </button>
+      </div>
+
+  </div>
 </div>
 
 
