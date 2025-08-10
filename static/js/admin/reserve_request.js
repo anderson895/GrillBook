@@ -156,8 +156,6 @@ $(document).ready(function () {
 
 $(document).on('click', '.viewDetailsBtn', function() {
   const id = $(this).data('id');
-
-
   $("#reservation_id").val(id);
 
   const table_code = $(this).data('table_code');

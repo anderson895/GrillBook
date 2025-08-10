@@ -355,17 +355,29 @@ public function UpdateMenu(
 
 
 
-
-    public function fetch_all_deals_and_menu($deal_type) {
+public function fetch_all_deals_and_menu($deal_type) {
     $queryStr = "SELECT * FROM deals";
+    $params = [];
+    $types = "";
+
     if (!is_null($deal_type)) {
-        $queryStr .= " WHERE deal_type = ?";
+        if ($deal_type === 'promo_deals') {
+            // Only promo_deals that are not expired
+            $queryStr .= " WHERE deal_type = ? AND deal_expiration >= NOW()";
+            $types = "s";
+            $params[] = $deal_type;
+        } else {
+            // Other deal types no expiration filter
+            $queryStr .= " WHERE deal_type = ?";
+            $types = "s";
+            $params[] = $deal_type;
+        }
     }
     $queryStr .= " ORDER BY deal_id DESC";
 
     $query = $this->conn->prepare($queryStr);
-    if (!is_null($deal_type)) {
-        $query->bind_param("s", $deal_type);
+    if ($types !== "") {
+        $query->bind_param($types, ...$params);
     }
 
     if ($query->execute()) {
@@ -383,13 +395,21 @@ public function UpdateMenu(
             $totalPrice = 0;
             $menus = [];
 
-            // Prepare IN clause
+            // Prepare IN clause for menu ids
             $placeholders = implode(',', array_fill(0, count($dealIds), '?'));
-            $types = str_repeat('i', count($dealIds));
-            
+            $typesMenu = str_repeat('i', count($dealIds));
+
             $sqlMenu = "SELECT * FROM menu WHERE menu_id IN ($placeholders)";
             $stmtMenu = $this->conn->prepare($sqlMenu);
-            $stmtMenu->bind_param($types, ...$dealIds);
+
+            // Mysqli doesn't support unpacking directly in bind_param, need workaround:
+            $bindParams = [];
+            $bindParams[] = &$typesMenu;
+            foreach ($dealIds as $key => $id) {
+                $bindParams[] = &$dealIds[$key];
+            }
+            call_user_func_array([$stmtMenu, 'bind_param'], $bindParams);
+
             $stmtMenu->execute();
             $resMenu = $stmtMenu->get_result();
 
@@ -398,7 +418,6 @@ public function UpdateMenu(
                 $totalPrice += $menu['menu_price'];
             }
 
-            // Add menus and total price to deal data
             $row['menus'] = $menus;
             $row['total_price'] = $totalPrice;
 
@@ -410,6 +429,7 @@ public function UpdateMenu(
 
     return [];
 }
+
 
 
 

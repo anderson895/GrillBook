@@ -32,11 +32,7 @@
             return;
         }
 
-        var menuDescription = $('#menuDescription').val().trim();
-        if (!menuDescription) {
-            alertify.error("Please enter description.");
-            return;
-        }
+       
         
         var menuImage = $('#menuImage').val();
            if (menuImage === "") {
