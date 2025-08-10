@@ -14,12 +14,12 @@ $(document).ready(function () {
   // Remove entry
   $(document).on('click', '.removeBtn', function (e) {
     e.preventDefault();
-    var entry_id = $(this).data('entry_id');
-    var entry_name = $(this).data('entry_name');
-    console.log(entry_id);
+    var deal_id = $(this).data('deal_id');
+    var deal_name = $(this).data('deal_name');
+    console.log(deal_name);
 
     Swal.fire({
-      title: `Are you sure to Remove <span style="color:red;">${entry_name}</span> ?`,
+      title: `Are you sure to Remove <span style="color:red;">${deal_name}</span> ?`,
       text: 'You won\'t be able to revert this!',
       icon: 'warning',
       showCancelButton: true,
@@ -30,7 +30,7 @@ $(document).ready(function () {
         $.ajax({
           url: "../controller/end-points/controller.php",
           type: 'POST',
-          data: { entry_id: entry_id, requestType: 'removeEntry' },
+          data: { deal_id: deal_id, requestType: 'removeDeals' },
           dataType: 'json',
           success: function (response) {
             console.log(response);
@@ -60,11 +60,7 @@ $(document).ready(function () {
       return;
     }
 
-    var entryDescription = $('#entryDescription').val();
-    if (entryDescription === "") {
-      alertify.error("Please enter description.");
-      return;
-    }
+    
 
     var entryImage = $('#entryImage').val();
     if (entryImage === "") {
@@ -131,8 +127,8 @@ $(document).ready(function () {
                     Menus
                   </a>
                   <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
-                    data-entry_id='${deal.deal_id}'
-                    data-entry_name='${deal.deal_name}'>Remove</button>
+                    data-deal_id='${deal.deal_id}'
+                    data-deal_name='${deal.deal_name}'>Remove</button>
                 </td>
               </tr>
             `);
