@@ -272,7 +272,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $menu_select = isset($_POST['menu_select']) ? $_POST['menu_select'] : [];
             $promo_select = isset($_POST['promo_select']) ? $_POST['promo_select'] : [];
             $group_select = isset($_POST['group_select']) ? $_POST['group_select'] : [];
-            $request_type = $_POST['requestType'];
             $selected_menus = $_POST['selected_menus'];
             $selected_promos = $_POST['selected_promos'];
             $selected_groups = $_POST['selected_groups'];
@@ -290,7 +289,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $menu_select,
                 $promo_select,
                 $group_select,
-                $request_type,
                 $selected_menus,
                 $selected_promos,
                 $selected_groups,

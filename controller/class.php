@@ -593,7 +593,6 @@ public function UpdateMenu(
             $menu_select,
             $promo_select,
             $group_select,
-            $request_type,
             $selected_menus,
             $selected_promos,
             $selected_groups,
@@ -607,7 +606,6 @@ public function UpdateMenu(
                 seats,            -- 2 
                 date_schedule,    -- 3
                 time_schedule,    -- 4
-                request_type,     -- 6
                 selected_menus,   -- 7
                 selected_promos,  -- 8
                 selected_groups,  -- 9
@@ -615,7 +613,7 @@ public function UpdateMenu(
                 promo_total,      -- 11
                 group_total,      -- 12
                 grand_total       -- 13
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $this->conn->prepare($sql);
             
@@ -626,12 +624,11 @@ public function UpdateMenu(
             // CORRECTED: 13 type definitions for 13 parameters
             // s = string, i = integer, d = decimal/double
             $stmt->bind_param(
-                "sisssssssddd",  // FIXED: 13 characters for 13 parameters
+                "sissssssddd",  // FIXED: 13 characters for 13 parameters
                 $table_code,     // s - string
                 $seats,          // i - integer  
                 $date_schedule,  // s - string
                 $time_schedule,  // s - string
-                $request_type,   // s - string
                 $selected_menus, // s - string (JSON)
                 $selected_promos,// s - string (JSON)
                 $selected_groups,// s - string (JSON)
