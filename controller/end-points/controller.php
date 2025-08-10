@@ -355,17 +355,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $table_code = $_GET['table_code'];
             $date_schedule = $_GET['date_schedule'];
 
-            // echo "Table Code: " . htmlspecialchars($table_code) . "<br>";
-            // echo "Date Schedule: " . htmlspecialchars($date_schedule) . "<br>";
-
- 
-
            $availability = $db->checkTableAvailability($table_code, $date_schedule);
 
             echo json_encode([
                 'status' => 200,
                 'availability' => $availability
             ]);
+
+        }else if ($_GET['requestType'] == 'fetch_all_reserve_request') {
+            $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+            $offset = ($page - 1) * $limit;
+
+            $data  = $db->fetch_all_reserve_request($limit, $offset);
+            $total = $db->count_all_reserve_request();
+
+            echo json_encode([
+                'status' => 200,
+                'total'  => $total,
+                'data'   => $data
+            ]);
+            exit;
 
         }else{
             echo "404";

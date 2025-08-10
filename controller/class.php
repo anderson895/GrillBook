@@ -680,12 +680,42 @@ public function UpdateMenu(
             return true;  // available
         }
     }
-
-    // If query fails, treat as not available or handle differently
     return false;
 }
 
 
+
+
+
+public function fetch_all_reserve_request($limit, $offset) {
+    $query = $this->conn->prepare("
+        SELECT * FROM reservations where status='pending' ORDER BY id DESC
+        LIMIT ? OFFSET ?
+    ");
+    $query->bind_param("ii", $limit, $offset);
+
+    if ($query->execute()) {
+        $result = $query->get_result();
+        $dogs = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $dogs[] = $row;
+        }
+
+        return $dogs;
+    }
+    return []; 
+}
+
+
+public function count_all_reserve_request() {
+    $result = $this->conn->query("
+        SELECT COUNT(*) as total 
+        FROM reservations where status='pending'
+    ");
+    $row = $result->fetch_assoc();
+    return (int)$row['total'];
+} 
 
       
 
