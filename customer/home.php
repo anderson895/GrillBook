@@ -111,10 +111,10 @@ include "../src/components/customer/footer.php";
   tabindex="-1"
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden"
 >
-  <div 
-    class="bg-[#1A1A1A]/95 backdrop-blur-lg rounded-xl shadow-2xl w-full max-w-4xl mx-auto p-8 text-[#E0E0E0] relative max-h-[95vh] overflow-y-auto"
-    role="document"
-  >
+    <div 
+        class="bg-[#1A1A1A]/95 backdrop-blur-lg rounded-xl shadow-2xl w-full max-w-4xl mx-auto p-8 text-[#E0E0E0] relative max-h-[95vh] overflow-y-auto hide-scrollbar"
+        role="document"
+    >
     <!-- Sticky Header -->
     <div class=" top-0 bg-[#1A1A1A]/95 backdrop-blur-lg z-10 flex justify-between items-center pb-3 border-b border-gray-700 mb-6">
       <h2 id="modalTitle" class="text-2xl font-bold text-yellow-400 whitespace-nowrap">
