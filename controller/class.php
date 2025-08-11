@@ -626,14 +626,56 @@ public function fetch_all_deals_and_menu($deal_type) {
 
 
 
-       public function RequestReservation(
+    public function RequestReservation(
+        $table_code,
+        $seats,
+        $date_schedule,
+        $time_schedule,
+        $menu_select,
+        $promo_select,
+        $group_select,
+        $selected_menus,
+        $selected_promos,
+        $selected_groups,
+        $menu_total,
+        $promo_total,
+        $group_total,
+        $grand_total,
+        $entryImageFileName,
+        $user_id
+    ) {
+        // Generate unique code
+        $uniqueCode = $this->generateUniqueCode();
+
+        $sql = "INSERT INTO reservations (
+            table_code,
+            seats,
+            date_schedule,
+            time_schedule,
+            selected_menus,
+            selected_promos,
+            selected_groups,
+            menu_total,
+            promo_total,
+            group_total,
+            grand_total,
+            proof_of_payment,
+            reserve_user_id,
+            reserve_unique_code
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Prepare failed: " . $this->conn->error);
+        }
+
+        $stmt->bind_param(
+            "sissssssdddsss",
             $table_code,
             $seats,
             $date_schedule,
             $time_schedule,
-            $menu_select,
-            $promo_select,
-            $group_select,
             $selected_menus,
             $selected_promos,
             $selected_groups,
@@ -642,60 +684,38 @@ public function fetch_all_deals_and_menu($deal_type) {
             $group_total,
             $grand_total,
             $entryImageFileName,
-            $user_id
-        ) {
-            $sql = "INSERT INTO reservations (
-                table_code,        -- 1
-                seats,            -- 2 
-                date_schedule,    -- 3
-                time_schedule,    -- 4
-                selected_menus,   -- 7
-                selected_promos,  -- 8
-                selected_groups,  -- 9
-                menu_total,       -- 10
-                promo_total,      -- 11
-                group_total,      -- 12
-                grand_total,       -- 13
-                proof_of_payment,      
-                reserve_user_id      
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-            
-            $stmt = $this->conn->prepare($sql);
-            
-            if (!$stmt) {
-                die("Prepare failed: " . $this->conn->error);
-            }
-            
-            // CORRECTED: 13 type definitions for 13 parameters
-            // s = string, i = integer, d = decimal/double
-            $stmt->bind_param(
-                "sissssssdddsi",  // FIXED: 13 characters for 13 parameters
-                $table_code,     // s - string
-                $seats,          // i - integer  
-                $date_schedule,  // s - string
-                $time_schedule,  // s - string
-                $selected_menus, // s - string (JSON)
-                $selected_promos,// s - string (JSON)
-                $selected_groups,// s - string (JSON)
-                $menu_total,     // d - decimal
-                $promo_total,    // d - decimal
-                $group_total,    
-                $grand_total,     
-                $entryImageFileName,
-                $user_id     
-            );
-            
-            $result = $stmt->execute();
-            
-            if (!$result) {
-                die("Execute failed: " . $stmt->error);
-            }
-            
-            $stmt->close();
-            return $result;
+            $user_id,
+            $uniqueCode
+        );
+
+        $result = $stmt->execute();
+
+        if (!$result) {
+            die("Execute failed: " . $stmt->error);
         }
 
+        $stmt->close();
+        return $result;
+    }
 
+
+
+    private function generateUniqueCode($length = 8) {
+        do {
+            // Gumawa ng random alphanumeric code
+            $code = strtoupper(substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length));
+            
+            // Check kung existing na sa database
+            $stmt = $this->conn->prepare("SELECT COUNT(*) FROM reservations WHERE reserve_unique_code = ?");
+            $stmt->bind_param("s", $code);
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            $stmt->close();
+        } while ($count > 0); 
+
+        return $code;
+    }
 
 
 
@@ -980,14 +1000,29 @@ public function fetch_all_reserved($limit, $offset) {
 
 
 
-public function count_all_reserved() {
-    $result = $this->conn->query("
-        SELECT COUNT(*) as total 
-        FROM reservations where status = 'confirmed' || status = 'complete'
-    ");
-    $row = $result->fetch_assoc();
-    return (int)$row['total'];
-} 
+        public function count_all_reserved() {
+            $result = $this->conn->query("
+                SELECT COUNT(*) as total 
+                FROM reservations where status = 'confirmed' || status = 'complete'
+            ");
+            $row = $result->fetch_assoc();
+            return (int)$row['total'];
+        } 
+
+
+
+
+      public function fetch_reservation($reservations_id) {
+        $query = $this->conn->prepare(" SELECT *
+        FROM reservations
+        LEFT JOIN user
+        ON user.user_id  = reservations.reserve_user_id
+        where id = $reservations_id");
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
 
 
 // Customer Reserved

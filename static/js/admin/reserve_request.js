@@ -264,36 +264,89 @@ $('#detailsModal').on('click', function(e) {
 
 
 
-
-
 $(document).on("click", "#btnApprove, #btnCancel", function () {
-  const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
-  const reservationId = $("#reservation_id").val();
+    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    const reservationId = $("#reservation_id").val();
 
-  const formData = new FormData();
-  formData.append("requestType", "UpdateReservationStatus");
-  formData.append("status", actionStatus);
-  formData.append("reservation_id", reservationId);
-
-  $.ajax({
-    url: "../controller/end-points/controller.php",
-    method: "POST",
-    data: formData,
-    processData: false,
-    contentType: false,
-    dataType: "json",
-    success: function (response) {
-      if (response.status === "success") {  // <-- change here
-        Swal.fire('Success!', response.message || `Reservation ${actionStatus}.`, 'success').then(() => {
-          location.reload();
-        });
-      } else {
-        alertify.error(response.message || "Error updating info.");
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error("Update error:", error);
-      alertify.error("Failed to update info. Please try again.");
-    }
-  });
+    confirmAction(actionStatus).then((confirmed) => {
+        if (confirmed) {
+             $('#detailsModal').removeClass('hidden');
+            updateReservationStatus(reservationId, actionStatus);
+        }
+    });
 });
+
+// Show confirmation modal
+function confirmAction(actionStatus) {
+    return Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to ${actionStatus} this reservation.`,
+        icon: 'warning',
+        showCancelButton: true,
+        background: '#1f2937',
+        color: '#f3f4f6',
+        iconColor: '#f87171',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, proceed',
+        cancelButtonText: 'No, cancel'
+    }).then(result => result.isConfirmed);
+}
+
+// Update reservation in the backend
+function updateReservationStatus(reservationId, actionStatus) {
+    const formData = new FormData();
+    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("status", actionStatus);
+    formData.append("reservation_id", reservationId);
+
+    // Show spinner right away
+    $('#spinnerOverlay').removeClass('hidden');
+
+    $.ajax({
+        url: "../controller/end-points/controller.php",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "success") {
+                sendEmailNotification(reservationId, actionStatus, response.message);
+            } else {
+                $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+                alertify.error(response.message || "Error updating info.");
+            }
+        },
+        error: function () {
+            $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+            alertify.error("Failed to update info. Please try again.");
+        }
+    });
+}
+
+// Send email notification after success
+function sendEmailNotification(reservationId, actionStatus, successMessage) {
+    $.ajax({
+        url: "../controller/end-points/mailer.php",
+        type: 'POST',
+        data: {
+            reservations_id: reservationId,
+            actionStatus: actionStatus
+        },
+        success: function () {
+            finishAction('Success!', successMessage, 'success');
+        },
+        error: function () {
+            finishAction('Email Error!', 'Action succeeded, but mail was not sent.', 'warning');
+        }
+    });
+}
+
+// Final step: show alert and reload
+function finishAction(title, message, type) {
+    $('#spinnerOverlay').addClass('hidden'); // Hide spinner
+    Swal.fire(title, message, type).then(() => {
+        location.reload();
+    });
+}
