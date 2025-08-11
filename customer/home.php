@@ -261,16 +261,23 @@ include "../src/components/customer/footer.php";
       </div>
 
       <!-- Submit -->
-      <div class="text-center">
-        <button
-          type="submit"
-          id="submitBtn"
-          disabled
-          class="bg-yellow-400 text-black font-semibold px-8 py-3 rounded-lg cursor-not-allowed opacity-50 hover:bg-yellow-500 transition"
-        >
-          Submit Reservation
-        </button>
-      </div>
+         <div class="text-center space-y-2">
+            <p id="availabilityInstruction" class="flex items-center text-sm text-white bg-red-500 px-3 py-2 rounded">
+              <span class="material-icons mr-2">event_busy</span>
+              Please check the availability of your date schedule before submitting.
+            </p>
+
+
+            <button
+              type="submit"
+              id="submitBtn"
+              disabled
+              class="bg-yellow-400 text-black font-semibold px-8 py-3 rounded-lg cursor-not-allowed opacity-50 hover:bg-yellow-500 transition"
+            >
+            Submit Reservation
+          </button>
+        </div>
+
     </form>
   </div>
 </div>

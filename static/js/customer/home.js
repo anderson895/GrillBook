@@ -106,6 +106,9 @@ $(function () {
                     isTableAvailable = true;
                     updateFormState();
 
+                    // Hide the instruction once the table is available
+                    $("#availabilityInstruction").hide();
+
                     Swal.fire({
                         icon: 'success',
                         title: 'Available!',
@@ -118,6 +121,9 @@ $(function () {
                 } else {
                     isTableAvailable = false;
                     updateFormState();
+
+                       // Keep showing the instruction if not available
+                    $("#availabilityInstruction").show();
 
                     let conflictHTML = `<p>Table <b>${table_code}</b> is not available on <b>${date}</b> at <b>${time}</b>.</p>`;
 
