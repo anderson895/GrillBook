@@ -59,6 +59,7 @@ $(document).ready(function () {
               <td class="p-3 text-center font-mono">${count++}</td>
               <td class="p-3 text-center font-mono">${created_at}</td>
               
+              <td class="p-3 text-center font-semibold">${data.reserve_unique_code}</td>
               <td class="p-3 text-center font-semibold">${data.table_code}</td>
               <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
               <td class="p-3 text-center font-semibold">${time_schedule}</td>
@@ -66,7 +67,7 @@ $(document).ready(function () {
              
               <td class="p-3 text-center">
                   <button
-                    class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                    class="viewDetailsBtn bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-semibold transition"
                     data-id='${data.id}'
                     data-table_code='${data.table_code}'
                     data-seats='${data.seats}'
@@ -84,9 +85,18 @@ $(document).ready(function () {
                     Details
                   </button>
 
-                <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
-                  data-gt_id='${data.id}'
-                  data-gt_name='${data.table_code}'>Archive</button>
+                <button id="btnComplete" class=" bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                  data-reservation_id='${data.id}'
+                  data-action='completed'
+                  
+                  >Complete
+                </button>
+
+                <button id="btnArchived" class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                  data-reservation_id='${data.id}'
+                  data-action='archived'
+                  >Archive
+                </button>
               </td>
             </tr>
           `);
@@ -149,10 +159,85 @@ $(document).ready(function () {
   });
 
     
+
+
+
+
+
+
+
+
+
+
+  
 });
 
 
 
+
+$(document).on("click", "#btnComplete, #btnArchived", function () {
+    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    const reservationId = $(this).data("reservation_id");
+
+    console.log(actionStatus);
+
+    confirmAction(actionStatus).then((confirmed) => {
+        if (confirmed) {
+           
+            updateReservationStatus(reservationId, actionStatus);
+        }
+    });
+});
+
+// Show confirmation modal
+function confirmAction(actionStatus) {
+    return Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to ${actionStatus} this reservation.`,
+        icon: 'warning',
+        showCancelButton: true,
+        background: '#1f2937',
+        color: '#f3f4f6',
+        iconColor: '#f87171',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, proceed',
+        cancelButtonText: 'No, cancel'
+    }).then(result => result.isConfirmed);
+}
+
+// Update reservation in the backend
+function updateReservationStatus(reservationId, actionStatus) {
+    const formData = new FormData();
+    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("status", actionStatus);
+    formData.append("reservation_id", reservationId);
+
+    // Show spinner right away
+    $('#spinnerOverlay').removeClass('hidden');
+
+    $.ajax({
+        url: "../controller/end-points/controller.php",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "success") {
+                  // Show spinner right away
+                location.reload();
+            } else {
+                $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+                alertify.error(response.message || "Error updating info.");
+            }
+        },
+        error: function () {
+            $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+            alertify.error("Failed to update info. Please try again.");
+        }
+    });
+}
 
 
 
