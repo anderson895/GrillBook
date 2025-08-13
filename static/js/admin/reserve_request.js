@@ -69,6 +69,7 @@ $(document).ready(function () {
                   <button
                     class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                     data-id='${data.id}'
+                    data-reservation_code='${data.reserve_unique_code}'
                     data-table_code='${data.table_code}'
                     data-seats='${data.seats}'
                     data-date_schedule='${data.date_schedule}'
@@ -83,12 +84,8 @@ $(document).ready(function () {
                     data-proof_of_payment='${data.proof_of_payment}'
                     data-terms_signed='${data.termsFileSigned}'
                   >
-                    Details 
+                    DETAILS 
                   </button>
-
-                <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
-                  data-gt_id='${data.id}'
-                  data-gt_name='${data.table_code}'>Cancel</button>
               </td>
             </tr>
           `);
