@@ -57,6 +57,7 @@ $(document).ready(function () {
           $('#outputTableBody').append(`
             <tr class="hover:bg-[#2B2B2B] transition-colors">
               <td class="p-3 text-center font-mono">${count++}</td>
+              <td class="p-3 text-center font-mono">${data.reserve_unique_code}</td>
               <td class="p-3 text-center font-mono">${created_at}</td>
               
               <td class="p-3 text-center font-semibold">${data.table_code}</td>
@@ -87,7 +88,7 @@ $(document).ready(function () {
 
                 <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
                   data-gt_id='${data.id}'
-                  data-gt_name='${data.table_code}'>Remove</button>
+                  data-gt_name='${data.table_code}'>Cancel</button>
               </td>
             </tr>
           `);
