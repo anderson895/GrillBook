@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2025 at 03:20 AM
+-- Generation Time: Aug 13, 2025 at 03:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -110,8 +110,7 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
-(7, 3, 'W6IRG8D3', 'F4', 5, '2025-08-11', '14:18:00', 370.00, 0.00, 0.00, 370.00, '[{\"id\":\"4\",\"name\":\"Sarciado\",\"price\":20,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"},{\"id\":\"2\",\"name\":\"Fried Pork Belly Liempo\",\"price\":200,\"type\":\"menu\"}]', '[]', '[]', '', 'proof_68998b41d85ae5.42714721.jpg', '2025-08-11 06:18:41', '2025-08-11 07:35:59', 'confirmed'),
-(8, 3, '2P93XCJZ', 'C4', 10, '2025-08-13', '09:07:00', 0.00, 0.00, 0.00, 0.00, '[]', '[]', '[]', 'terms_689be56a5d6fb1.45479745.pdf', 'proof_689be56a5ccc49.11722359.pdf', '2025-08-13 01:07:54', '2025-08-13 01:07:54', 'pending');
+(10, 3, '8M5FYBP7', 'DJ', 5, '2025-08-13', '09:30:00', 0.00, 270.00, 350.00, 620.00, '[]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_689bebc0824356.93856830.pdf', 'proof_689bebc0820eb3.72815322.png', '2025-08-13 01:34:56', '2025-08-13 01:34:56', 'pending');
 
 -- --------------------------------------------------------
 
@@ -187,7 +186,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user`

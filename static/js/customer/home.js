@@ -141,19 +141,16 @@ $(function () {
             requestType: 'checkAvailability',
             table_code: table_code,
             date_schedule: date,
-            time_schedule: time  // added time
+            time_schedule: time 
         },
         success: function(response) {
             console.log(response);
 
             if (response.status === 200) {
-                // Use response.available if your backend returns that
-                // or adjust to response.availability if it's boolean
                 if (response.available === true || response.availability === true) {
                     isTableAvailable = true;
                     updateFormState();
 
-                    // Hide the instruction once the table is available
                     $("#availabilityInstruction").hide();
 
                     Swal.fire({
@@ -256,96 +253,80 @@ $(function () {
     }
   });
 
-  // ===== Submit Form =====
-  $("#frmRequestReservation").on("submit", function (e) {
+
+
+
+$("#frmRequestReservation").on("submit", function (e) {
     e.preventDefault();
 
-    // Double-check availability before submitting
+    // === Validation ===
     if (!isTableAvailable) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Availability Required',
-        text: 'Please check table availability first before submitting your reservation.'
-      });
-      return;
+        Swal.fire({
+            icon: 'warning',
+            title: 'Availability Required',
+            text: 'Please check table availability first before submitting your reservation.'
+        });
+        return;
     }
 
-    var payment_proof = $('#payment_proof').val();
-    if (payment_proof === "") {
+    if (!$('#payment_proof').val()) {
         alertify.error("Please upload payment receipt.");
         return; 
     }
 
-
-    var termsFileSigned = $('#termsFileSigned').val();
-    if (termsFileSigned === "") {
+    if (!$('#termsFileSigned').val()) {
         alertify.error("Please upload term with signed.");
         return; 
     }
 
-    
-
-    const formData = new FormData(this);
-    formData.append("requestType", "RequestReservation");
-
-    // Collect selected menu items
+    // === Collect selected items ===
     const selectedMenus = [];
     $('input[name="menu_select[]"]:checked').each(function() {
-      const menuId = $(this).val();
-      const menuCard = $(this).closest('.swiper-slide');
-      const menuName = menuCard.find('h3').text();
-      const menuPriceText = menuCard.find('p:contains("Price:")').text();
-      const menuPrice = menuPriceText.replace('Price: ₱', '').replace('Price: ', '');
-      
-      selectedMenus.push({
-        id: menuId,
-        name: menuName,
-        price: parseFloat(menuPrice) || 0,
-        type: 'menu'
-      });
+        const menuCard = $(this).closest('.swiper-slide');
+        selectedMenus.push({
+            id: $(this).val(),
+            name: menuCard.find('h3').text(),
+            price: parseFloat(menuCard.find('p:contains("Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            type: 'menu'
+        });
     });
 
-    // Collect selected promo deals
     const selectedPromos = [];
     $('#promoContainer input[type="checkbox"]:checked').each(function() {
-      const dealId = $(this).val();
-      const dealCard = $(this).closest('.swiper-slide');
-      const dealName = dealCard.find('h3').text();
-      const dealPriceText = dealCard.find('p:contains("Total Price:")').text();
-      const dealPrice = dealPriceText.replace('Total Price: ₱', '').replace('Total Price: ', '');
-      
-      selectedPromos.push({
-        id: dealId,
-        name: dealName,
-        price: parseFloat(dealPrice) || 0,
-        type: 'promo_deal'
-      });
+        const dealCard = $(this).closest('.swiper-slide');
+        selectedPromos.push({
+            id: $(this).val(),
+            name: dealCard.find('h3').text(),
+            price: parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            type: 'promo_deal'
+        });
     });
 
-    // Collect selected group deals
     const selectedGroups = [];
     $('#groupContainer input[type="checkbox"]:checked').each(function() {
-      const dealId = $(this).val();
-      const dealCard = $(this).closest('.swiper-slide');
-      const dealName = dealCard.find('h3').text();
-      const dealPriceText = dealCard.find('p:contains("Total Price:")').text();
-      const dealPrice = dealPriceText.replace('Total Price: ₱', '').replace('Total Price: ', '');
-      
-      selectedGroups.push({
-        id: dealId,
-        name: dealName,
-        price: parseFloat(dealPrice) || 0,
-        type: 'group_deal'
-      });
+        const dealCard = $(this).closest('.swiper-slide');
+        selectedGroups.push({
+            id: $(this).val(),
+            name: dealCard.find('h3').text(),
+            price: parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            type: 'group_deal'
+        });
     });
 
-    // Calculate total price
+    if (selectedMenus.length === 0 && selectedPromos.length === 0 && selectedGroups.length === 0) {
+        alertify.error("Please select at least one Menu, Promo, or Group deal before submitting.");
+        return;
+    }
+
+    // === Totals ===
     const totalMenuPrice = selectedMenus.reduce((sum, item) => sum + item.price, 0);
     const totalPromoPrice = selectedPromos.reduce((sum, item) => sum + item.price, 0);
     const totalGroupPrice = selectedGroups.reduce((sum, item) => sum + item.price, 0);
     const grandTotal = totalMenuPrice + totalPromoPrice + totalGroupPrice;
 
-    // Add selected items data to form
+    // === FormData ===
+    const formData = new FormData(this);
+    formData.append("requestType", "RequestReservation");
     formData.append("selected_menus", JSON.stringify(selectedMenus));
     formData.append("selected_promos", JSON.stringify(selectedPromos));
     formData.append("selected_groups", JSON.stringify(selectedGroups));
@@ -354,75 +335,77 @@ $(function () {
     formData.append("group_total", totalGroupPrice.toFixed(2));
     formData.append("grand_total", grandTotal.toFixed(2));
 
-    // Optional: Show summary before submitting
-    if (selectedMenus.length > 0 || selectedPromos.length > 0 || selectedGroups.length > 0) {
-      let summary = "Selected Items:\n\n";
-      
-      if (selectedMenus.length > 0) {
-        summary += "Menus:\n";
-        selectedMenus.forEach(item => {
-          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
-        });
-        summary += `Menu Total: ₱${totalMenuPrice.toFixed(2)}\n\n`;
-      }
-      
-      if (selectedPromos.length > 0) {
-        summary += "Promo Deals:\n";
-        selectedPromos.forEach(item => {
-          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
-        });
-        summary += `Promo Total: ₱${totalPromoPrice.toFixed(2)}\n\n`;
-      }
-      
-      if (selectedGroups.length > 0) {
-        summary += "Group Deals:\n";
-        selectedGroups.forEach(item => {
-          summary += `- ${item.name}: ₱${item.price.toFixed(2)}\n`;
-        });
-        summary += `Group Total: ₱${totalGroupPrice.toFixed(2)}\n\n`;
-      }
-      
-      summary += `Grand Total: ₱${grandTotal.toFixed(2)}`;
-      
-      if (!confirm(summary + "\n\nProceed with reservation?")) {
-        return;
-      }
+    // === SweetAlert Summary ===
+    let summaryHTML = `<div style="text-align:left;">`;
+    if (selectedMenus.length) {
+        summaryHTML += `<h4 style="color:#FFD700;">Menus:</h4><ul>`;
+        selectedMenus.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        summaryHTML += `</ul><p><b>Menu Total:</b> ₱${totalMenuPrice.toFixed(2)}</p><br>`;
     }
+    if (selectedPromos.length) {
+        summaryHTML += `<h4 style="color:#FFD700;">Promo Deals:</h4><ul>`;
+        selectedPromos.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        summaryHTML += `</ul><p><b>Promo Total:</b> ₱${totalPromoPrice.toFixed(2)}</p><br>`;
+    }
+    if (selectedGroups.length) {
+        summaryHTML += `<h4 style="color:#FFD700;">Group Deals:</h4><ul>`;
+        selectedGroups.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        summaryHTML += `</ul><p><b>Group Total:</b> ₱${totalGroupPrice.toFixed(2)}</p><br>`;
+    }
+    summaryHTML += `<hr><h3>Grand Total: ₱${grandTotal.toFixed(2)}</h3></div>`;
 
-    // Show loading state
+    Swal.fire({
+        title: 'Reservation Summary',
+        html: summaryHTML,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Proceed',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#FFD700',
+        background: '#2B2B2B',
+        color: '#FFFFFF'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            submitReservation(formData);
+        }
+    });
+});
+
+// === AJAX submission function ===
+function submitReservation(formData) {
     $("#submitBtn").prop('disabled', true).text('Submitting...');
 
     $.ajax({
-      url: "../controller/end-points/controller.php",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (res) {
-        // Handle success response
-        Swal.fire({
-          icon: 'success',
-          title: 'Reservation Submitted!',
-          text: 'Your reservation has been submitted successfully.',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          closeModal();
-        });
-      },
-      error: function(xhr, status, error) {
-        console.error("Submission Error:", status, error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Submission Failed',
-          text: 'Error submitting reservation. Please try again.'
-        });
-      },
-      complete: function() {
-        $("#submitBtn").prop('disabled', false).text('Submit Reservation');
-        updateFormState(); // Re-apply proper state
-      }
+        url: "../controller/end-points/controller.php",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Reservation Submitted!',
+                text: 'Your reservation has been submitted successfully.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                closeModal();
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Submission Error:", status, error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Submission Failed',
+                text: 'Error submitting reservation. Please try again.'
+            });
+        },
+        complete: function() {
+            $("#submitBtn").prop('disabled', false).text('Submit Reservation');
+            updateFormState();
+        }
     });
-  });
+}
+
 
   // ===== Initialize Swiper functions (keeping your existing functions) =====
   function initSwiper(selector) {
