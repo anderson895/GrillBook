@@ -67,8 +67,9 @@ $(document).ready(function () {
              
               <td class="p-3 text-center">
                   <button
-                    class="viewDetailsBtn bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                    class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                     data-id='${data.id}'
+                    data-reservation_code='${data.reserve_unique_code}'
                     data-table_code='${data.table_code}'
                     data-seats='${data.seats}'
                     data-date_schedule='${data.date_schedule}'
@@ -81,8 +82,9 @@ $(document).ready(function () {
                     data-promos_details='${encodeURIComponent(JSON.stringify(data.promos_details))}'
                     data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
                     data-proof_of_payment='${data.proof_of_payment}'
+                    data-terms_signed='${data.termsFileSigned}'
                   >
-                    Details
+                    DETAILS 
                   </button>
 
                 <button id="btnComplete" class=" bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
@@ -260,6 +262,8 @@ $(document).on('click', '.viewDetailsBtn', function() {
   const time_schedule = $(this).data('time_schedule');
   const grand_total = $(this).data('grand_total');
   const proof_of_payment = $(this).data('proof_of_payment');
+  const terms_signed = $(this).data('terms_signed');
+  
 
   function safeParse(data) {
     try { return JSON.parse(decodeURIComponent(data)); }
@@ -277,44 +281,85 @@ $(document).on('click', '.viewDetailsBtn', function() {
   });
 
   function buildList(items, title) {
-  if (!items.length) return '';
-  return `
-    <section class="mb-6 max-w-full sm:max-w-lg mx-auto px-4 sm:px-0">
-      <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1">${title}</h3>
-      <ul class="space-y-3 max-h-52 overflow-y-auto pr-2 scrollbar-hidden">
-        ${items.map(item => `
-          <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
-            <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" alt="${item.name}" class="w-10 h-10 rounded object-cover flex-shrink-0" />
-            <div class="truncate">
-              <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
-              <p class="text-yellow-400 text-xs mt-1">₱${item.price}</p>
-            </div>
-          </li>
-        `).join('')}
-      </ul>
-    </section>
-  `;
-}
-
+    if (!items.length) return '';
+    return `
+      <section class="mb-6 max-w-full sm:max-w-lg mx-auto px-4 sm:px-0">
+        <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1">${title}</h3>
+        <ul class="space-y-3 max-h-52 overflow-y-auto pr-2 scrollbar-hidden">
+          ${items.map(item => `
+            <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
+              <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" 
+                   alt="${item.name}" 
+                   class="w-10 h-10 rounded object-cover flex-shrink-0" />
+              <div class="truncate">
+                <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
+                <p class="text-yellow-400 text-xs mt-1">₱${item.price}</p>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      </section>
+    `;
+  }
 
   const menusHtml = buildList(menus_details, 'Menus');
   const promosHtml = buildList(promos_details, 'Promos');
   const groupsHtml = buildList(groups_details, 'Groups');
 
+  // Build Signed Terms preview
+  let termsPreviewHtml = '';
+  if (terms_signed) {
+    const fileExt = terms_signed.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
+      // Show image preview
+      termsPreviewHtml = `<img src="../static/upload/${terms_signed}" alt="Signed Terms" class="w-full max-h-56 object-cover rounded-md transition duration-300 group-hover:opacity-80" />`;
+    } else {
+      // Show icon for non-image
+      termsPreviewHtml = `
+        <div class="flex flex-col items-center justify-center h-56 w-[20rem] max-w-full text-gray-300 bg-[#222222] rounded-md">
+          <span class="material-icons text-[8rem] leading-none">description</span>
+          <p class="text-base mt-3">${fileExt.toUpperCase()} File</p>
+        </div>
+
+      `;
+
+    }
+  }
+
   const proofHtml = proof_of_payment
-    ? `<section class="mb-6 max-w-full sm:max-w-md mx-auto px-4 sm:px-0">
+    ? `
+    <div class="flex flex-col sm:flex-row gap-6 max-w-full mx-auto px-4 sm:px-0">
+      <!-- Proof of Payment -->
+      <section class="flex-1">
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Proof of Payment
         </h3>
         <a href="../static/upload/${proof_of_payment}" download="${proof_of_payment}" title="Download Proof of Payment" 
           class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
           <img src="../static/upload/${proof_of_payment}" alt="Proof of Payment" 
-              class="max-w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
-           <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-6xl opacity-0 group-hover:opacity-100 transition pointer-events-none bg-black bg-opacity-40">
+            class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
+        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
+          download
+        </span>
+
+        </a>
+      </section>
+
+      <!-- Signed Terms -->
+      <section class="flex-1">
+        <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
+          Signed Terms
+        </h3>
+        <a href="../static/upload/${terms_signed}" download="${terms_signed}" title="Download Signed Terms" 
+          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+          ${termsPreviewHtml}
+          <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
             download
           </span>
         </a>
-      </section>`
+      </section>
+    </div>
+    `
     : '';
 
   $('#modalContent').html(`

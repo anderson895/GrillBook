@@ -35,7 +35,9 @@ class global_class extends db_connect
 
 
     public function fetch_all_menu() {
-        $query = $this->conn->prepare("SELECT * FROM menu ORDER BY menu_id DESC");
+        $query = $this->conn->prepare("SELECT * FROM menu
+        where menu_status='1'
+        ORDER BY menu_id DESC");
 
         if ($query->execute()) {
             $result = $query->get_result();
@@ -275,41 +277,21 @@ public function UpdateMenu(
 
 
 
- public function removeMenu($menu_id) {
-        // Step 1: Get the banner filename from the database
-        $selectQuery = "SELECT menu_image_banner FROM menu WHERE menu_id = ?";
-        $stmt = $this->conn->prepare($selectQuery);
-        if (!$stmt) {
-            return 'Prepare failed (select): ' . $this->conn->error;
-        }
-
-        $stmt->bind_param("i", $menu_id);
-        $stmt->execute();
-        $stmt->bind_result($bannerFile);
-        $stmt->fetch();
-        $stmt->close();
-
-        // Step 2: Delete the record from the database
-        $deleteQuery = "DELETE FROM menu WHERE menu_id = ?";
+    public function removeMenu($menu_id) {
+       
+        $deleteQuery = "UPDATE menu SET menu_status = 0 WHERE menu_id = ?";
         $stmt = $this->conn->prepare($deleteQuery);
         if (!$stmt) {
-            return 'Prepare failed (delete): ' . $this->conn->error;
+            return 'Prepare failed (update): ' . $this->conn->error;
         }
 
         $stmt->bind_param("i", $menu_id);
         $result = $stmt->execute();
         $stmt->close();
 
-        // Step 3: Delete the file from the filesystem
-        if ($result && $bannerFile) {
-            $filePath = __DIR__ . "../../static/upload/" . $bannerFile;
-            if (file_exists($filePath)) {
-                unlink($filePath); // deletes the image file
-            }
-        }
-
-        return $result ? 'success' : 'Error deleting event';
+        return $result ? 'success' : 'Error updating menu';
     }
+
 
 
 
