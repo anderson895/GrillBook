@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2025 at 03:35 AM
+-- Generation Time: Aug 13, 2025 at 03:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -110,7 +110,8 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
-(10, 3, '8M5FYBP7', 'DJ', 5, '2025-08-13', '09:30:00', 0.00, 270.00, 350.00, 620.00, '[]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_689bebc0824356.93856830.pdf', 'proof_689bebc0820eb3.72815322.png', '2025-08-13 01:34:56', '2025-08-13 01:34:56', 'pending');
+(10, 3, '8M5FYBP7', 'DJ', 5, '2025-08-13', '09:30:00', 0.00, 270.00, 350.00, 620.00, '[]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_689bebc0824356.93856830.pdf', 'proof_689bebc0820eb3.72815322.png', '2025-08-13 01:34:56', '2025-08-13 01:34:56', 'pending'),
+(11, 3, '39IRHFCO', 'C5', 8, '2025-08-13', '09:50:00', 20.00, 270.00, 530.00, 820.00, '[{\"id\":\"4\",\"name\":\"Sarciado\",\"price\":20,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_689bef90f04ae9.48170934.png', 'proof_689bef90ef7690.19069440.png', '2025-08-13 01:51:12', '2025-08-13 01:51:12', 'pending');
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`
