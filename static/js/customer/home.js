@@ -1,3 +1,50 @@
+
+
+$(document).ready(function () {
+  $("#payment_method").on("change", function () {
+    const selected = $(this).val();
+    let qrSrc = "";
+    let text = "";
+
+    if (selected === "gcash") {
+      text = "Send payment to GCash number: 0917-123-4567 (Juan Dela Cruz)";
+      qrSrc = "../static/qr/gcash.webp";
+    } 
+    else if (selected === "bpi") {
+      text = "Transfer to BPI Account: 1234-5678-90 (Juan Dela Cruz)";
+      qrSrc = "../static/qr/bpi.webp";
+    } 
+    else if (selected === "maya") {
+      text = "Send payment to Maya account: 0917-987-6543 (Juan Dela Cruz)";
+      qrSrc = "../static/qr/maya.jpg";
+    } 
+    else if (selected === "paypal") {
+      text = "Pay via PayPal: paypal.me/juanpay";
+      qrSrc = "../static/qr/paypal.webp";
+    }
+
+    if (qrSrc) {
+      $("#payment_text").text(text);
+      $("#payment_qr").attr("src", qrSrc);
+      $("#download_qr_btn").attr("href", qrSrc); // set download link
+      $("#payment_details").removeClass("hidden");
+    } else {
+      $("#payment_details").addClass("hidden");
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 $(function () {
   // ===== Global variables to track state =====
   let isTableAvailable = false;
@@ -228,6 +275,15 @@ $(function () {
         alertify.error("Please upload payment receipt.");
         return; 
     }
+
+
+    var termsFileSigned = $('#termsFileSigned').val();
+    if (termsFileSigned === "") {
+        alertify.error("Please upload term with signed.");
+        return; 
+    }
+
+    
 
     const formData = new FormData(this);
     formData.append("requestType", "RequestReservation");

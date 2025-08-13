@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2025 at 04:30 PM
+-- Generation Time: Aug 13, 2025 at 03:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,6 +85,8 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `menu_category`, `menu_description`,
 
 CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
+  `reserve_user_id` int(11) NOT NULL,
+  `reserve_unique_code` varchar(60) DEFAULT NULL,
   `table_code` varchar(10) NOT NULL,
   `seats` int(11) NOT NULL,
   `date_schedule` date NOT NULL,
@@ -96,11 +98,20 @@ CREATE TABLE `reservations` (
   `selected_menus` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_menus`)),
   `selected_promos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_promos`)),
   `selected_groups` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`selected_groups`)),
+  `termsFileSigned` varchar(255) NOT NULL,
   `proof_of_payment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` enum('pending','confirmed','cancelled','completed','archived') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
+(7, 3, 'W6IRG8D3', 'F4', 5, '2025-08-11', '14:18:00', 370.00, 0.00, 0.00, 370.00, '[{\"id\":\"4\",\"name\":\"Sarciado\",\"price\":20,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"},{\"id\":\"2\",\"name\":\"Fried Pork Belly Liempo\",\"price\":200,\"type\":\"menu\"}]', '[]', '[]', '', 'proof_68998b41d85ae5.42714721.jpg', '2025-08-11 06:18:41', '2025-08-11 07:35:59', 'confirmed'),
+(8, 3, '2P93XCJZ', 'C4', 10, '2025-08-13', '09:07:00', 0.00, 0.00, 0.00, 0.00, '[]', '[]', '[]', 'terms_689be56a5d6fb1.45479745.pdf', 'proof_689be56a5ccc49.11722359.pdf', '2025-08-13 01:07:54', '2025-08-13 01:07:54', 'pending');
 
 -- --------------------------------------------------------
 
@@ -147,7 +158,8 @@ ALTER TABLE `menu`
 -- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reserve_user_id` (`reserve_user_id`);
 
 --
 -- Indexes for table `user`
@@ -175,13 +187,23 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`reserve_user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

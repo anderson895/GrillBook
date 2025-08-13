@@ -642,7 +642,8 @@ public function fetch_all_deals_and_menu($deal_type) {
         $group_total,
         $grand_total,
         $entryImageFileName,
-        $user_id
+        $user_id,
+        $termsFileSignedFileName
     ) {
         // Generate unique code
         $uniqueCode = $this->generateUniqueCode();
@@ -661,8 +662,9 @@ public function fetch_all_deals_and_menu($deal_type) {
             grand_total,
             proof_of_payment,
             reserve_user_id,
-            reserve_unique_code
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            reserve_unique_code,
+            termsFileSigned
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -671,7 +673,7 @@ public function fetch_all_deals_and_menu($deal_type) {
         }
 
         $stmt->bind_param(
-            "sissssssdddsss",
+            "sissssssdddssss",
             $table_code,
             $seats,
             $date_schedule,
@@ -685,7 +687,8 @@ public function fetch_all_deals_and_menu($deal_type) {
             $grand_total,
             $entryImageFileName,
             $user_id,
-            $uniqueCode
+            $uniqueCode,
+            $termsFileSignedFileName
         );
 
         $result = $stmt->execute();

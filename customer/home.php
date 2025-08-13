@@ -206,7 +206,7 @@ include "../src/components/customer/footer.php";
 </section>
 
 <!-- Promo Deals Section -->
-<section class="py-16 px-6 bg-[#1A1A1A]" id="promo_section">
+<section class="py-2 px-6 bg-[#1A1A1A]" id="promo_section">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl text-center font-bold text-[#FFD700] uppercase mb-10">Promo Deals</h2>
     <div class="swiper promoSwiper">
@@ -231,52 +231,126 @@ include "../src/components/customer/footer.php";
 
 
 
-      <!-- Terms -->
-      <div class="flex items-start space-x-3">
-        <input 
-          type="checkbox" 
-          id="terms" 
-          name="terms" 
-          required 
-          class="mt-1 rounded text-yellow-400 focus:ring-yellow-400 w-5 h-5" 
-        />
-        <label for="terms" class="text-sm select-none">
-          I agree to the <a href="../static/resources/terms_and_condition.pdf" target="_blank" download class="underline text-yellow-400 hover:text-yellow-300">Terms and Conditions</a>
-        </label>
+      <!-- Reservation Form Section -->
+      <div class="space-y-6 bg-[#0D0D0D] p-6 rounded-2xl border border-gray-700 shadow-lg">
+
+        <!-- Terms -->
+        <div class="space-y-4">
+          <!-- Terms and Conditions checkbox -->
+          <div class="flex items-start space-x-3 p-4 bg-[#1A1A1A] rounded-lg border border-gray-600">
+            <input 
+              type="checkbox" 
+              id="terms" 
+              name="terms" 
+              required 
+              class="mt-1 rounded text-yellow-400 focus:ring-yellow-400 w-5 h-5" 
+            />
+            <label for="terms" class="text-sm select-none text-gray-300">
+              I agree to the 
+              <a href="../static/resources/terms_and_condition.pdf" target="_blank" download class="underline text-yellow-400 hover:text-yellow-300">
+                Terms and Conditions
+              </a>
+            </label>
+          </div>
+
+          <!-- File upload for signed Terms -->
+          <div>
+            <label for="termsFileSigned" class="block text-sm font-medium text-gray-300 mb-2">
+              Upload Signed Terms and Conditions
+            </label>
+            <input 
+              type="file" 
+              id="termsFileSigned" 
+              name="termsFileSigned" 
+              accept=".pdf,.jpg,.jpeg,.png" 
+              required
+              class="block w-full text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+            <p class="mt-1 text-xs text-gray-400">Accepted formats: PDF, JPG, PNG</p>
+          </div>
+        </div>
+
+        <!-- Payment Method Dropdown -->
+        <div>
+          <label for="payment_method" class="block mb-2 font-semibold text-gray-300">
+            Select Payment Method
+          </label>
+          <select
+            id="payment_method"
+            name="payment_method"
+            class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+            <option value="">-- Select Payment Method --</option>
+            <option value="gcash">GCash</option>
+            <option value="maya">Maya</option>
+            <option value="bpi">BPI Bank Transfer</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
+
+       <!-- Payment Details / QR Display -->
+      <div id="payment_details" class="hidden">
+        <div class="bg-[#1A1A1A] p-4 rounded-lg border border-gray-600 text-center">
+          <p id="payment_text" class="text-gray-300 text-sm mb-3"></p>
+
+          <!-- QR Image -->
+          <img 
+            id="payment_qr" 
+            src="" 
+            alt="Payment QR Code" 
+            class="w-48 h-48 object-contain mx-auto rounded-lg border border-gray-700 shadow-md" 
+          />
+
+          <!-- Download Button -->
+          <a 
+            id="download_qr_btn"
+            href="" 
+            download="payment_qr.png"
+            class="inline-flex items-center mt-4 px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition"
+          >
+            <span class="material-icons mr-2">download</span>
+            Download QR
+          </a>
+
+        </div>
       </div>
 
-      <!-- File Upload -->
-      <div>
-        <label for="payment_proof" class="block mb-1 font-semibold">Upload Proof of Payment</label>
-        <input
-          type="file"
-          id="payment_proof"
-          name="payment_proof"
-          accept="image/*,.pdf"
-          disabled
-          required
-          class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
-        <p id="fileNamePreview" class="mt-1 text-yellow-400 text-sm"></p>
-      </div>
 
-      <!-- Submit -->
-         <div class="text-center space-y-2">
-            <p id="availabilityInstruction" class="flex items-center text-sm text-white bg-red-500 px-3 py-2 rounded">
-              <span class="material-icons mr-2">event_busy</span>
-              Please check the availability of your date schedule before submitting.
-            </p>
+        <!-- Upload Proof of Payment -->
+        <div>
+          <label for="payment_proof" class="block mb-2 font-semibold text-gray-300">
+            Upload Proof of Payment
+          </label>
+          <input
+            type="file"
+            id="payment_proof"
+            name="payment_proof"
+            accept="image/*,.pdf"
+            disabled
+            required
+            class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 border border-gray-600 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <p id="fileNamePreview" class="mt-1 text-yellow-400 text-sm"></p>
+        </div>
 
-
-            <button
-              type="submit"
-              id="submitBtn"
-              disabled
-              class="bg-yellow-400 text-black font-semibold px-8 py-3 rounded-lg cursor-not-allowed opacity-50 hover:bg-yellow-500 transition"
-            >
+        <!-- Submit -->
+        <div class="text-center space-y-4">
+          <p id="availabilityInstruction" class="flex items-center justify-center text-sm text-white bg-red-500 px-4 py-2 rounded-lg">
+            <span class="material-icons mr-2">event_busy</span>
+            Please check the availability of your date schedule before submitting.
+          </p>
+          <button
+            type="submit"
+            id="submitBtn"
+            disabled
+            class="bg-yellow-400 text-black font-semibold px-8 py-3 rounded-lg cursor-not-allowed opacity-50 hover:bg-yellow-500 transition-all duration-200"
+          >
             Submit Reservation
           </button>
         </div>
+
+      </div>
+
 
     </form>
   </div>

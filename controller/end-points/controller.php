@@ -302,32 +302,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $group_total = $_POST['group_total'];
             $grand_total = $_POST['grand_total'];
 
+
             
             $entryImage = $_FILES['payment_proof'];
+            $termsFileSigned = $_FILES['termsFileSigned'];
             $uploadDir = '../../static/upload/';
-            $entryImageFileName = '';
 
+            $entryImageFileName = '';
+            $termsFileSignedFileName = '';
+
+            // Upload payment proof
             if (isset($entryImage) && $entryImage['error'] === UPLOAD_ERR_OK) {
                 $bannerExtension = pathinfo($entryImage['name'], PATHINFO_EXTENSION);
                 $entryImageFileName = uniqid('proof_', true) . '.' . $bannerExtension;
                 $bannerPath = $uploadDir . $entryImageFileName;
 
-                $bannerUploaded = move_uploaded_file($entryImage['tmp_name'], $bannerPath);
-
-                if (!$bannerUploaded) {
+                if (!move_uploaded_file($entryImage['tmp_name'], $bannerPath)) {
                     echo json_encode([
                         'status' => 500,
-                        'message' => 'Error uploading image.'
+                        'message' => 'Error uploading payment proof.'
                     ]);
                     exit;
                 }
             } elseif ($entryImage['error'] !== UPLOAD_ERR_NO_FILE && $entryImage['error'] !== 0) {
                 echo json_encode([
                     'status' => 400,
-                    'message' => 'Invalid image upload.'
+                    'message' => 'Invalid payment proof upload.'
                 ]);
                 exit;
             }
+
+            // Upload signed terms file
+            if (isset($termsFileSigned) && $termsFileSigned['error'] === UPLOAD_ERR_OK) {
+                $termsExtension = pathinfo($termsFileSigned['name'], PATHINFO_EXTENSION);
+                $termsFileSignedFileName = uniqid('terms_', true) . '.' . $termsExtension;
+                $termsPath = $uploadDir . $termsFileSignedFileName;
+
+                if (!move_uploaded_file($termsFileSigned['tmp_name'], $termsPath)) {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'Error uploading signed terms file.'
+                    ]);
+                    exit;
+                }
+            } elseif ($termsFileSigned['error'] !== UPLOAD_ERR_NO_FILE && $termsFileSigned['error'] !== 0) {
+                echo json_encode([
+                    'status' => 400,
+                    'message' => 'Invalid signed terms file upload.'
+                ]);
+                exit;
+            }
+
             
 
             // Call the database method with all parameters
@@ -347,7 +372,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $group_total,
                 $grand_total,
                 $entryImageFileName,
-                $user_id
+                $user_id,
+                $termsFileSignedFileName
             );
 
             if ($result) {
