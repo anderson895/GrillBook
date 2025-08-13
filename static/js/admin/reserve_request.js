@@ -57,9 +57,8 @@ $(document).ready(function () {
           $('#outputTableBody').append(`
             <tr class="hover:bg-[#2B2B2B] transition-colors">
               <td class="p-3 text-center font-mono">${count++}</td>
-              <td class="p-3 text-center font-mono">${data.reserve_unique_code}</td>
               <td class="p-3 text-center font-mono">${created_at}</td>
-              
+              <td class="p-3 text-center font-mono">${data.reserve_unique_code}</td>
               <td class="p-3 text-center font-semibold">${data.table_code}</td>
               <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
               <td class="p-3 text-center font-semibold">${time_schedule}</td>
