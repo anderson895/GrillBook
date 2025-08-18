@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     if (selected === "gcash") {
       text = "Send payment to GCash number: 0917-123-4567 (Juan Dela Cruz)";
-      qrSrc = "../static/qr/gcash.webp";
+      qrSrc = "../static/qr/grillbook_gcash_qr.jpg";
     } 
     else if (selected === "bpi") {
       text = "Transfer to BPI Account: 1234-5678-90 (Juan Dela Cruz)";
