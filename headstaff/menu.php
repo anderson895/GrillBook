@@ -1,6 +1,6 @@
 <?php
-include "../src/components/admin/header.php";
-include "../src/components/admin/nav.php";
+include "../src/components/headstaff/header.php";
+include "../src/components/headstaff/nav.php";
 ?>
 
 <!-- Top Bar -->
@@ -26,15 +26,7 @@ include "../src/components/admin/nav.php";
     placeholder="Search..."
   />
 
-  <!-- Add Button -->
-  <button
-    id="addMenuBtn"
-    class="w-full sm:w-auto bg-[#FFD700] text-black font-semibold 
-           text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2 rounded-md 
-           hover:bg-yellow-500 transition"
-  >
-    + Add Menu
-  </button>
+ 
 </div>
 
 
@@ -85,70 +77,6 @@ include "../src/components/admin/nav.php";
 
 
 
-<div id="addMenuModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" style="display:none;">
-  <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-xl mx-auto p-6 text-[#CCCCCC] relative">
-    <button id="closeAddGettableModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
-
-    <div id="modalContent" class="space-y-4">
-      <h3 class="text-lg font-bold text-[#FFD700]">MENU DETAILS</h3>
-      <form id="frmAddMenu" class="space-y-4">
-
-        <!-- Event Name -->
-        <div>
-          <label for="menuName" class="block text-sm font-medium text-[#FFD700]">Menu</label>
-          <input type="text" id="menuName" name="menuName" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
-        </div>
-
-        <!-- Description -->
-        <div>
-          <label for="menuDescription" class="block text-sm font-medium text-[#FFD700]">Description</label>
-          <textarea id="menuDescription" name="menuDescription" rows="3" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]"></textarea>
-        </div>
-
-        <div>
-          <label for="menuCategory" class="block text-sm font-medium text-[#FFD700]">Category</label>
-          <select id="menuCategory" name="menuCategory" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
-            <option value="">-- Select category --</option>
-            <option value="dessert">Dessert</option>
-            <option value="appetizer">Appetizer</option>
-            <option value="soup">Soup</option>
-            <option value="salad">Salad</option>
-            <option value="main course">Main Course</option>
-            <option value="side dish">Side Dish</option>
-            <option value="beverages">Beverages</option>
-          </select>
-        </div>
-
-
-        <!-- Upload Banner -->
-        <div>
-          <label for="menuImage" class="block text-sm font-medium text-[#FFD700]">Upload Image</label>
-          <input type="file" id="menuImage" name="menuImage" accept="image/*" class="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#FFD700] file:text-black hover:file:bg-yellow-400">
-        </div>
-
-         <!-- Description -->
-        <div>
-          <label for="menuPrice" class="block text-sm font-medium text-[#FFD700]">Price</label>
-          <input type="text" id="menuPrice" name="menuPrice" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
-
-        </div>
-
-        <!-- Submit Button -->
-        <div class="text-right">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">Submit</button>
-        </div>
-
-      </form>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
 
 
 
@@ -163,7 +91,7 @@ include "../src/components/admin/nav.php";
 
     <div id="modalContent" class="space-y-4">
       <h3 class="text-lg font-bold text-[#FFD700]">DETAILS</h3>
-      <form id="frmUpdatMenu" class="space-y-4">
+      <form class="space-y-4">
 
 
         <input type="hidden" id="menu_id" name="menu_id">
@@ -203,10 +131,7 @@ include "../src/components/admin/nav.php";
           <label for="menu_price_update" class="block text-sm font-medium text-[#FFD700]">Menu Price</label>
           <input type="text" id="menu_price_update" name="menu_price" class="mt-1 w-full px-3 py-2 bg-[#0D0D0D] border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
         </div>
-        <!-- Submit Button -->
-        <div class="text-right">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">UPDATE</button>
-        </div>
+       
 
       </form>
     </div>
@@ -226,8 +151,8 @@ include "../src/components/admin/nav.php";
 
 
 <?php
-include "../src/components/admin/footer.php";
+include "../src/components/headstaff/footer.php";
 ?>
 
 
-<script src="../static/js/admin/menu.js"></script>
+<script src="../static/js/headstaff/menu.js"></script>

@@ -26,11 +26,16 @@ $("#frmLogin").submit(function (e) {
             const position = response.user_position;
 
             setTimeout(function () {
-            if (position === "admin") {
-                window.location.href = "admin/dashboard";
-            } else if (position === "customer") {
-                window.location.href = "customer/home";
+            const routes = {
+                admin: "admin/dashboard",
+                headstaff: "headstaff/dashboard",
+                customer: "customer/home"
+            };
+
+            if (routes[position]) {
+                window.location.href = routes[position];
             }
+
             }, 1000);
 
         } else {

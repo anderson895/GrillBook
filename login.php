@@ -14,6 +14,10 @@ include "src/components/header.php";
       <h1 class="text-3xl font-extrabold text-yellow-300 tracking-wide">GrillBook Login</h1>
     </div>
 
+    <!-- Spinner Overlay -->
+        <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50  bg-white/70" style="display:none;">
+            <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
     <!-- Login Form -->
     <form id="frmLogin" method="POST" class="space-y-5">
       <div>
