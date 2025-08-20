@@ -15,8 +15,6 @@ if (isset($_SESSION['user_id'])) {
    header('location: ../login');
 }
 
-// Pass session position to JS
-$user_position = $_SESSION['user_position'] ?? '';
 ?>
 
 
