@@ -60,18 +60,6 @@
       </a>
 
 
-    <a href="manage_users" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-      <span class="material-icons">group</span>
-      <span>Users</span>
-    </a>
-
-
-      <a href="backup" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-        <span class="material-icons">backup</span>
-
-        <span>Backup</span>
-      </a>
-
 
 
       <a href="settings" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
