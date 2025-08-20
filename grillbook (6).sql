@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2025 at 04:14 AM
+-- Generation Time: Aug 20, 2025 at 03:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -112,7 +112,8 @@ CREATE TABLE `reservations` (
 
 INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
 (10, 3, '8M5FYBP7', 'DJ', 5, '2025-08-13', '09:30:00', 0.00, 270.00, 350.00, 620.00, '[]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_689bebc0824356.93856830.pdf', 'proof_689bebc0820eb3.72815322.png', '2025-08-13 01:34:56', '2025-08-13 02:04:04', 'archived'),
-(11, 3, '39IRHFCO', 'C5', 8, '2025-08-13', '09:50:00', 20.00, 270.00, 530.00, 820.00, '[{\"id\":\"4\",\"name\":\"Sarciado\",\"price\":20,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_689bef90f04ae9.48170934.png', 'proof_689bef90ef7690.19069440.png', '2025-08-13 01:51:12', '2025-08-13 01:51:12', 'pending');
+(11, 3, '39IRHFCO', 'C5', 8, '2025-08-13', '09:50:00', 20.00, 270.00, 530.00, 820.00, '[{\"id\":\"4\",\"name\":\"Sarciado\",\"price\":20,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_689bef90f04ae9.48170934.png', 'proof_689bef90ef7690.19069440.png', '2025-08-13 01:51:12', '2025-08-13 01:51:12', 'pending'),
+(12, 3, 'UX6OFAL9', 'E3', 10, '2025-08-18', '20:02:00', 1130.00, 0.00, 0.00, 1130.00, '[{\"id\":\"7\",\"name\":\"Strawbery Shake\",\"price\":150,\"type\":\"menu\"},{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"8\",\"name\":\"Manggo Shake\",\"price\":200,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"},{\"id\":\"2\",\"name\":\"Fried Pork Belly Liempo\",\"price\":200,\"type\":\"menu\"},{\"id\":\"9\",\"name\":\"Green apple Shake\",\"price\":180,\"type\":\"menu\"}]', '[]', '[]', 'terms_68a3167dc8ce13.98696171.pdf', 'proof_68a3167dc76802.68074081.png', '2025-08-18 12:03:09', '2025-08-20 01:26:04', 'confirmed');
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_password`, `user_position`, `user_status`) VALUES
 (2, 'juan', 'dela cruz', 'admin@gmail.com', '$2y$10$365uaOv8W44iLlOqJYyIgukb4WKci2BpbHEj9272Y0CdrQLd.0sdq', 'admin', 1),
 (3, 'Joshua Anderson', 'Padilla', 'andersonandy046@gmail.com', '$2y$10$wT2P4z2/HuwbW1Dcgb/zleHRj62t2f0XXPiiUrbB2s/xhJj8p0I.W', 'customer', 1),
-(4, 'john', 'doe', 'jdoe@gmail.com', '$2y$10$bE11O2FVvkuB8Qq2EFHjOOB3ZY5eftxoEXx9GUe2pphKGumQ2hx0q', 'customer', 1);
+(4, 'john', 'doe', 'jdoe@gmail.com', '$2y$10$bE11O2FVvkuB8Qq2EFHjOOB3ZY5eftxoEXx9GUe2pphKGumQ2hx0q', 'customer', 1),
+(5, 'head', 'staff', 'headstaff@gmail.com', '$2y$10$.MVXGQP5s1mpwxjo46V/GuzfsI2Y8cZEAPQk7LhPBF6KGNxjSBUje', 'headstaff', 1);
 
 --
 -- Indexes for dumped tables
@@ -188,13 +190,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
