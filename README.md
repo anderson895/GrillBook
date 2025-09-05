@@ -34,9 +34,15 @@
    ```bash
    composer -V
 
- ```bash
-   cd C:\xampp\htdocs\[your-system-folder-name]
+5. Install PHPMailer (via Composer)
 
- ```bash
-   composer require phpmailer/phpmailer
+Open Command Prompt.
 
+Navigate to your project folder inside htdocs:
+
+cd C:\xampp\htdocs\[your-system-folder-name]
+
+
+Run the following command to install PHPMailer:
+
+composer require phpmailer/phpmailer
