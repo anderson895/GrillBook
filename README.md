@@ -33,3 +33,8 @@
 
    ```bash
    composer -V
+
+cd C:\xampp\htdocs\[your-system-folder-name]
+
+composer require phpmailer/phpmailer
+
