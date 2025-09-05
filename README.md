@@ -36,13 +36,13 @@
 
 5. Install PHPMailer (via Composer)
 
-Open Command Prompt.
+### Open Command Prompt.
 
-Navigate to your project folder inside htdocs:
+### Navigate to your project folder inside htdocs:
 
 cd C:\xampp\htdocs\[your-system-folder-name]
 
 
-Run the following command to install PHPMailer:
+### Run the following command to install PHPMailer:
 
 composer require phpmailer/phpmailer
