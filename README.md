@@ -34,7 +34,9 @@
    ```bash
    composer -V
 
-## cd C:\xampp\htdocs\[your-system-folder-name]
+ ```bash
+   cd C:\xampp\htdocs\[your-system-folder-name]
 
-## composer require phpmailer/phpmailer
+ ```bash
+   composer require phpmailer/phpmailer
 
