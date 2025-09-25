@@ -87,12 +87,7 @@ $(document).ready(function () {
                     DETAILS 
                   </button>
 
-                <button id="btnComplete" class=" bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
-                  data-reservation_id='${data.id}'
-                  data-action='completed'
-                  
-                  >Complete
-                </button>
+                
 
                 <button id="btnRestored" class="removeBtn bg-green-500 hover:bg-green-600 text-black px-3 py-1 rounded text-xs font-semibold transition"
                   data-reservation_id='${data.id}'
