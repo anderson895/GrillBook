@@ -91,7 +91,7 @@ $(document).ready(function () {
                     data-proof_of_payment='${data.proof_of_payment}'
                     data-terms_signed='${data.termsFileSigned}'
                   >
-                    DETAILS 
+                    Details 
                   </button>
 
                 <button id="btnComplete" class=" bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
