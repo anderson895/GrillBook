@@ -51,12 +51,15 @@ $(document).ready(function () {
 
             const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
             const time_schedule = timeDate.toLocaleTimeString('en-US', timeOptions);
+            const fullname = data.user_fname + " " + data.user_lname;
+
 
 
 
           $('#outputTableBody').append(`
             <tr class="hover:bg-[#2B2B2B] transition-colors">
               <td class="p-3 text-center font-mono">${count++}</td>
+              <td class="p-3 text-center font-mono">${fullname}</td>
               <td class="p-3 text-center font-mono">${created_at}</td>
               
               <td class="p-3 text-center font-semibold">${data.reserve_unique_code}</td>

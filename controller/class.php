@@ -1010,6 +1010,8 @@ public function fetch_all_reserved($limit, $offset) {
     // Step 1: Get reservations only
     $query = $this->conn->prepare("
         SELECT * FROM reservations
+        LEFT JOIN user
+        ON reservations.reserve_user_id = user.user_id 
         WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed')
         ORDER BY id DESC
         LIMIT ? OFFSET ?

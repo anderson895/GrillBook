@@ -367,7 +367,7 @@ $(document).on("click", "#btnArchived", function () {
 
 function updateReservationStatus(reservationId, actionStatus) {
     const formData = new FormData();
-    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("requestType", "updateArchived");
     formData.append("status", actionStatus);
     formData.append("reservation_id", reservationId);
     formData.append("column", "archived_by_customer");

@@ -50,6 +50,7 @@ include "../src/components/admin/nav.php";
     <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs">
       <tr>
         <th class="p-3">#</th>
+        <th class="p-3 text-center">Account Name</th>
         <th class="p-3 text-center">Date</th>
         <th class="p-3 text-center">Reservation Code</th>
         <th class="p-3 text-center">Table</th>
