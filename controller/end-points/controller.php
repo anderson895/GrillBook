@@ -62,19 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
 
-        }else if ($_POST['requestType'] == 'UpdateReservationStatus') {
-
-
-                // echo "<pre>";
-                // print_r($_POST);
-                // echo "</pre>";
+        }else if ($_POST['requestType'] == 'updateArchived') {
 
                 $column = $_POST['column'];
                 $reservation_id = $_POST['reservation_id'];
                 $status = $_POST['status'];
                 
 
-                $result = $db->UpdateReservationStatus($reservation_id, $status,$column);
+                $result = $db->updateArchived($reservation_id, $status,$column);
 
                 if ($result['success']) {
                     echo json_encode([
@@ -90,6 +85,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                
+
+        }else if ($_POST['requestType'] == 'UpdateReservationStatus') {
+
+                $reservation_id = $_POST['reservation_id'];
+                $status = $_POST['status'];
+                
+
+                $result = $db->UpdateReservationStatus($reservation_id, $status);
+
+                if ($result['success']) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => $result['message'],
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message']
+                    ]);
+                }
+
+        }else if ($_POST['requestType'] == 'ApproveReservationStatus') {
+
+                $reservation_id = $_POST['reservation_id'];
+                $status = $_POST['status'];
+                
+
+                $result = $db->ApproveReservationStatus($reservation_id, $status);
+
+                if ($result['success']) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => $result['message'],
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message']
+                    ]);
+                }
+
+
 
         }else if ($_POST['requestType'] == 'AddMenu') {
 

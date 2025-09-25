@@ -94,13 +94,7 @@ $(document).ready(function () {
                     Details 
                   </button>
 
-                <button id="btnComplete" class=" bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
-                  data-reservation_id='${data.id}'
-                  data-action='completed'
-                  
-                  >Complete
-                </button>
-
+             
                 <button id="btnArchived" class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
                   data-reservation_id='${data.id}'
                   data-action='archived'
@@ -172,17 +166,6 @@ $(document).ready(function () {
 
 
 
-$(document).on("click", "#btnApprove, #btnCancel", function () {
-    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
-    const reservationId = $("#reservation_id").val();
-
-    confirmAction(actionStatus).then((confirmed) => {
-        if (confirmed) {
-             $('#detailsModal').removeClass('hidden');
-            updateReservationStatus(reservationId, actionStatus);
-        }
-    });
-});
 
 
 
@@ -195,7 +178,7 @@ $(document).on("click", "#btnApprove, #btnCancel", function () {
 
 
 
-$(document).on("click", "#btnComplete, #btnArchived", function () {
+$(document).on("click", "#btnArchived", function () {
     let action = $(this).data("action")
     let actionStatus = $(this).data("action"); 
     const reservationId = $(this).data("reservation_id");
@@ -210,7 +193,7 @@ $(document).on("click", "#btnComplete, #btnArchived", function () {
 
     confirmAction(action).then((confirmed) => {
         if (confirmed) {
-            updateReservationStatus(reservationId, actionStatus);
+            updateArchived(reservationId, actionStatus);
         }
     });
 });
@@ -232,10 +215,10 @@ function confirmAction(action) {
     }).then(result => result.isConfirmed);
 }
 
-// Update reservation in the backend
-function updateReservationStatus(reservationId, actionStatus) {
+
+function updateArchived(reservationId, actionStatus) {
     const formData = new FormData();
-    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("requestType", "updateArchived");
     formData.append("status", actionStatus); //the value of this is line 1 or 0 
     formData.append("reservation_id", reservationId);
     formData.append("column", "archived_by_admin");
@@ -428,3 +411,49 @@ $('#detailsModal').on('click', function(e) {
   }
 });
 
+
+
+$(document).on("click", "#btnApprove, #btnCancel", function () {
+    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    const reservationId = $("#reservation_id").val();
+
+    confirmAction(actionStatus).then((confirmed) => {
+        if (confirmed) {
+             $('#detailsModal').removeClass('hidden');
+            updateReservationStatus(reservationId, actionStatus);
+        }
+    });
+});
+
+
+function updateReservationStatus(reservationId, actionStatus) {
+    const formData = new FormData();
+    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("status", actionStatus);
+    formData.append("reservation_id", reservationId);
+
+    // Show spinner right away
+    $('#spinnerOverlay').removeClass('hidden');
+
+    $.ajax({
+        url: "../controller/end-points/controller.php",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "success") {
+                  // Show spinner right away
+                location.reload();
+            } else {
+                $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+                alertify.error(response.message || "Error updating info.");
+            }
+        },
+        error: function () {
+            $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+            alertify.error("Failed to update info. Please try again.");
+        }
+    });
+}

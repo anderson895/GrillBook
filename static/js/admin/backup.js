@@ -187,7 +187,7 @@ $(document).on("click", "#btnComplete, #btnRestored", function () {
 
     confirmAction(action).then((confirmed) => {
         if (confirmed) {
-            updateReservationStatus(reservationId, actionStatus);
+            updateArchived(reservationId, actionStatus);
         }
     });
 });
@@ -210,9 +210,9 @@ function confirmAction(actionStatus) {
 }
 
 // Update reservation in the backend
-function updateReservationStatus(reservationId, actionStatus) {
+function updateArchived(reservationId, actionStatus) {
     const formData = new FormData();
-    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("requestType", "updateArchived");
     formData.append("status", actionStatus);
     formData.append("reservation_id", reservationId);
     formData.append("column", "archived_by_admin");

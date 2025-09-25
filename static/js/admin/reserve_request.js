@@ -337,7 +337,7 @@ function confirmAction(actionStatus) {
 // Update reservation in the backend
 function updateReservationStatus(reservationId, actionStatus) {
     const formData = new FormData();
-    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("requestType", "ApproveReservationStatus");
     formData.append("status", actionStatus);
     formData.append("reservation_id", reservationId);
 

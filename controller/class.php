@@ -59,7 +59,7 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
 
 
-    public function UpdateReservationStatus($reservation_id, $status,$column){
+    public function updateArchived($reservation_id, $status,$column){
             $stmt = $this->conn->prepare("UPDATE `reservations` SET $column = ? WHERE `id` = ?");
             $stmt->bind_param("ii", $status, $reservation_id);
 
@@ -75,6 +75,47 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
                 ];
             }
         }
+
+
+
+
+        public function UpdateReservationStatus($reservation_id, $status){
+            $stmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
+            $stmt->bind_param("si", $status, $reservation_id);
+
+            if ($stmt->execute()) {
+                return [
+                    'success' => true,
+                    'message' => 'Reservation status updated successfully.'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => $stmt->error
+                ];
+            }
+        }
+
+
+
+
+        public function ApproveReservationStatus($reservation_id, $status){
+            $stmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
+            $stmt->bind_param("si", $status, $reservation_id);
+
+            if ($stmt->execute()) {
+                return [
+                    'success' => true,
+                    'message' => 'Reservation status updated successfully.'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => $stmt->error
+                ];
+            }
+        }
+
 
 
 
