@@ -15,6 +15,32 @@ class global_class extends db_connect
 
 
 
+    public function getDataAnalytics()
+{
+    $query = "
+        SELECT 
+            (SELECT COUNT(*) FROM user WHERE user_status = 1) AS totalUsers,
+            (SELECT COUNT(*) FROM reservations) AS totalReservations,
+            (SELECT COUNT(*) FROM reservations WHERE status = 'pending') AS pendingReservations,
+            (SELECT COUNT(*) FROM reservations WHERE status = 'confirmed') AS confirmedReservations,
+            (SELECT COUNT(*) FROM reservations WHERE status = 'completed') AS completedReservations,
+            (SELECT COUNT(*) FROM menu WHERE menu_status = 1) AS activeMenuItems,
+            (SELECT COUNT(*) FROM deals WHERE deal_type = 'promo_deals') AS totalPromos,
+            (SELECT COUNT(*) FROM deals WHERE deal_type = 'group_deals') AS totalGroupDeals,
+            (SELECT COALESCE(SUM(grand_total), 0) FROM reservations WHERE status = 'completed') AS totalSales
+    ";
+
+    $result = $this->conn->query($query);
+
+    if ($result) {
+        return $result->fetch_assoc();
+    } else {
+        return false;
+    }
+}
+
+
+
 
 
 public function UpdateAccount($user_id, $first_name, $last_name, $email, $password) {

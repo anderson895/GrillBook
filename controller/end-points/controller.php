@@ -583,6 +583,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
             
 
+        }else if ($_GET['requestType'] == 'dashboard_analytics') {
+            $db = new global_class();
+                $data = $db->getDataAnalytics();
+
+                if ($data) {
+                    echo json_encode([
+                        'success' => true,
+                        'data' => $data
+                    ]);
+                } else {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Failed to retrieve analytics'
+                    ]);
+                }
+
+            
+
         }else{
             echo "404";
         }
