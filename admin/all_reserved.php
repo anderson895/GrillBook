@@ -56,6 +56,7 @@ include "../src/components/admin/nav.php";
         <th class="p-3 text-center">Schedule</th>
         <th class="p-3 text-center">Time</th>
         <th class="p-3 text-center">Total</th>
+        <th class="p-3 text-center">Status</th>
         <th class="p-3 text-center">Action</th>
       </tr>
     </thead>
@@ -105,6 +106,30 @@ include "../src/components/admin/nav.php";
     <div id="modalContent" class="space-y-6 text-base leading-relaxed max-w-full">
       <!-- Dynamic content injected here -->
     </div>
+    <hr class="border-gray-600 mt-6 mb-8">
+
+   
+      <input type="hidden" id="reservation_id" name="reservation_id">
+
+      <!-- Action buttons -->
+      <div class="flex justify-end space-x-4">
+        <button type="submit" id="btnApprove" 
+          class="px-8 py-3 bg-[#FFD700] text-black rounded-md font-semibold shadow-lg
+                 hover:bg-yellow-400 transition duration-200 ease-in-out
+                 focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-offset-2"
+                 data-action="completed"
+                 >
+          Completed
+        </button>
+        <button type="button" id="btnCancel" 
+          class="px-8 py-3 bg-red-700 text-[#F3F3F3] rounded-md font-semibold shadow-lg
+                 hover:bg-red-600 transition duration-200 ease-in-out
+                 focus:outline-none focus:ring-4 focus:ring-red-600 focus:ring-offset-2""
+                 data-action="cancelled"
+                 >
+          Decline
+        </button>
+      </div>
   </div>
 </div>
 

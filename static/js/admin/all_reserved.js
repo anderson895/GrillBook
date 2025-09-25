@@ -64,6 +64,13 @@ $(document).ready(function () {
               <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
               <td class="p-3 text-center font-semibold">${time_schedule}</td>
               <td class="p-3 text-center font-semibold">${data.grand_total}</td>
+              <td class="p-3 text-center font-semibold capitalize
+                  ${data.status === 'confirmed' ? 'text-yellow-500' : ''} 
+                  ${data.status === 'completed' ? 'text-green-500' : ''}">
+                  ${data.status}
+              </td>
+
+
              
               <td class="p-3 text-center">
                   <button
@@ -165,6 +172,17 @@ $(document).ready(function () {
 
 
 
+$(document).on("click", "#btnApprove, #btnCancel", function () {
+    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    const reservationId = $("#reservation_id").val();
+
+    confirmAction(actionStatus).then((confirmed) => {
+        if (confirmed) {
+             $('#detailsModal').removeClass('hidden');
+            updateReservationStatus(reservationId, actionStatus);
+        }
+    });
+});
 
 
 
