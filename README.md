@@ -18,7 +18,7 @@
 ## 3. Import Database
 1. Open your browser and go to:  
    👉 [http://localhost/phpmyadmin](http://localhost/phpmyadmin)  
-2. Create a new database (e.g., `system_db`).  
+2. Create a new database (e.g., `grillbook`).  
 3. Click **Import**, then select the provided `.sql` file.  
 4. Click **Go** to upload the database.  
 
