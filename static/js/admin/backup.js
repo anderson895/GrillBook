@@ -173,14 +173,20 @@ $(document).ready(function () {
 
 
 $(document).on("click", "#btnComplete, #btnRestored", function () {
-    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    let action = $(this).data("action")
+    let actionStatus = $(this).data("action"); 
     const reservationId = $(this).data("reservation_id");
+
+    if (actionStatus === "archived") {
+        actionStatus=1
+    } else if (actionStatus === "restore") {
+        actionStatus = 0; 
+    }
 
     console.log(actionStatus);
 
-    confirmAction(actionStatus).then((confirmed) => {
+    confirmAction(action).then((confirmed) => {
         if (confirmed) {
-           
             updateReservationStatus(reservationId, actionStatus);
         }
     });
@@ -209,6 +215,8 @@ function updateReservationStatus(reservationId, actionStatus) {
     formData.append("requestType", "UpdateReservationStatus");
     formData.append("status", actionStatus);
     formData.append("reservation_id", reservationId);
+    formData.append("column", "archived_by_admin");
+
 
     // Show spinner right away
     $('#spinnerOverlay').removeClass('hidden');

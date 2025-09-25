@@ -86,9 +86,9 @@ $(document).ready(function () {
                     Details
                   </button>
 
-                <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
-                  data-gt_id='${data.id}'
-                  data-gt_name='${data.table_code}'>Archive</button>
+                <button id="btnArchived" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                  data-reservation_id='${data.id}'
+                  data-action='archived'>Archive</button>
               </td>
             </tr>
           `);
@@ -317,3 +317,87 @@ $('#detailsModal').on('click', function(e) {
     $(this).addClass('hidden');
   }
 });
+
+
+
+
+
+
+// Show confirmation modal
+function confirmAction() {
+    return Swal.fire({
+        title: 'Are you sure?',
+        text: `Archived this record.`,
+        icon: 'warning',
+        showCancelButton: true,
+        background: '#1f2937',
+        color: '#f3f4f6',
+        iconColor: '#f87171',
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, proceed',
+        cancelButtonText: 'No, cancel'
+    }).then(result => result.isConfirmed);
+}
+
+
+
+
+
+$(document).on("click", "#btnArchived", function () {
+    let action = $(this).data("action")
+    let actionStatus = $(this).data("action"); 
+    const reservationId = $(this).data("reservation_id");
+
+    if (actionStatus === "archived") {
+        actionStatus=1
+    } else if (actionStatus === "restore") {
+        actionStatus = 0; 
+    }
+
+    console.log(actionStatus);
+
+    confirmAction(action).then((confirmed) => {
+        if (confirmed) {
+            updateReservationStatus(reservationId, actionStatus);
+        }
+    });
+});
+
+
+function updateReservationStatus(reservationId, actionStatus) {
+    const formData = new FormData();
+    formData.append("requestType", "UpdateReservationStatus");
+    formData.append("status", actionStatus);
+    formData.append("reservation_id", reservationId);
+    formData.append("column", "archived_by_customer");
+
+    // Show spinner right away
+    $('#spinnerOverlay').removeClass('hidden');
+
+    $.ajax({
+        url: "../controller/end-points/controller.php",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "success") {
+                  // Show spinner right away
+                location.reload();
+            } else {
+                $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+                alertify.error(response.message || "Error updating info.");
+            }
+        },
+        error: function () {
+            $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+            alertify.error("Failed to update info. Please try again.");
+        }
+    });
+}
+
+
+
+

@@ -64,11 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }else if ($_POST['requestType'] == 'UpdateReservationStatus') {
 
+
+                // echo "<pre>";
+                // print_r($_POST);
+                // echo "</pre>";
+
+                $column = $_POST['column'];
                 $reservation_id = $_POST['reservation_id'];
                 $status = $_POST['status'];
                 
 
-                $result = $db->UpdateReservationStatus($reservation_id, $status);
+                $result = $db->UpdateReservationStatus($reservation_id, $status,$column);
 
                 if ($result['success']) {
                     echo json_encode([

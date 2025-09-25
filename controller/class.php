@@ -59,9 +59,9 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
 
 
-    public function UpdateReservationStatus($reservation_id, $status){
-            $stmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
-            $stmt->bind_param("si", $status, $reservation_id);
+    public function UpdateReservationStatus($reservation_id, $status,$column){
+            $stmt = $this->conn->prepare("UPDATE `reservations` SET $column = ? WHERE `id` = ?");
+            $stmt->bind_param("ii", $status, $reservation_id);
 
             if ($stmt->execute()) {
                 return [
@@ -969,7 +969,7 @@ public function fetch_all_reserved($limit, $offset) {
     // Step 1: Get reservations only
     $query = $this->conn->prepare("
         SELECT * FROM reservations
-        WHERE status = 'confirmed' || status = 'completed'
+        WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed')
         ORDER BY id DESC
         LIMIT ? OFFSET ?
     ");
@@ -1107,7 +1107,7 @@ public function fetch_all_reserved($limit, $offset) {
             // Step 1: Get reservations only
             $query = $this->conn->prepare("
                 SELECT * FROM reservations
-                WHERE status = 'archived'
+                WHERE archived_by_admin = '1'
                 ORDER BY id DESC
                 LIMIT ? OFFSET ?
             ");
@@ -1257,6 +1257,7 @@ public function fetch_all_customer_reservation($limit, $offset,$user_id) {
     $query = $this->conn->prepare("
         SELECT * FROM reservations
         WHERE reserve_user_id = $user_id
+        AND archived_by_customer=0
         ORDER BY id DESC
         LIMIT ? OFFSET ?
     ");

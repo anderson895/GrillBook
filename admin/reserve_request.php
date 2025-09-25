@@ -121,7 +121,7 @@ include "../src/components/admin/nav.php";
         <button type="button" id="btnCancel" 
           class="px-8 py-3 bg-red-700 text-[#F3F3F3] rounded-md font-semibold shadow-lg
                  hover:bg-red-600 transition duration-200 ease-in-out
-                 focus:outline-none focus:ring-4 focus:ring-red-600 focus:ring-offset-2""
+                 focus:outline-none focus:ring-4 focus:ring-red-600 focus:ring-offset-2"
                  data-action="cancelled"
                  >
           Decline

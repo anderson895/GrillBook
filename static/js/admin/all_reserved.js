@@ -196,24 +196,30 @@ $(document).on("click", "#btnApprove, #btnCancel", function () {
 
 
 $(document).on("click", "#btnComplete, #btnArchived", function () {
-    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    let action = $(this).data("action")
+    let actionStatus = $(this).data("action"); 
     const reservationId = $(this).data("reservation_id");
+
+    if (actionStatus === "archived") {
+        actionStatus=1
+    } else if (actionStatus === "restore") {
+        actionStatus = 0; 
+    }
 
     console.log(actionStatus);
 
-    confirmAction(actionStatus).then((confirmed) => {
+    confirmAction(action).then((confirmed) => {
         if (confirmed) {
-           
             updateReservationStatus(reservationId, actionStatus);
         }
     });
 });
 
 // Show confirmation modal
-function confirmAction(actionStatus) {
+function confirmAction(action) {
     return Swal.fire({
         title: 'Are you sure?',
-        text: `You are about to ${actionStatus} this reservation.`,
+        text: `You are about to ${action} this reservation.`,
         icon: 'warning',
         showCancelButton: true,
         background: '#1f2937',
@@ -230,8 +236,9 @@ function confirmAction(actionStatus) {
 function updateReservationStatus(reservationId, actionStatus) {
     const formData = new FormData();
     formData.append("requestType", "UpdateReservationStatus");
-    formData.append("status", actionStatus);
+    formData.append("status", actionStatus); //the value of this is line 1 or 0 
     formData.append("reservation_id", reservationId);
+    formData.append("column", "archived_by_admin");
 
     // Show spinner right away
     $('#spinnerOverlay').removeClass('hidden');
