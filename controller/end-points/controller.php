@@ -202,6 +202,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'message' => 'No changes made or error updating data.'
                     ]);
             }
+        }else if ($_POST['requestType'] == 'removeUser') {
+
+            $user_id=$_POST['user_id'];
+            $result = $db->removeUser($user_id);
+            if ($result) {
+                    echo json_encode([
+                        'status' => 200,
+                        'message' => 'Remove successfully.'
+                    ]);
+            } else {
+                    echo json_encode([
+                        'status' => 500,
+                        'message' => 'No changes made or error updating data.'
+                    ]);
+            }
         }else if ($_POST['requestType'] == 'remove_deal_ids') {
 
             $deal_id =$_POST['dealId'];
@@ -400,6 +415,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    if (isset($_GET['requestType'])) {
         if ($_GET['requestType'] == 'fetch_all_menu') {
             $result = $db->fetch_all_menu();
+            echo json_encode([
+                'status' => 200,
+                'data' => $result
+            ]);
+        }if ($_GET['requestType'] == 'fetch_all_users') {
+            $result = $db->fetch_all_users();
             echo json_encode([
                 'status' => 200,
                 'data' => $result

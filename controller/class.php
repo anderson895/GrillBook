@@ -54,6 +54,30 @@ class global_class extends db_connect
 
 
 
+
+
+
+
+    public function fetch_all_users() {
+        $query = $this->conn->prepare("SELECT * FROM user
+        where user_status='1'
+        ORDER BY user_id DESC");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            $data = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+
+            return $data;
+        }
+        return []; 
+    }
+
+
+
     public function AddMenu($menuName,$menuCategory,$menuDescription,$menuPrice,$menuImageFileName ) {
             $query = "INSERT INTO `menu` (`menu_name`,`menu_category`, `menu_description`, `menu_price`, `menu_image_banner`) 
                     VALUES (?,?,?,?,?)";
@@ -127,6 +151,15 @@ class global_class extends db_connect
             $user = $result->fetch_assoc();
 
             if (password_verify($password, $user['user_password'])) {
+                // 🔍 Check if inactive
+                if ($user['user_status'] == 0) {
+                    $query->close();
+                    return [
+                        'success' => false,
+                        'message' => 'Your account is not active.'
+                    ];
+                }
+
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
@@ -157,6 +190,7 @@ class global_class extends db_connect
         return ['success' => false, 'message' => 'Database error during execution.'];
     }
 }
+
 
 
 
@@ -286,6 +320,25 @@ public function UpdateMenu(
         }
 
         $stmt->bind_param("i", $menu_id);
+        $result = $stmt->execute();
+        $stmt->close();
+
+        return $result ? 'success' : 'Error updating menu';
+    }
+
+
+
+
+
+    public function removeUser($user_id) {
+       
+        $deleteQuery = "UPDATE user SET user_status = 0 WHERE user_id = ?";
+        $stmt = $this->conn->prepare($deleteQuery);
+        if (!$stmt) {
+            return 'Prepare failed (update): ' . $this->conn->error;
+        }
+
+        $stmt->bind_param("i", $user_id);
         $result = $stmt->execute();
         $stmt->close();
 
