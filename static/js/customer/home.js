@@ -53,6 +53,21 @@ $(function () {
   // ===== Open Modal & Load All Data =====
   $(document).on("click", ".setSchedule", function () {
     const table_code = $(this).data("value");
+
+     let today = new Date();
+    today.setDate(today.getDate() + 1);
+    // format YYYY-MM-DD
+    let yyyy = today.getFullYear();
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let dd = String(today.getDate()).padStart(2, '0');
+
+    let tomorrow = `${yyyy}-${mm}-${dd}`;
+
+    // set as default value
+    $('#date_schedule').val(tomorrow);
+
+
+
     $("#table_code").val(table_code);
     $("#table_code_label").text(table_code);
 
@@ -63,6 +78,9 @@ $(function () {
     fetchMenus();
     fetchPromos();
     fetchGroups();
+
+
+    
 
     $("#scheduleModal").fadeIn();
   });
@@ -259,6 +277,8 @@ $(function () {
 $("#frmRequestReservation").on("submit", function (e) {
     e.preventDefault();
 
+    const seats = $('#seats').val();
+
     // === Validation ===
     if (!isTableAvailable) {
         Swal.fire({
@@ -268,6 +288,22 @@ $("#frmRequestReservation").on("submit", function (e) {
         });
         return;
     }
+
+    if (isNaN(seats)) {
+        alertify.error("Please enter the number of seats.");
+        return;
+    }
+
+    if (seats < 1) {
+        alertify.error("You must reserve at least 1 seat.");
+        return;
+    }
+
+    if (seats > 6) {
+        alertify.error("You can only reserve up to 6 seats.");
+        return;
+    }
+
 
     if (!$('#payment_proof').val()) {
         alertify.error("Please upload payment receipt.");

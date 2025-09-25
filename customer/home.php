@@ -152,6 +152,7 @@ include "../src/components/customer/footer.php";
           id="seats" 
           name="seats" 
           min="1" 
+          max="6" 
           placeholder="Enter number of seats" 
           required 
           class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 

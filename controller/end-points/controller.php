@@ -412,14 +412,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-   if (isset($_GET['requestType'])) {
+   if (isset($_GET['requestType']))
+    {
         if ($_GET['requestType'] == 'fetch_all_menu') {
             $result = $db->fetch_all_menu();
             echo json_encode([
                 'status' => 200,
                 'data' => $result
             ]);
-        }if ($_GET['requestType'] == 'fetch_all_users') {
+        }else if ($_GET['requestType'] == 'fetch_all_users') {
             $result = $db->fetch_all_users();
             echo json_encode([
                 'status' => 200,
@@ -524,6 +525,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'data'   => $data
             ]);
             exit;
+            
 
         }else{
             echo "404";
