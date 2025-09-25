@@ -24,10 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'message' => $loginResult['message']
                 ]);
             }
-
-
         }else if ($_POST['requestType'] == 'RegisterCustomer') {
-
                 $first_name = $_POST['first_name'];
                 $last_name  = $_POST['last_name'];
                 $email      = $_POST['email'];
@@ -47,7 +44,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                 }
 
-               
+        }else if ($_POST['requestType'] == 'UpdateAccount') {
+
+                $user_id = $_POST['user_id'];
+                $first_name = $_POST['first_name'];
+                $last_name = $_POST['last_name'];
+                $password = $_POST['password'];
+                $email = $_POST['email'];
+
+                // Update user information in the database
+                $updateSuccess = $db->UpdateAccount($user_id, $first_name, $last_name, $email, $password);
+
+                if ($updateSuccess) {
+                    echo json_encode(['status' => 'success', 'message' => 'Profile updated successfully']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to update profile']);
+                }
+
 
         }else if ($_POST['requestType'] == 'UpdateReservationStatus') {
 

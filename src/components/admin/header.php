@@ -8,6 +8,11 @@ $db = new auth_class();
 if (isset($_SESSION['user_id'])) {
     $id = intval($_SESSION['user_id']);
     $On_Session = $db->check_account($id);
+
+    // echo "<pre>";
+    // print_r($On_Session);
+    // echo "</pre>";
+
     if (empty($On_Session)) {
         header('location: ../login');
     }

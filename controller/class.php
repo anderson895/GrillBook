@@ -15,6 +15,50 @@ class global_class extends db_connect
 
 
 
+
+
+public function UpdateAccount($user_id, $first_name, $last_name, $email, $password) {
+    // Start building the query
+    $queryStr = "UPDATE `user` SET `user_fname` = ?, `user_lname` = ?, `user_email` = ?";
+
+    // Include password only if it's not empty
+    if (!empty($password)) {
+        $queryStr .= ", `user_password` = ?";
+        // Hash the password using bcrypt
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    $queryStr .= " WHERE `user_id` = ?";
+
+    // Prepare the query
+    $query = $this->conn->prepare($queryStr);
+
+    if (!$query) {
+        // Optional: log the error
+        error_log("Prepare failed: " . $this->conn->error);
+        return false;
+    }
+
+    // Bind parameters based on whether password is provided
+    if (!empty($password)) {
+        $query->bind_param("ssssi", $first_name, $last_name, $email, $hashedPassword, $user_id);
+    } else {
+        $query->bind_param("sssi", $first_name, $last_name, $email, $user_id);
+    }
+
+    // Execute the query and return the result
+    return $query->execute();
+}
+
+
+
+
+
+
+
+
+
+
     public function UpdateReservationStatus($reservation_id, $status){
             $stmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
             $stmt->bind_param("si", $status, $reservation_id);
