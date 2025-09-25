@@ -549,11 +549,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
 
         }else if ($_GET['requestType'] == 'fetch_all_reserved_archived') {
+            $collumn=$_GET['collumn'];
             $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
             $offset = ($page - 1) * $limit;
 
-            $data  = $db->fetch_all_reserved_archived($limit, $offset);
+            $data  = $db->fetch_all_reserved_archived($limit, $offset,$collumn);
             $total = $db->count_all_reserved_archived();
 
             echo json_encode([

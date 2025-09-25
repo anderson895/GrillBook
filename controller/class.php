@@ -1172,11 +1172,11 @@ public function fetch_all_reserved($limit, $offset) {
 
 
 
-    public function fetch_all_reserved_archived($limit, $offset) {
+    public function fetch_all_reserved_archived($limit, $offset,$collumn) {
             // Step 1: Get reservations only
             $query = $this->conn->prepare("
                 SELECT * FROM reservations
-                WHERE archived_by_admin = '1'
+                WHERE $collumn = '1'
                 ORDER BY id DESC
                 LIMIT ? OFFSET ?
             ");

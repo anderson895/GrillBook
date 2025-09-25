@@ -12,6 +12,7 @@
     <div class="hidden md:flex flex-1 justify-center space-x-6 items-center">
       <a href="home" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Home</a>
       <a href="reservation" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Reservation</a>
+      <a href="backup" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Backup</a>
     </div>
 
     <!-- Login/Register (Right Side) -->
@@ -49,7 +50,7 @@
 
   <!-- Navigation Buttons (Centered by default on mobile) -->
   <a href="home" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Home</a>
-  <a href="reservation" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a>
+  <a href="reservation" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a> 
   <a href="settings" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=$_SESSION['user_fname'];?></a>
   <a href="logout" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Logout</a>
 </div>

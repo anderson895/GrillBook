@@ -15,7 +15,7 @@ $(document).ready(function () {
       requestType: "fetch_all_reserved_archived",
       page: page,
       limit: limit,
-      collumn:"archived_by_admin"
+      collumn:"archived_by_customer"
     },
     dataType: "json",
     beforeSend: function () {
@@ -216,7 +216,7 @@ function updateArchived(reservationId, actionStatus) {
     formData.append("requestType", "updateArchived");
     formData.append("status", actionStatus);
     formData.append("reservation_id", reservationId);
-    formData.append("column", "archived_by_admin");
+    formData.append("column", "archived_by_customer");
 
 
     // Show spinner right away
