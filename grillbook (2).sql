@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2025 at 06:29 AM
+-- Generation Time: Sep 25, 2025 at 08:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -103,15 +103,19 @@ CREATE TABLE `reservations` (
   `proof_of_payment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('pending','confirmed','cancelled','completed','archived') DEFAULT 'pending'
+  `status` enum('pending','confirmed','cancelled','completed','') DEFAULT 'pending',
+  `archived_by_admin` int(11) NOT NULL,
+  `archived_by_customer` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`) VALUES
-(13, 3, '427GMQ86', 'SOUNDECT', 6, '2025-09-26', '12:27:00', 320.00, 270.00, 530.00, 1120.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_68d4c4e51f05e3.59371420.jpg', 'proof_68d4c4e51ee142.72196853.jpg', '2025-09-25 04:28:21', '2025-09-25 04:28:21', 'pending');
+INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`, `archived_by_admin`, `archived_by_customer`) VALUES
+(13, 3, '427GMQ86', 'SOUNDECT', 6, '2025-09-26', '12:27:00', 320.00, 270.00, 530.00, 1120.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_68d4c4e51f05e3.59371420.jpg', 'proof_68d4c4e51ee142.72196853.jpg', '2025-09-25 04:28:21', '2025-09-25 06:11:43', 'completed', 0, 1),
+(14, 3, 'WL2N0EKR', 'BILLIARDS', 5, '2025-09-25', '13:19:00', 220.00, 270.00, 0.00, 490.00, '[{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[]', 'terms_68d4d112dea448.68692948.jpg', 'proof_68d4d112de4484.44925582.jpg', '2025-09-25 05:20:18', '2025-09-25 06:10:52', 'confirmed', 0, 1),
+(15, 3, 'PAOC7V54', 'COMPLI', 4, '2025-09-26', '13:20:00', 0.00, 0.00, 350.00, 350.00, '[]', '[]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_68d4d15909a576.16517855.jpg', 'proof_68d4d159097b92.49814229.png', '2025-09-25 05:21:29', '2025-09-25 06:11:45', 'pending', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -134,8 +138,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_password`, `user_position`, `user_status`) VALUES
-(2, 'juan', 'dela cruz', 'admin@gmail.com', '$2y$10$365uaOv8W44iLlOqJYyIgukb4WKci2BpbHEj9272Y0CdrQLd.0sdq', 'admin', 1),
-(3, 'Joshua Anderson', 'Padilla', 'andersonandy046@gmail.com', '$2y$10$wT2P4z2/HuwbW1Dcgb/zleHRj62t2f0XXPiiUrbB2s/xhJj8p0I.W', 'customer', 1),
+(2, 'pedro', 'dela cruz', 'admin@gmail.com', '$2y$10$ELmrWp70f3PxsVYpNuadGOmW06fM4frvDri8//mEti1yrQsyI8/8K', 'admin', 1),
+(3, 'Joshua Anderson ss', 'Padilla', 'andersonandy046@gmail.com', '$2y$10$wT2P4z2/HuwbW1Dcgb/zleHRj62t2f0XXPiiUrbB2s/xhJj8p0I.W', 'customer', 1),
 (4, 'john', 'doe', 'jdoe@gmail.com', '$2y$10$bE11O2FVvkuB8Qq2EFHjOOB3ZY5eftxoEXx9GUe2pphKGumQ2hx0q', 'customer', 1),
 (5, 'head', 'staff', 'headstaff@gmail.com', '$2y$10$.MVXGQP5s1mpwxjo46V/GuzfsI2Y8cZEAPQk7LhPBF6KGNxjSBUje', 'headstaff', 1);
 
@@ -188,7 +192,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user`
