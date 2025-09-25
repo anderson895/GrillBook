@@ -116,7 +116,7 @@ include "../src/components/admin/nav.php";
                  focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-offset-2"
                  data-action="confirmed"
                  >
-          Approve
+          Confirmed
         </button>
         <button type="button" id="btnCancel" 
           class="px-8 py-3 bg-red-700 text-[#F3F3F3] rounded-md font-semibold shadow-lg
