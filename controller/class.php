@@ -868,12 +868,7 @@ public function fetch_all_deals_and_menu($deal_type) {
 
 
 
-
-
 public function checkAvailability($table_code, $date_schedule, $time_schedule) {
-    // Normalize time format (H:i:s)
-    $time_schedule = date("H:i:s", strtotime($time_schedule));
-
     // 1. Kunin day of week
     $dayOfWeek = date('l', strtotime($date_schedule)); // e.g. "Sunday"
 
@@ -889,48 +884,82 @@ public function checkAvailability($table_code, $date_schedule, $time_schedule) {
     $hours = $scheduleResult->fetch_assoc();
 
     if (!$hours) {
-        return false; // walang schedule
+        return [
+            "status" => 200,
+            "available" => false,
+            "dayOfWeek" => $dayOfWeek,
+            "reason" => "no_schedule"
+        ];
     }
 
-    $openTime  = $hours['open_time'];   // e.g. 17:00:00
-    $closeTime = $hours['close_time'];  // e.g. 03:00:00
+    $openTime  = $hours['open_time'];   // e.g., "17:00:00"
+    $closeTime = $hours['close_time'];  // e.g., "03:00:00"
 
-    // 3. Check kung pasok sa schedule (inclusive)
-    $isAvailableTime = false;
-    if ($closeTime > $openTime) {
-        // Normal case
-        if ($time_schedule >= $openTime && $time_schedule <= $closeTime) {
-            $isAvailableTime = true;
-        }
-    } else {
-        // Cross midnight
-        if ($time_schedule >= $openTime || $time_schedule <= $closeTime) {
-            $isAvailableTime = true;
+    // 3. Convert times to DateTime for reliable comparison
+    $time       = DateTime::createFromFormat('H:i', $time_schedule);
+    $open       = DateTime::createFromFormat('H:i:s', $openTime);
+    $close      = DateTime::createFromFormat('H:i:s', $closeTime);
+
+    // Handle overnight schedules (close time < open time)
+    if ($close <= $open) {
+        $close->modify('+1 day');  // close is next day
+        if ($time < $open) {
+            $time->modify('+1 day'); // adjust time if before open (after midnight)
         }
     }
+
+    $isAvailableTime = ($time >= $open && $time <= $close);
 
     if (!$isAvailableTime) {
-        return false; // labas sa business hours
+        return [
+            "status" => 200,
+            "available" => false,
+            "dayOfWeek" => $dayOfWeek,
+            "open_time" => $openTime,
+            "close_time" => $closeTime,
+            "reason" => "outside_hours"
+        ];
     }
 
-    // 4. Check kung may reservation conflict (same table, same date, same time)
+    // 4. Check existing confirmed reservations (same table, same date)
     $query = $this->conn->prepare("
         SELECT * FROM reservations 
         WHERE table_code = ? 
         AND date_schedule = ? 
-        AND time_schedule = ? 
         AND status = 'confirmed'
     ");
-    $query->bind_param("sss", $table_code, $date_schedule, $time_schedule);
+    $query->bind_param("ss", $table_code, $date_schedule);
     $query->execute();
     $result = $query->get_result();
 
     if ($result->num_rows > 0) {
-        return false; // may naka-book na exact time
+        $conflicts = [];
+        while ($row = $result->fetch_assoc()) {
+            $conflicts[] = $row;
+        }
+
+        return [
+            "status" => 200,
+            "available" => false,
+            "dayOfWeek" => $dayOfWeek,
+            "open_time" => $openTime,
+            "close_time" => $closeTime,
+            "reason" => "conflict",
+            "conflicts" => $conflicts
+        ];
     }
 
-    return true; // ✅ available
+    // 5. Available
+    return [
+        "status" => 200,
+        "available" => true,
+        "dayOfWeek" => $dayOfWeek,
+        "open_time" => $openTime,
+        "close_time" => $closeTime
+    ];
 }
+
+
 
 
 
