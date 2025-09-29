@@ -7,7 +7,7 @@ include "src/components/header.php";
 <section class="bg-gray-900 pt-32 pb-20 text-center px-4">
   <h2 class="text-3xl sm:text-4xl font-extrabold text-yellow-300 mb-4">Book a Table at Your Favorite Restaurant</h2>
   <p class="text-base sm:text-lg text-yellow-200 max-w-2xl mx-auto mb-6">Reserve your seat and avoid the wait. Quick, easy, and convenient online table reservations.</p>
-  <a href="#" class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition">Reserve Now</a>
+  <a href="login" class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition">Reserve Now</a>
 </section>
 
 

@@ -49,8 +49,10 @@
 
       <!-- Dropdown Menu -->
       <div id="reserveDropdown" class="ml-8 space-y-2" style="display: none;">
-        <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Request</a>
+        <a href="overseats_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Overseats Request</a>
+        <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Reservation Request</a>
         <a href="all_reserved" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All</a>
+        <a href="add_more" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Add more</a>
       </div>
 
 

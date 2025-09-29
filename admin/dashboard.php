@@ -92,7 +92,7 @@ include "../src/components/admin/nav.php";
         <span class="material-icons text-[#FFD700]">donut_large</span>
         <span>Reservations by Status</span>
       </h2>
-      <div id="reservationsChart"></div>
+      <div  id="reservationsChart"></div>
     </div>
     <div class="bg-[#1A1A1A] shadow rounded-xl p-4">
       <h2 class="text-lg font-semibold mb-4 flex items-center space-x-2 text-white">

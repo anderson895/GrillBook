@@ -66,7 +66,7 @@ include "src/components/header.php";
                     <label class="block text-sm font-medium text-gray-300">Message</label>
                     <textarea name="message" rows="4" required placeholder="Write your detailed message here..." class="mt-1 block w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-yellow-500 focus:ring-yellow-500"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 rounded-lg transition">
+                <button type="submit" class="cursor-pointer w-full bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 rounded-lg transition">
                     Send Message
                 </button>
             </form>
@@ -75,9 +75,8 @@ include "src/components/header.php";
     </div>
 </div>
 
-<!-- Font Awesome for Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+<!-- Font Awesome CDN v6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 <?php
 include "src/components/footer.php";
 ?>

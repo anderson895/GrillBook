@@ -246,9 +246,6 @@
   .pointer-events-none {
     pointer-events: none;
   }
-  .visible {
-    visibility: visible;
-  }
   .absolute {
     position: absolute;
   }
@@ -462,9 +459,6 @@
   .block {
     display: block;
   }
-  .contents {
-    display: contents;
-  }
   .flex {
     display: flex;
   }
@@ -473,9 +467,6 @@
   }
   .hidden {
     display: none;
-  }
-  .inline {
-    display: inline;
   }
   .inline-block {
     display: inline-block;
@@ -867,11 +858,20 @@
   .bg-\[\#2B2B2B\] {
     background-color: #2B2B2B;
   }
+  .bg-\[\#3AB7E4\] {
+    background-color: #3AB7E4;
+  }
   .bg-\[\#222222\] {
     background-color: #222222;
   }
   .bg-\[\#FFD700\] {
     background-color: #FFD700;
+  }
+  .bg-\[\#dff7f9\] {
+    background-color: #dff7f9;
+  }
+  .bg-\[3AB7E4\] {
+    background-color: 3AB7E4;
   }
   .bg-amber-100 {
     background-color: var(--color-amber-100);
@@ -1132,9 +1132,6 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
-  .text-\[\#0D0D0D\] {
-    color: #0D0D0D;
-  }
   .text-\[\#CCCCCC\] {
     color: #CCCCCC;
   }
@@ -1159,12 +1156,6 @@
   .text-blue-500 {
     color: var(--color-blue-500);
   }
-  .text-blue-600 {
-    color: var(--color-blue-600);
-  }
-  .text-gray-200 {
-    color: var(--color-gray-200);
-  }
   .text-gray-300 {
     color: var(--color-gray-300);
   }
@@ -1183,15 +1174,6 @@
   .text-green-500 {
     color: var(--color-green-500);
   }
-  .text-green-600 {
-    color: var(--color-green-600);
-  }
-  .text-indigo-500 {
-    color: var(--color-indigo-500);
-  }
-  .text-indigo-600 {
-    color: var(--color-indigo-600);
-  }
   .text-orange-500 {
     color: var(--color-orange-500);
   }
@@ -1200,9 +1182,6 @@
   }
   .text-pink-500 {
     color: var(--color-pink-500);
-  }
-  .text-purple-500 {
-    color: var(--color-purple-500);
   }
   .text-red-500 {
     color: var(--color-red-500);
@@ -1222,14 +1201,8 @@
   .text-yellow-500 {
     color: var(--color-yellow-500);
   }
-  .text-yellow-600 {
-    color: var(--color-yellow-600);
-  }
   .capitalize {
     text-transform: capitalize;
-  }
-  .lowercase {
-    text-transform: lowercase;
   }
   .uppercase {
     text-transform: uppercase;
@@ -1243,11 +1216,6 @@
   .placeholder-gray-400 {
     &::placeholder {
       color: var(--color-gray-400);
-    }
-  }
-  .placeholder-gray-500 {
-    &::placeholder {
-      color: var(--color-gray-500);
     }
   }
   .accent-\[\#FFD700\] {
@@ -1362,9 +1330,6 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
-  }
-  .\[hostname\:port\] {
-    hostname: port;
   }
   .group-hover\:opacity-80 {
     &:is(:where(.group):hover *) {
@@ -1646,11 +1611,6 @@
           background-color: var(--color-yellow-400);
         }
       }
-    }
-  }
-  .focus\:border-\[\#FFD700\] {
-    &:focus {
-      border-color: #FFD700;
     }
   }
   .focus\:border-yellow-500 {

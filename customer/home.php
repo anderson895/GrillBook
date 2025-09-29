@@ -22,7 +22,7 @@ include "../src/components/customer/nav.php";
   <div class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 " >
     
     <!-- Card -->
-    <div class="bg-[#1A1A1A] rounded-xl shadow-lg p-4 sm:p-6 ">
+    <div class="bg-[#dff7f9] rounded-xl p-4 sm:p-6 ">
       
       <!-- Scrollable Grid Only -->
       <div class="overflow-auto scrollbar-hidden ">
