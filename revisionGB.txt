@@ -1,0 +1,56 @@
+--Major--
+table status legend 
+	-pending inquiry (gray)
+	-inquiry approved (yellow)
+	-pending booking (orange)
+	-reserved (green) 
+
+--Major--
+over seats
+	-admin receive email notif
+	-enter how many seats
+	
+--Minor--
+calendar layout
+	-legends
+	-size
+
+--Major--
+time
+	-start and end dun lang makakapag reserved
+	dipwede mag reserve ng umaga dapat opening
+	5:00pm
+
+
+
+--Minor----
+Menu List,Promo Deals,Group Deals (arrow left, arrow right) for slider 
+
+
+--Minor---
+Terms And Condition
+	-open new tab not auto download
+
+
+--Minor---
+Payment Method--
+	-enlarge screen on modal
+
+
+--Major
+Customer can cancel Booking (pending)
+	-request new schedule
+	
+
+-- Minor
+Dashboard
+	-Dollar Sign Change to Peso
+	-text color on reservation status
+
+
+	-
+
+
+
+
+

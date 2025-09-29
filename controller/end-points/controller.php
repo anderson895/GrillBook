@@ -510,8 +510,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }else if ($_GET['requestType'] == 'checkAvailability') {
             $table_code = $_GET['table_code'];
             $date_schedule = $_GET['date_schedule'];
+            $time_schedule = $_GET['time_schedule'];
 
-           $availability = $db->checkTableAvailability($table_code, $date_schedule);
+           $availability = $db->checkAvailability($table_code, $date_schedule,$time_schedule);
 
             echo json_encode([
                 'status' => 200,

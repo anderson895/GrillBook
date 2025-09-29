@@ -870,34 +870,70 @@ public function fetch_all_deals_and_menu($deal_type) {
 
 
 
+public function checkAvailability($table_code, $date_schedule, $time_schedule) {
+    // Normalize time format (H:i:s)
+    $time_schedule = date("H:i:s", strtotime($time_schedule));
 
-        
-    public function checkTableAvailability($table_code, $date_schedule) {
-        $query = $this->conn->prepare("
-            SELECT * FROM reservations 
-            WHERE table_code = ? 
-            AND date_schedule = ? 
-            AND status = 'confirmed'
-        ");
-    $query->bind_param("ss", $table_code, $date_schedule);
+    // 1. Kunin day of week
+    $dayOfWeek = date('l', strtotime($date_schedule)); // e.g. "Sunday"
 
-    if ($query->execute()) {
-        $result = $query->get_result();
-        $data = [];
+    // 2. Kunin open/close time sa business_hours
+    $scheduleQuery = $this->conn->prepare("
+        SELECT open_time, close_time 
+        FROM business_hours 
+        WHERE day_of_week = ?
+    ");
+    $scheduleQuery->bind_param("s", $dayOfWeek);
+    $scheduleQuery->execute();
+    $scheduleResult = $scheduleQuery->get_result();
+    $hours = $scheduleResult->fetch_assoc();
 
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+    if (!$hours) {
+        return false; // walang schedule
+    }
+
+    $openTime  = $hours['open_time'];   // e.g. 17:00:00
+    $closeTime = $hours['close_time'];  // e.g. 03:00:00
+
+    // 3. Check kung pasok sa schedule (inclusive)
+    $isAvailableTime = false;
+    if ($closeTime > $openTime) {
+        // Normal case
+        if ($time_schedule >= $openTime && $time_schedule <= $closeTime) {
+            $isAvailableTime = true;
         }
-
-        // If there are confirmed reservations, table is NOT available
-        if (count($data) > 0) {
-            return false; // NOT available
-        } else {
-            return true;  // available
+    } else {
+        // Cross midnight
+        if ($time_schedule >= $openTime || $time_schedule <= $closeTime) {
+            $isAvailableTime = true;
         }
     }
-    return false;
+
+    if (!$isAvailableTime) {
+        return false; // labas sa business hours
+    }
+
+    // 4. Check kung may reservation conflict (same table, same date, same time)
+    $query = $this->conn->prepare("
+        SELECT * FROM reservations 
+        WHERE table_code = ? 
+        AND date_schedule = ? 
+        AND time_schedule = ? 
+        AND status = 'confirmed'
+    ");
+    $query->bind_param("sss", $table_code, $date_schedule, $time_schedule);
+    $query->execute();
+    $result = $query->get_result();
+
+    if ($result->num_rows > 0) {
+        return false; // may naka-book na exact time
+    }
+
+    return true; // ✅ available
 }
+
+
+
 
 
 
