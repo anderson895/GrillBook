@@ -22,13 +22,13 @@ Menu List,Promo Deals,Group Deals (arrow left, arrow right) for slider
 
 
 --Minor---
-Terms And Condition
-	-open new tab not auto download
+✔Terms And Condition
+	✔-open new tab not auto download
 
 
 --Minor---
-Payment Method--
-	-enlarge screen on modal
+✔Payment Method--
+	✔-enlarge screen on modal
 
 
 --Major

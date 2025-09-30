@@ -236,23 +236,25 @@ include "../src/components/customer/footer.php";
       <div class="space-y-6 bg-[#0D0D0D] p-6 rounded-2xl border border-gray-700 shadow-lg">
 
         <!-- Terms -->
-        <div class="space-y-4">
-          <!-- Terms and Conditions checkbox -->
-          <div class="flex items-start space-x-3 p-4 bg-[#1A1A1A] rounded-lg border border-gray-600">
-            <input 
-              type="checkbox" 
-              id="terms" 
-              name="terms" 
-              required 
-              class="mt-1 rounded text-yellow-400 focus:ring-yellow-400 w-5 h-5" 
-            />
-            <label for="terms" class="text-sm select-none text-gray-300">
-              I agree to the 
-              <a href="../static/resources/terms_and_condition.pdf" target="_blank" download class="underline text-yellow-400 hover:text-yellow-300">
-                Terms and Conditions
-              </a>
-            </label>
+          <div class="space-y-4">
+            <!-- Terms and Conditions checkbox -->
+            <div class="flex items-start space-x-3 p-4 bg-[#1A1A1A] rounded-lg border border-gray-600">
+              <input 
+                type="checkbox" 
+                id="terms" 
+                name="terms" 
+                required 
+                class="mt-1 rounded text-yellow-400 focus:ring-yellow-400 w-5 h-5" 
+              />
+              <label for="terms" class="text-sm select-none text-gray-300">
+                I agree to the 
+                <a href="../static/resources/terms_and_condition.pdf" target="_blank" class="underline text-yellow-400 hover:text-yellow-300">
+                  Terms and Conditions
+                </a>
+              </label>
+            </div>
           </div>
+
 
           <!-- File upload for signed Terms -->
           <div>
@@ -289,7 +291,7 @@ include "../src/components/customer/footer.php";
           </select>
         </div>
 
-       <!-- Payment Details / QR Display -->
+        <!-- Payment Details / QR Display -->
       <div id="payment_details" class="hidden">
         <div class="bg-[#1A1A1A] p-4 rounded-lg border border-gray-600 text-center">
           <p id="payment_text" class="text-gray-300 text-sm mb-3"></p>
@@ -299,7 +301,7 @@ include "../src/components/customer/footer.php";
             id="payment_qr" 
             src="" 
             alt="Payment QR Code" 
-            class="w-48 h-48 object-contain mx-auto rounded-lg border border-gray-700 shadow-md" 
+            class="w-48 h-48 object-contain mx-auto rounded-lg border border-gray-700 shadow-md cursor-pointer" 
           />
 
           <!-- Download Button -->
@@ -312,7 +314,6 @@ include "../src/components/customer/footer.php";
             <span class="material-icons mr-2">download</span>
             Download QR
           </a>
-
         </div>
       </div>
 
@@ -352,8 +353,18 @@ include "../src/components/customer/footer.php";
 
       </div>
 
-
     </form>
+  </div>
+</div>
+
+     <!-- Modal for Enlarged QR -->
+<div id="payment_img_modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" style="display:none;">
+  <div class="relative max-w-3xl">
+    <img id="modal_img" src="" alt="Enlarged QR" class="max-h-screen max-w-full rounded-lg shadow-lg" />
+    <!-- Close button -->
+    <button id="close_modal" class="cursor-pointer absolute top-2 right-2 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-600">
+      ✕
+    </button>
   </div>
 </div>
 

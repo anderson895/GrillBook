@@ -1,6 +1,20 @@
-
-
 $(document).ready(function () {
+    // Open modal with fadeIn
+  $(document).on("click", "#payment_qr", function () {
+    let imgSrc = $(this).attr("src");
+    $("#modal_img").attr("src", imgSrc);
+    $("#payment_img_modal").fadeIn(300); // show with animation
+    console.log("Modal opened with image:", imgSrc);
+  });
+
+  // Close modal with fadeOut
+  $(document).on("click", "#close_modal, #payment_img_modal", function (e) {
+    if (e.target.id === "payment_img_modal" || e.target.id === "close_modal") {
+      $("#payment_img_modal").fadeOut(300); // hide with animation
+    }
+  });
+
+  // Payment method logic (unchanged)
   $("#payment_method").on("change", function () {
     const selected = $(this).val();
     let qrSrc = "";
@@ -26,17 +40,15 @@ $(document).ready(function () {
     if (qrSrc) {
       $("#payment_text").text(text);
       $("#payment_qr").attr("src", qrSrc);
-      $("#download_qr_btn").attr("href", qrSrc); // set download link
-      $("#payment_details").removeClass("hidden");
+      $("#download_qr_btn").attr("href", qrSrc);
+      $("#payment_details").fadeIn(300).removeClass("hidden");
     } else {
-      $("#payment_details").addClass("hidden");
+      $("#payment_details").fadeOut(300, function () {
+        $(this).addClass("hidden");
+      });
     }
   });
 });
-
-
-
-
 
 
 
