@@ -15,12 +15,6 @@ calendar layout
 	-legends
 	-size
 
---Major--
-time
-	-start and end dun lang makakapag reserved
-	dipwede mag reserve ng umaga dapat opening
-	5:00pm
-
 
 
 --Minor----

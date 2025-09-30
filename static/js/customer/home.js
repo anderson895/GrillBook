@@ -223,8 +223,7 @@ $(function () {
 
         $("#reservationForm input, #reservationForm select").prop('disabled', true);
     }
-}
-, error: function(xhr, status, error) {
+}, error: function(xhr, status, error) {
             console.error('AJAX Error:', error);
             Swal.fire({
                 icon: 'error',
