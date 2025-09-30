@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2025 at 08:40 AM
+-- Generation Time: Sep 30, 2025 at 03:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `grillbook`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `business_hours`
+--
+
+CREATE TABLE `business_hours` (
+  `id` int(11) NOT NULL,
+  `day_of_week` enum('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday') NOT NULL,
+  `open_time` time NOT NULL,
+  `close_time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `business_hours`
+--
+
+INSERT INTO `business_hours` (`id`, `day_of_week`, `open_time`, `close_time`) VALUES
+(1, 'Sunday', '17:00:00', '03:00:00'),
+(2, 'Monday', '17:00:00', '02:00:00'),
+(3, 'Tuesday', '17:00:00', '02:00:00'),
+(4, 'Wednesday', '17:00:00', '02:00:00'),
+(5, 'Thursday', '17:00:00', '02:00:00'),
+(6, 'Friday', '19:00:00', '04:00:00'),
+(7, 'Saturday', '19:00:00', '04:00:00');
 
 -- --------------------------------------------------------
 
@@ -141,11 +167,17 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_p
 (2, 'pedro', 'dela cruz', 'admin@gmail.com', '$2y$10$ELmrWp70f3PxsVYpNuadGOmW06fM4frvDri8//mEti1yrQsyI8/8K', 'admin', 1),
 (3, 'Joshua Anderson ss', 'Padilla', 'andersonandy046@gmail.com', '$2y$10$wT2P4z2/HuwbW1Dcgb/zleHRj62t2f0XXPiiUrbB2s/xhJj8p0I.W', 'customer', 1),
 (4, 'john', 'doe', 'jdoe@gmail.com', '$2y$10$bE11O2FVvkuB8Qq2EFHjOOB3ZY5eftxoEXx9GUe2pphKGumQ2hx0q', 'customer', 1),
-(5, 'head', 'staff', 'headstaff@gmail.com', '$2y$10$.MVXGQP5s1mpwxjo46V/GuzfsI2Y8cZEAPQk7LhPBF6KGNxjSBUje', 'headstaff', 1);
+(5, 'head', 'staffs', 'headstaff@gmail.com', '$2y$10$.MVXGQP5s1mpwxjo46V/GuzfsI2Y8cZEAPQk7LhPBF6KGNxjSBUje', 'headstaff', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `business_hours`
+--
+ALTER TABLE `business_hours`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `deals`
@@ -175,6 +207,12 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `business_hours`
+--
+ALTER TABLE `business_hours`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `deals`
