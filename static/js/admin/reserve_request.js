@@ -63,10 +63,15 @@ $(document).ready(function () {
               <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
               <td class="p-3 text-center font-semibold">${time_schedule}</td>
               <td class="p-3 text-center font-semibold">${data.grand_total}</td>
+              <td class="p-3 text-center font-semibold capitalize 
+                  ${data.status === 'request cancel' ? 'text-red-500' : data.status === 'pending' ? 'text-yellow-500' : 'text-black'}">
+                  ${data.status}
+              </td>
+
              
               <td class="p-3 text-center">
                   <button
-                    class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                    class="viewDetailsBtn cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                     data-id='${data.id}'
                     data-reservation_code='${data.reserve_unique_code}'
                     data-table_code='${data.table_code}'

@@ -970,7 +970,7 @@ public function fetch_all_reserve_request($limit, $offset) {
     // Step 1: Get reservations only
     $query = $this->conn->prepare("
         SELECT * FROM reservations
-        WHERE status = 'pending'
+        WHERE status = 'pending' OR status = 'request cancel'
         ORDER BY id DESC
         LIMIT ? OFFSET ?
     ");

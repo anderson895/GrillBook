@@ -22,7 +22,7 @@
       </a>
 
       <!--  Dropdown Button -->
-      <button id="toggleDeals" class="w-full flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <button id="toggleDeals" class="w-full flex cursor-pointer items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
           <span class="material-icons">sell</span>
           <span>Deals</span>
@@ -39,7 +39,7 @@
 
     
       <!--  Dropdown Button -->
-      <button id="toggleReservation" class="w-full flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <button id="toggleReservation" class="w-full cursor-pointer flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
           <span class="material-icons">event</span>
           <span>Reservation</span>
@@ -49,10 +49,9 @@
 
       <!-- Dropdown Menu -->
       <div id="reserveDropdown" class="ml-8 space-y-2" style="display: none;">
-        <a href="overseats_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Overseats Request</a>
+       
         <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Reservation Request</a>
         <a href="all_reserved" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All</a>
-        <a href="add_more" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Add more</a>
       </div>
 
 
