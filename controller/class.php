@@ -1522,4 +1522,43 @@ public function count_all_customer_reservation($user_id) {
 
 
 
+
+
+        public function cancel_reservation($reservationId) {
+            // Prepare statement
+            $stmt = $this->conn->prepare("UPDATE reservations SET status = 'request cancel' WHERE id = ?");
+            
+            if ($stmt) {
+                // Bind parameter
+                $stmt->bind_param("i", $reservationId); 
+                
+                // Execute statement
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    return [
+                        'success' => true,
+                        'message' => 'Request canceled successfully.'
+                    ];
+                } else {
+                    $stmt->close();
+                    return [
+                        'success' => false,
+                        'message' => 'Failed to cancel appointment. Please try again.'
+                    ];
+                }
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'Failed to prepare the statement.'
+                ];
+            }
+        }
+
+
+
+
+
+
+
+
 }

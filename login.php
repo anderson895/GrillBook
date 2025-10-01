@@ -33,7 +33,7 @@ include "src/components/header.php";
       </div>
 
       <button type="submit"
-              class="w-full bg-yellow-400 text-black font-bold py-2 rounded-full hover:bg-yellow-300 transition">
+              class="w-full cursor-pointer bg-yellow-400 text-black font-bold py-2 rounded-full hover:bg-yellow-300 transition">
         Login
       </button>
     </form>

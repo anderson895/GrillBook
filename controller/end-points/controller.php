@@ -24,6 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'message' => $loginResult['message']
                 ]);
             }
+        }else if ($_POST['requestType'] == 'cancel_reservation') {
+                    $reservationId = $_POST['reservation_id'];
+                    $result = $db->cancel_reservation($reservationId);
+
+                    if ($result['success']) {
+                        echo json_encode([
+                            'status' => 'success',
+                            'message' => $result['message']   
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => $result['message']  
+                        ]);
+                    }
+
         }else if ($_POST['requestType'] == 'RegisterCustomer') {
                 $first_name = $_POST['first_name'];
                 $last_name  = $_POST['last_name'];

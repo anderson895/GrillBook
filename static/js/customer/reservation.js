@@ -36,63 +36,75 @@ $(document).ready(function () {
       $('#outputTableBody').empty();
 
       if (res.status === 200 && res.data.length > 0) {
-        res.data.forEach(data => {
+      res.data.forEach(data => {
 
-           const dateObj = new Date(data.created_at);
+    const dateObj = new Date(data.created_at);
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const created_at = dateObj.toLocaleDateString('en-US', dateOptions);
 
-            // Para sa word format ng date
-            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            const created_at = dateObj.toLocaleDateString('en-US', dateOptions);
+    const timeString = data.time_schedule;
+    const [hour, minute] = timeString.split(':');
+    const timeDate = new Date();
+    timeDate.setHours(parseInt(hour), parseInt(minute));
+    const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const time_schedule = timeDate.toLocaleTimeString('en-US', timeOptions);
 
-            const timeString = data.time_schedule; // example: "14:30" or "14:30:00"
-            const [hour, minute] = timeString.split(':');
-            const timeDate = new Date();
-            timeDate.setHours(parseInt(hour), parseInt(minute));
+    const isPending = data.status.toLowerCase() === 'pending';
 
-            const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-            const time_schedule = timeDate.toLocaleTimeString('en-US', timeOptions);
+    // Cancel button: enabled if pending
+    const cancelButton = `<button class="cancelBtn cursor-pointer bg-gray-400 text-white px-3 py-1 rounded text-xs font-semibold transition ${isPending ? '' : 'cursor-not-allowed opacity-50'}"
+        data-reservation_id='${data.id}'
+        ${isPending ? '' : 'disabled'}
+      >
+        Cancel
+      </button>`;
 
+    // Archive button: disabled if pending
+    const archiveButton = `<button class="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition ${isPending ? 'cursor-not-allowed opacity-50' : ''}"
+        data-reservation_id='${data.id}'
+        data-action='archived'
+        ${isPending ? 'disabled' : ''}
+      >
+        Archive
+      </button>`;
 
+    $('#outputTableBody').append(`
+      <tr class="hover:bg-[#2B2B2B] transition-colors">
+        <td class="p-3 text-center font-mono">${count++}</td>
+        <td class="p-3 text-center font-mono">${created_at}</td>
+        <td class="p-3 text-center font-semibold">${data.table_code}</td>
+        <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
+        <td class="p-3 text-center font-semibold">${time_schedule}</td>
+        <td class="p-3 text-center font-semibold">${data.grand_total}</td>
+        <td class="p-3 text-center font-semibold capitalize">${data.status}</td>
+        <td class="p-3 text-center">
+          <button
+            class="viewDetailsBtn cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+            data-id='${data.id}'
+            data-table_code='${data.table_code}'
+            data-seats='${data.seats}'
+            data-date_schedule='${data.date_schedule}'
+            data-time_schedule='${data.time_schedule}'
+            data-grand_total='${data.grand_total}'
+            data-selected_menus='${encodeURIComponent(data.selected_menus)}'
+            data-selected_promos='${encodeURIComponent(data.selected_promos)}'
+            data-selected_groups='${encodeURIComponent(data.selected_groups)}'
+            data-menus_details='${encodeURIComponent(JSON.stringify(data.menus_details))}'
+            data-promos_details='${encodeURIComponent(JSON.stringify(data.promos_details))}'
+            data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
+            data-proof_of_payment='${data.proof_of_payment}'
+            data-terms_signed='${data.termsFileSigned}'
+          >
+            Details
+          </button>
 
-          $('#outputTableBody').append(`
-            <tr class="hover:bg-[#2B2B2B] transition-colors">
-              <td class="p-3 text-center font-mono">${count++}</td>
-              <td class="p-3 text-center font-mono">${created_at}</td>
-              
-              <td class="p-3 text-center font-semibold">${data.table_code}</td>
-              <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
-              <td class="p-3 text-center font-semibold">${time_schedule}</td>
-              <td class="p-3 text-center font-semibold">${data.grand_total}</td>
-              <td class="p-3 text-center font-semibold">${data.status}</td>
-             
-              <td class="p-3 text-center">
-                  <button
-                    class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
-                    data-id='${data.id}'
-                    data-table_code='${data.table_code}'
-                    data-seats='${data.seats}'
-                    data-date_schedule='${data.date_schedule}'
-                    data-time_schedule='${data.time_schedule}'
-                    data-grand_total='${data.grand_total}'
-                    data-selected_menus='${encodeURIComponent(data.selected_menus)}'
-                    data-selected_promos='${encodeURIComponent(data.selected_promos)}'
-                    data-selected_groups='${encodeURIComponent(data.selected_groups)}'
-                    data-menus_details='${encodeURIComponent(JSON.stringify(data.menus_details))}'
-                    data-promos_details='${encodeURIComponent(JSON.stringify(data.promos_details))}'
-                    data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
-                    data-proof_of_payment='${data.proof_of_payment}'
-                    data-terms_signed='${data.termsFileSigned}'
-                  >
-                    Details
-                  </button>
+          ${archiveButton}
+          ${cancelButton}
+        </td>
+      </tr>
+    `);
+});
 
-                <button id="btnArchived" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
-                  data-reservation_id='${data.id}'
-                  data-action='archived'>Archive</button>
-              </td>
-            </tr>
-          `);
-        });
 
         renderPagination(res.total, limit, currentPage);
 
@@ -404,3 +416,64 @@ function updateReservationStatus(reservationId, actionStatus) {
 
 
 
+// Event delegation para sa dynamically generated buttons
+$(document).on('click', '.cancelBtn', function() {
+    const reservationId = $(this).data('reservation_id');
+    const button = $(this);
+
+    // Kung disabled, huwag gawin kahit click
+    if (button.prop('disabled')) return;
+
+    // Swal confirmation
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to cancel this reservation?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, cancel it!',
+        cancelButtonText: 'No, keep it'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // AJAX request to cancel
+            $.ajax({
+                url: '../controller/end-points/controller.php',
+                method: 'POST',
+                data: {
+                    requestType: 'cancel_reservation',
+                    reservation_id: reservationId
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === "success") {
+                        Swal.fire(
+                            'Cancelled!',
+                            'The reservation has been cancelled.',
+                            'success'
+                        );
+                        // Optional: refresh table
+                         setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+
+
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            res.message || 'Failed to cancel reservation.',
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong. Please try again.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
