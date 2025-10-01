@@ -60,7 +60,7 @@ $(document).ready(function () {
       </button>`;
 
     // Archive button: disabled if pending
-    const archiveButton = `<button class="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition ${isPending ? 'cursor-not-allowed opacity-50' : ''}"
+    const archiveButton = `<button class="btnArchived bg-red-500 cursor-pointer hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition ${isPending ? 'cursor-not-allowed opacity-50' : ''}"
         data-reservation_id='${data.id}'
         data-action='archived'
         ${isPending ? 'disabled' : ''}
@@ -356,7 +356,7 @@ function confirmAction() {
 
 
 
-$(document).on("click", "#btnArchived", function () {
+$(document).on("click", ".btnArchived", function () {
     let action = $(this).data("action")
     let actionStatus = $(this).data("action"); 
     const reservationId = $(this).data("reservation_id");
