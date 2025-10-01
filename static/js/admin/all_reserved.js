@@ -204,7 +204,11 @@ $(document).ready(function () {
 
 // Open modal with details
 $(document).on('click', '#btnViewRequest', function() {
+    const reservation_id = $(this).data('reservation_id');
     const requestDetailsJson = $(this).data('request_details');
+
+
+    $("#reservation_id_request").val(reservation_id);
 
     if (!requestDetailsJson) {
         alert("No request details found!");
@@ -259,11 +263,7 @@ $('#cancelRequest').on('click', function() {
     $('#requestModal').addClass('hidden');
 });
 
-// Approve button action (example)
-$('#approveRequest').on('click', function() {
-    alert("Request approved!");
-    $('#requestModal').addClass('hidden');
-});
+
 
 // Close modal
 $('#closeModal').on('click', function() {
@@ -301,7 +301,6 @@ $(document).on("click", "#btnArchived", function () {
 function confirmAction(action) {
     return Swal.fire({
         title: 'Are you sure?',
-        text: `You are about to ${action} this reservation.`,
         icon: 'warning',
         showCancelButton: true,
         background: '#1f2937',
@@ -513,7 +512,7 @@ $('#detailsModal').on('click', function(e) {
 
 
 $(document).on("click", "#btnApprove, #btnCancel", function () {
-    const actionStatus = $(this).data("action"); // "confirmed" or "cancelled"
+    const actionStatus = $(this).data("action"); 
     const reservationId = $("#reservation_id").val();
 
     confirmAction(actionStatus).then((confirmed) => {
@@ -523,6 +522,63 @@ $(document).on("click", "#btnApprove, #btnCancel", function () {
         }
     });
 });
+
+
+
+$(document).on("click", "#approveRequest", function () {
+    const actionStatus = $(this).data("action"); 
+    const reservationId = $("#reservation_id_request").val();
+
+    confirmAction(actionStatus).then((confirmed) => {
+        if (confirmed) {
+             $('#requestModal').removeClass('hidden');
+            ApproveReschedule(reservationId, actionStatus);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+function ApproveReschedule(reservationId, actionStatus) {
+    const formData = new FormData();
+    formData.append("requestType", "ApproveReschedule");
+    formData.append("status", actionStatus);
+    formData.append("reservation_id", reservationId);
+
+    // Show spinner right away
+    $('#spinnerOverlay').removeClass('hidden');
+
+    $.ajax({
+        url: "../controller/end-points/controller.php",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "success") {
+                  // Show spinner right away
+                location.reload();
+            } else {
+                $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+                alertify.error(response.message || "Error updating info.");
+            }
+        },
+        error: function () {
+            $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
+            alertify.error("Failed to update info. Please try again.");
+        }
+    });
+}
+
+
+
 
 
 function updateReservationStatus(reservationId, actionStatus) {

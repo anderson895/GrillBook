@@ -149,27 +149,20 @@ include "../src/components/admin/nav.php";
       <h2 class="text-lg font-medium text-white text-center">Request Details</h2>
     </div>
 
+    <input type="hidden" id="reservation_id_request" name="reservation_id" value="test">
     <!-- Request Details -->
     <div id="modalRequestDetails" class="px-6 py-4 space-y-3 text-gray-800 text-sm">
-      <!-- Example structure (filled dynamically via JS) -->
-      <!--
-      <div class="flex justify-between border-b border-yellow-200 pb-1">
-        <span class="font-medium text-yellow-700">Reason:</span>
-        <span>Sick</span>
-      </div>
-      <div class="flex justify-between border-b border-yellow-200 pb-1">
-        <span class="font-medium text-yellow-700">New Date:</span>
-        <span>2025-10-02</span>
-      </div>
-      -->
+    <!-- Dynamic part -->
     </div>
 
     <!-- Footer with Buttons -->
     <div class="px-6 py-3 border-t border-gray-200 flex justify-end gap-2 bg-gray-50">
-      <button id="approveRequest" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+      <button id="approveRequest" class="cursor-pointer bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+      data-action="request new schedule"
+      >
         Approve
       </button>
-      <button id="cancelRequest" class="bg-gray-300 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md text-sm font-medium transition">
+      <button id="cancelRequest" class="bg-gray-300 cursor-pointer hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md text-sm font-medium transition">
         Cancel
       </button>
     </div>

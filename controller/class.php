@@ -125,6 +125,72 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
 
 
+         public function ApproveReschedule($reservation_id) {
+    // Fetch the request_details JSON
+    $stmt = $this->conn->prepare("SELECT request_details FROM reservations WHERE id = ?");
+    if (!$stmt) {
+        return [
+            'success' => false,
+            'message' => 'Prepare failed: ' . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("i", $reservation_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+
+    if (!$result) {
+        return [
+            'success' => false,
+            'message' => 'Reservation not found.'
+        ];
+    }
+
+    $request_details = json_decode($result['request_details'], true);
+
+    if (isset($request_details['newDate']) && isset($request_details['newTime'])) {
+        $newDate = $request_details['newDate'];
+        $newTime = $request_details['newTime'];
+
+        // Update status to 'pending', date_schedule, time_schedule, and clear request_details
+        $stmt = $this->conn->prepare(
+            "UPDATE reservations 
+             SET status = 'pending', date_schedule = ?, time_schedule = ?, request_details = NULL 
+             WHERE id = ?"
+        );
+
+        if (!$stmt) {
+            return [
+                'success' => false,
+                'message' => 'Prepare failed: ' . $this->conn->error
+            ];
+        }
+
+        $stmt->bind_param("ssi", $newDate, $newTime, $reservation_id);
+
+        if ($stmt->execute()) {
+            return [
+                'success' => true,
+                'message' => 'Reservation updated successfully.'
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => 'Update failed: ' . $stmt->error
+            ];
+        }
+    } else {
+        return [
+            'success' => false,
+            'message' => 'No new schedule found in request_details.'
+        ];
+    }
+}
+
+
+
+
+
         public function ApproveReservationStatus($reservation_id, $status){
             $stmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
             $stmt->bind_param("si", $status, $reservation_id);

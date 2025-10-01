@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2025 at 09:11 AM
+-- Generation Time: Oct 01, 2025 at 11:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -129,19 +129,20 @@ CREATE TABLE `reservations` (
   `proof_of_payment` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('pending','confirmed','cancelled','completed','request cancel') DEFAULT 'pending',
+  `status` enum('pending','confirmed','cancelled','completed','request cancel','request new schedule') DEFAULT 'pending',
   `archived_by_admin` int(11) NOT NULL,
-  `archived_by_customer` int(11) NOT NULL
+  `archived_by_customer` int(11) NOT NULL,
+  `request_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`, `archived_by_admin`, `archived_by_customer`) VALUES
-(13, 3, '427GMQ86', 'SOUNDECT', 6, '2025-09-26', '12:27:00', 320.00, 270.00, 530.00, 1120.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_68d4c4e51f05e3.59371420.jpg', 'proof_68d4c4e51ee142.72196853.jpg', '2025-09-25 04:28:21', '2025-09-25 06:40:37', 'completed', 0, 0),
-(14, 3, 'WL2N0EKR', 'BILLIARDS', 5, '2025-09-25', '13:19:00', 220.00, 270.00, 0.00, 490.00, '[{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[]', 'terms_68d4d112dea448.68692948.jpg', 'proof_68d4d112de4484.44925582.jpg', '2025-09-25 05:20:18', '2025-09-25 06:40:35', 'pending', 0, 0),
-(15, 3, 'PAOC7V54', 'COMPLI', 4, '2025-09-26', '13:20:00', 0.00, 0.00, 350.00, 350.00, '[]', '[]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_68d4d15909a576.16517855.jpg', 'proof_68d4d159097b92.49814229.png', '2025-09-25 05:21:29', '2025-10-01 07:06:59', 'request cancel', 0, 0);
+INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`, `archived_by_admin`, `archived_by_customer`, `request_details`) VALUES
+(13, 3, '427GMQ86', 'SOUNDECT', 6, '2025-09-26', '12:27:00', 320.00, 270.00, 530.00, 1120.00, '[{\"id\":\"6\",\"name\":\"Ginisang Sitaw with Bell Pepper\",\"price\":250,\"type\":\"menu\"},{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"12\",\"name\":\"Ultimate Mixed Drinks\",\"price\":530,\"type\":\"group_deal\"}]', 'terms_68d4c4e51f05e3.59371420.jpg', 'proof_68d4c4e51ee142.72196853.jpg', '2025-09-25 04:28:21', '2025-10-01 08:01:09', 'completed', 0, 1, NULL),
+(14, 3, 'WL2N0EKR', 'BILLIARDS', 5, '2025-09-25', '13:19:00', 220.00, 270.00, 0.00, 490.00, '[{\"id\":\"5\",\"name\":\"Brazo de Mercedes\",\"price\":70,\"type\":\"menu\"},{\"id\":\"3\",\"name\":\"Creamy Coconut Milk Fish Stew (Ginataang Isda with Eggplant \",\"price\":150,\"type\":\"menu\"}]', '[{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"type\":\"promo_deal\"}]', '[]', 'terms_68d4d112dea448.68692948.jpg', 'proof_68d4d112de4484.44925582.jpg', '2025-09-25 05:20:18', '2025-10-01 08:01:11', 'request cancel', 0, 1, NULL),
+(15, 3, 'PAOC7V54', 'COMPLI', 4, '2025-10-10', '17:00:00', 0.00, 0.00, 350.00, 350.00, '[]', '[]', '[{\"id\":\"11\",\"name\":\"Bar & Grill\",\"price\":350,\"type\":\"group_deal\"}]', 'terms_68d4d15909a576.16517855.jpg', 'proof_68d4d159097b92.49814229.png', '2025-09-25 05:21:29', '2025-10-01 09:19:48', 'pending', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
