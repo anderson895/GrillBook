@@ -129,6 +129,63 @@ include "../src/components/customer/nav.php";
 
 
 
+
+
+
+
+
+
+<div id="rescheduleModal" class="fixed inset-0 hidden items-center justify-center z-50" style="background-color: rgba(0, 0, 0, 0.3);">
+  <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-sm p-6 mx-4 text-black relative">
+    <h2 class="text-lg font-semibold mb-4 text-center">Request New Schedule</h2>
+
+    <!-- Spinner Overlay -->
+    <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50 bg-white/70" style="display:none;">
+        <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <form id="rescheduleForm">
+      <input type="hidden" id="rescheduleReservationId" name="reservationId">
+
+      <!-- Reason -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="rescheduleReason">Reason</label>
+        <select id="rescheduleReason" name="reason" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+          <option value="" disabled selected>Select reason</option>
+          <option value="personal">Personal reason</option>
+          <option value="sick">Sick</option>
+          <option value="work">Work-related</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <!-- New Date -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="rescheduleDate">New Date</label>
+        <input type="date" id="rescheduleDate" name="newDate" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+      </div>
+
+      <!-- New Time -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium mb-1" for="rescheduleTime">New Time</label>
+        <input type="time" id="rescheduleTime" name="newTime" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end space-x-3">
+        <button type="button" id="closeRescheduleModal" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 text-sm">Cancel</button>
+        <button type="submit" id="submitReschedule" class="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600 text-sm">Submit</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+
+
+
+
 <?php
 include "../src/components/customer/footer.php";
 ?>

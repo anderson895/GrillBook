@@ -24,6 +24,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'message' => $loginResult['message']
                 ]);
             }
+        }else if ($_POST['requestType'] == 'reschedule') {
+                   $reservationId = $_POST['reservationId'] ?? null;
+                    $reason = $_POST['reason'] ?? null;
+                    $newDate = $_POST['newDate'] ?? null;
+                    $newTime = $_POST['newTime'] ?? null;
+
+
+                    $result = $db->reschedule($reservationId, $reason, $newDate,$newTime);
+
+                    if (!empty($result['success']) && $result['success']) {
+                        echo json_encode([
+                            'status' => 'success',
+                            'message' => $result['message']   
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => $result['message'] ?? 'Something went wrong.'
+                        ]);
+                    }
+
+
         }else if ($_POST['requestType'] == 'cancel_reservation') {
                     $reservationId = $_POST['reservation_id'];
                     $result = $db->cancel_reservation($reservationId);

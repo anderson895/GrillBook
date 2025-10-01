@@ -138,6 +138,49 @@ include "../src/components/admin/nav.php";
 
 
 
+
+<!-- Modal Overlay -->
+<div id="requestModal" class="hidden fixed inset-0 bg-[rgba(0,0,0,0.4)] flex items-center justify-center z-50">
+  <!-- Modal Content -->
+  <div class="bg-white rounded-xl shadow-md max-w-sm w-full overflow-hidden">
+    
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-yellow-700 bg-gray-600">
+      <h2 class="text-lg font-medium text-white text-center">Request Details</h2>
+    </div>
+
+    <!-- Request Details -->
+    <div id="modalRequestDetails" class="px-6 py-4 space-y-3 text-gray-800 text-sm">
+      <!-- Example structure (filled dynamically via JS) -->
+      <!--
+      <div class="flex justify-between border-b border-yellow-200 pb-1">
+        <span class="font-medium text-yellow-700">Reason:</span>
+        <span>Sick</span>
+      </div>
+      <div class="flex justify-between border-b border-yellow-200 pb-1">
+        <span class="font-medium text-yellow-700">New Date:</span>
+        <span>2025-10-02</span>
+      </div>
+      -->
+    </div>
+
+    <!-- Footer with Buttons -->
+    <div class="px-6 py-3 border-t border-gray-200 flex justify-end gap-2 bg-gray-50">
+      <button id="approveRequest" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+        Approve
+      </button>
+      <button id="cancelRequest" class="bg-gray-300 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md text-sm font-medium transition">
+        Cancel
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
 <?php
 include "../src/components/admin/footer.php";
 ?>

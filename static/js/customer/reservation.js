@@ -68,6 +68,19 @@ $(document).ready(function () {
         Archive
       </button>`;
 
+
+    const isConfirmed = data.status.toLowerCase() === 'confirmed';
+
+      // Reschedule button: enabled if confirmed
+      const rescheduleButton = `<button class="rescheduleBtn cursor-pointer bg-green-500 hover:bg-green-600 text-black px-3 py-1 rounded text-xs font-semibold transition ${isConfirmed ? '' : 'cursor-not-allowed opacity-50'}"
+          data-reservation_id='${data.id}'
+          ${isConfirmed ? '' : 'disabled'}
+        >
+          Re-schedule
+        </button>`;
+
+
+
     $('#outputTableBody').append(`
       <tr class="hover:bg-[#2B2B2B] transition-colors">
         <td class="p-3 text-center font-mono">${count++}</td>
@@ -100,9 +113,11 @@ $(document).ready(function () {
 
           ${archiveButton}
           ${cancelButton}
+          ${rescheduleButton} <!-- added here -->
         </td>
       </tr>
     `);
+
 });
 
 
@@ -474,6 +489,78 @@ $(document).on('click', '.cancelBtn', function() {
                     );
                 }
             });
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Open modal when Reschedule button is clicked
+$(document).on('click', '.rescheduleBtn', function() {
+  const reservationId = $(this).data('reservation_id');
+  $('#rescheduleReservationId').val(reservationId); // set hidden input
+  $('#rescheduleReason').val(''); // clear previous reason
+  $('#rescheduleDate').val(''); // clear previous date
+  $('#rescheduleModal').fadeIn(200).css('display', 'flex'); // fade in with flex display
+});
+
+// Close modal
+$('#closeRescheduleModal').click(function() {
+  $('#rescheduleModal').fadeOut(200);
+});
+
+// Close modal when clicking outside the content
+$('#rescheduleModal').on('click', function(e) {
+  if (e.target === this) {
+    $(this).fadeOut(200);
+  }
+});
+
+
+$("#rescheduleForm").submit(function (e) {
+    e.preventDefault();
+
+    $('#spinner').show();
+    $('#submitReschedule').prop('disabled', true);
+
+    var formData = $(this).serializeArray(); 
+    formData.push({ name: 'requestType', value: 'reschedule' });
+    var serializedData = $.param(formData);
+
+    $.ajax({
+        type: "POST",
+        url: "../controller/end-points/controller.php",
+        data: serializedData,
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === "success") {
+                alertify.success('Request Sent Successfully');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                $('#spinner').hide();
+                $('#submitReschedule').prop('disabled', false);
+                console.log(response); 
+                alertify.error(response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            $('#spinner').hide();
+            $('#submitReschedule').prop('disabled', false);
+            alertify.error('An error occurred. Please try again.');
         }
     });
 });

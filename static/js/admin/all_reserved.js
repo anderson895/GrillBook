@@ -69,7 +69,10 @@ $(document).ready(function () {
               <td class="p-3 text-center font-semibold">${data.grand_total}</td>
               <td class="p-3 text-center font-semibold capitalize
                   ${data.status === 'confirmed' ? 'text-yellow-500' : ''} 
-                  ${data.status === 'completed' ? 'text-green-500' : ''}">
+                  ${data.status === 'completed' ? 'text-green-500' : ''}
+                  ${data.status === 'request new schedule' ? 'text-red-500' : ''}
+                  
+                  ">
                   ${data.status}
               </td>
 
@@ -77,7 +80,7 @@ $(document).ready(function () {
              
               <td class="p-3 text-center">
                   <button
-                    class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                    class="viewDetailsBtn bg-yellow-400 cursor-pointer hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                     data-id='${data.id}'
                     data-reservation_code='${data.reserve_unique_code}'
                     data-table_code='${data.table_code}'
@@ -93,16 +96,33 @@ $(document).ready(function () {
                     data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
                     data-proof_of_payment='${data.proof_of_payment}'
                     data-terms_signed='${data.termsFileSigned}'
+                    data-request_details='${encodeURIComponent(data.request_details)}'
                   >
                     Details 
                   </button>
 
              
-                <button id="btnArchived" class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                <button id="btnArchived" class="removeBtn cursor-pointer bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
                   data-reservation_id='${data.id}'
                   data-action='archived'
                   >Archive
                 </button>
+
+
+                 <button 
+                  id="btnViewRequest"
+                  class="cursor-pointer px-3 py-1 rounded text-xs font-semibold transition
+                    ${data.status === 'request new schedule' 
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                      : 'bg-gray-600 text-gray-200 cursor-not-allowed'}"
+                  ${data.status !== 'request new schedule' ? 'disabled' : ''}
+                  data-reservation_id='${data.id}'
+                  data-request_details='${encodeURIComponent(data.request_details)}'
+                  data-action='pending'
+                >
+                  View Request
+                </button>
+
               </td>
             </tr>
           `);
@@ -177,6 +197,82 @@ $(document).ready(function () {
 
   
 });
+
+
+
+
+
+// Open modal with details
+$(document).on('click', '#btnViewRequest', function() {
+    const requestDetailsJson = $(this).data('request_details');
+
+    if (!requestDetailsJson) {
+        alert("No request details found!");
+        return;
+    }
+
+    let requestDetails;
+    try {
+        requestDetails = JSON.parse(decodeURIComponent(requestDetailsJson));
+    } catch (e) {
+        console.error("Failed to parse request details:", e);
+        alert("Invalid request details format.");
+        return;
+    }
+
+    // Safely access properties
+    const reason = requestDetails.reason || "-";
+    const newDate = requestDetails.newDate || "-";
+    let newTime = requestDetails.newTime || "-";
+
+    // Convert to 12-hour format with AM/PM
+    if (newTime !== "-") {
+        const [hourStr, minute] = newTime.split(':');
+        let hour = parseInt(hourStr, 10);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12; // Convert 0 => 12
+        newTime = `${hour}:${minute} ${ampm}`;
+    }
+
+    const formattedDetails = `
+        <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="font-medium text-gray-600">Reason:</span>
+            <span class="capitalize">${reason}</span>
+        </div>
+        <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="font-medium text-gray-600">New Date:</span>
+            <span>${newDate}</span>
+        </div>
+        <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="font-medium text-gray-600">New Time:</span>
+            <span>${newTime}</span>
+        </div>
+    `;
+
+    $('#modalRequestDetails').html(formattedDetails);
+    $('#requestModal').removeClass('hidden');
+});
+
+
+// Close modal
+$('#cancelRequest').on('click', function() {
+    $('#requestModal').addClass('hidden');
+});
+
+// Approve button action (example)
+$('#approveRequest').on('click', function() {
+    alert("Request approved!");
+    $('#requestModal').addClass('hidden');
+});
+
+// Close modal
+$('#closeModal').on('click', function() {
+    $('#requestModal').addClass('hidden');
+});
+
+
+
+
 
 
 

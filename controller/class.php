@@ -1103,7 +1103,7 @@ public function fetch_all_reserved($limit, $offset) {
         SELECT * FROM reservations
         LEFT JOIN user
         ON reservations.reserve_user_id = user.user_id 
-        WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed')
+        WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed'|| status = 'request new schedule')
         ORDER BY id DESC
         LIMIT ? OFFSET ?
     ");
@@ -1553,6 +1553,55 @@ public function count_all_customer_reservation($user_id) {
                 ];
             }
         }
+
+
+
+
+
+
+
+
+        public function reschedule($reservationId, $reason, $newDate,$newTime) {
+            // Create JSON from reason and new date
+            $requestDetails = json_encode([
+                'reason' => $reason,
+                'newDate' => $newDate,
+                'newTime' => $newTime
+            ]);
+
+            // Prepare statement
+            $stmt = $this->conn->prepare(
+                "UPDATE reservations 
+                SET status = 'request new schedule', request_details = ? 
+                WHERE id = ?"
+            );
+
+            if ($stmt) {
+                // Bind parameters: s = string, i = integer
+                $stmt->bind_param("si", $requestDetails, $reservationId);
+
+                // Execute statement
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    return [
+                        'success' => true,
+                        'message' => 'Request sent successfully.'
+                    ];
+                } else {
+                    $stmt->close();
+                    return [
+                        'success' => false,
+                        'message' => 'Failed to send request. Please try again.'
+                    ];
+                }
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'Failed to prepare the statement.'
+                ];
+            }
+        }
+
 
 
 
