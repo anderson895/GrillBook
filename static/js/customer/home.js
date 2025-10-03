@@ -556,53 +556,63 @@ function submitReservation(formData) {
   }
 
   // ===== Fetch functions (keeping your existing functions) =====
-  function fetchMenus() {
-    $.ajax({
-      url: "../controller/end-points/controller.php",
-      method: "GET",
-      data: { requestType: "fetch_all_menu" },
-      dataType: "json",
-      success: function (response) {
-        if (response.status === 200 && response.data.length > 0) {
-          const container = $("#menuContainer").empty();
+ function fetchMenus() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_menu" },
+    dataType: "json",
+    success: function (response) {
+      if (response.status === 200 && response.data.length > 0) {
+        const container = $("#menuContainer").empty(); // swiper-wrapper
 
-          response.data.forEach(menu => {
-            container.append(`
-            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-    
+        response.data.forEach(menu => {
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] shadow-lg relative text-center w-72">
               <!-- Checkbox -->
               <div class="absolute top-4 left-4">
-                  <input type="checkbox" 
-                  class="w-5 h-5 accent-[#FFD700] cursor-pointer"
-                  value="${menu.menu_id}" 
-                  name="menu_select[]" />
+                <input type="checkbox" class="w-5 h-5 accent-[#FFD700] cursor-pointer"
+                  value="${menu.menu_id}" name="menu_select[]" />
               </div>
 
               <!-- Button instead of link -->
-              <button type="button" 
-                  class="w-full text-left focus:outline-none" 
-                  data-id="${menu.menu_id}">
-                  <img src="../static/upload/${menu.menu_image_banner}" 
-                      alt="${menu.menu_name}" 
-                      class="w-full h-40 object-cover rounded-lg mb-4" />
-                  <h3 class="text-xl font-bold text-[#FFD700] mb-1">${menu.menu_name}</h3>
-                  <p class="text-[#CCCCCC] text-sm mb-1">Price: ${menu.menu_price}</p>
+              <button type="button" class="w-full text-left focus:outline-none" data-id="${menu.menu_id}">
+                <img src="../static/upload/${menu.menu_image_banner}" 
+                  alt="${menu.menu_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${menu.menu_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${menu.menu_price}</p>
               </button>
+            </div>
+          `);
+        });
 
-              </div>
-            `);
-          });
-
-          initSwiper(".menuSwiper");
-        } else {
-          console.error("No menu found or bad response.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("AJAX Error:", status, error);
+        initSwiper(".menuSwiper");
+      } else {
+        console.error("No menu found or bad response.");
       }
-    });
-  }
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error:", status, error);
+    }
+  });
+}
+function initSwiper(selector) {
+  new Swiper(selector, {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true, // <-- infinite looping
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+}
+
+
 
   function fetchPromos() {
     $.ajax({
@@ -683,6 +693,29 @@ function submitReservation(formData) {
       }
     });
   }
+
+
+
+function initSwiper(selector) {
+  new Swiper(selector, {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true, // infinite swipe
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+}
+
+
+
+
+
 
   function fetchGroups() {
     $.ajax({
@@ -765,3 +798,22 @@ function submitReservation(formData) {
   }
 
 });
+
+
+
+
+function initSwiper(selector) {
+  new Swiper(selector, {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true, // infinite swipe
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+}

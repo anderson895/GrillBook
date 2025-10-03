@@ -259,40 +259,76 @@ include "../src/components/customer/footer.php";
       </div>
 
 <!-- Menu Section -->
-<section class="py-16 px-6 bg-[#1A1A1A]">
+<section class="py-16 px-6 bg-[#1A1A1A] relative">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl text-center font-bold text-[#FFD700] uppercase mb-10">Menu List</h2>
-    <div class="swiper menuSwiper">
+
+    <div class="swiper menuSwiper relative">
       <div class="swiper-wrapper" id="menuContainer">
         <!-- Slides injected by JS -->
       </div>
+
+     <!-- Left Arrow -->
+      <button class="swiper-button-prev absolute top-1/2 left-2 transform -translate-y-1/2 z-10 p-2 rounded-full shadow-lg !block">
+
+      </button>
+
+      <!-- Right Arrow -->
+      <button class="swiper-button-next absolute top-1/2 right-2 transform -translate-y-1/2 z-10  p-2 rounded-full shadow-lg !block">
+
+      </button>
+
     </div>
   </div>
 </section>
 
 <!-- Promo Deals Section -->
-<section class="py-2 px-6 bg-[#1A1A1A]" id="promo_section">
+<section class="py-2 px-6 bg-[#1A1A1A] relative" id="promo_section">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl text-center font-bold text-[#FFD700] uppercase mb-10">Promo Deals</h2>
-    <div class="swiper promoSwiper">
+
+    <div class="swiper promoSwiper relative">
       <div class="swiper-wrapper" id="promoContainer">
         <!-- Slides injected by JS -->
       </div>
+
+      <!-- Left Arrow -->
+      <button class="swiper-button-prev absolute top-1/2 left-2 transform -translate-y-1/2 z-10 p-2 rounded-full shadow-lg !block opacity-100">
+      
+      </button>
+
+      <!-- Right Arrow -->
+      <button class="swiper-button-next absolute top-1/2 right-2 transform -translate-y-1/2 z-10 p-2 rounded-full shadow-lg !block opacity-100">
+       
+      </button>
     </div>
   </div>
 </section>
 
+
 <!-- Group Deals Section -->
-<section class="py-16 px-6 bg-[#1A1A1A]">
+<section class="py-16 px-6 bg-[#1A1A1A] relative" id="group_section">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl text-center font-bold text-[#FFD700] uppercase mb-10">Group Deals</h2>
-    <div class="swiper groupSwiper">
+
+    <div class="swiper groupSwiper relative">
       <div class="swiper-wrapper" id="groupContainer">
         <!-- Slides injected by JS -->
       </div>
+
+      <!-- Left Arrow -->
+      <button class="swiper-button-prev absolute top-1/2 left-2 transform -translate-y-1/2 z-10 p-2 rounded-full shadow-lg !block opacity-100">
+        
+      </button>
+
+      <!-- Right Arrow -->
+      <button class="swiper-button-next absolute top-1/2 right-2 transform -translate-y-1/2 z-10 p-2 rounded-full shadow-lg !block opacity-100">
+       
+      </button>
     </div>
   </div>
 </section>
+
 
 
 
