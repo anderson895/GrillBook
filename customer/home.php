@@ -423,17 +423,19 @@ include "../src/components/customer/footer.php";
 
 
 
-     <!-- Modal for Enlarged QR -->
-<div id="payment_img_modal" class="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style="display:none;">
+<!-- Modal for Enlarged QR -->
+<div id="payment_img_modal" 
+     class="fixed inset-0 flex items-center justify-center z-[9999] bg-black/30 backdrop-blur-sm" 
+     style="display:none;">
   <div class="relative max-w-3xl">
     <img id="modal_img" src="" alt="Enlarged QR" class="max-h-screen max-w-full rounded-lg shadow-lg" />
     <!-- Close button -->
-    <button id="close_modal" class="cursor-pointer absolute top-2 right-2 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-600">
+    <button id="close_modal" 
+            class="cursor-pointer absolute top-2 right-2 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-600">
       ✕
     </button>
   </div>
 </div>
-
 
 
 

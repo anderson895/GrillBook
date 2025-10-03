@@ -938,6 +938,9 @@
   .bg-\[\#222222\] {
     background-color: #222222;
   }
+  .bg-\[\#222222\]\/70 {
+    background-color: color-mix(in oklab, #222222 70%, transparent);
+  }
   .bg-\[\#FFD700\] {
     background-color: #FFD700;
   }
@@ -1831,6 +1834,11 @@
       outline-style: none;
     }
   }
+  .sm\:col-span-2 {
+    @media (width >= 40rem) {
+      grid-column: span 2 / span 2;
+    }
+  }
   .sm\:h-12 {
     @media (width >= 40rem) {
       height: calc(var(--spacing) * 12);
@@ -1844,6 +1852,11 @@
   .sm\:w-auto {
     @media (width >= 40rem) {
       width: auto;
+    }
+  }
+  .sm\:max-w-2xl {
+    @media (width >= 40rem) {
+      max-width: var(--container-2xl);
     }
   }
   .sm\:max-w-lg {
@@ -1864,6 +1877,11 @@
   .sm\:grid-cols-2 {
     @media (width >= 40rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .sm\:grid-cols-4 {
+    @media (width >= 40rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   .sm\:flex-row {

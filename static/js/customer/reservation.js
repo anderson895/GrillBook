@@ -276,14 +276,14 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Proof of Payment
         </h3>
-        <a href="../static/upload/${proof_of_payment}" download="${proof_of_payment}" title="Download Proof of Payment" 
-          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+        <a href="../static/upload/${proof_of_payment}" 
+          class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
+          data-img="../static/upload/${proof_of_payment}">
+          
           <img src="../static/upload/${proof_of_payment}" alt="Proof of Payment" 
-            class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
-        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
-          download
-        </span>
-
+              class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
+          
+        
         </a>
       </section>
 
@@ -292,11 +292,14 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Signed Terms
         </h3>
-        <a href="../static/upload/${terms_signed}" download="${terms_signed}" title="Download Signed Terms" 
+         <a href="../static/upload/${terms_signed}" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="View Signed Terms"
           class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
           ${termsPreviewHtml}
           <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
-            download
+            open_in_new
           </span>
         </a>
       </section>
@@ -305,26 +308,36 @@ $(document).on('click', '.viewDetailsBtn', function() {
     : '';
 
   $('#modalContent').html(`
-    <section class="mb-10 max-w-full sm:max-w-md mx-auto px-4 sm:px-0 text-center">
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 text-[#CCCCCC] text-sm leading-relaxed">
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Table Code</dt>
-          <dd>${table_code}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Seats</dt>
-          <dd>${seats}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Date & Time</dt>
-          <dd>${formattedDate}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Grand Total</dt>
-          <dd class="text-yellow-400 font-semibold">₱${grand_total}</dd>
-        </div>
-      </dl>
-    </section>
+    <section class="mb-10 max-w-full sm:max-w-2xl mx-auto px-4 sm:px-0">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    
+    <!-- Table Code -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-lg p-6 shadow-md">
+      <dt class="font-semibold mb-2 text-gray-300">Table Code</dt>
+      <dd class="text-base font-medium text-[#CCCCCC]">${table_code}</dd>
+    </div>
+
+    <!-- Seats -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-lg p-6 shadow-md">
+      <dt class="font-semibold mb-2 text-gray-300">Seats</dt>
+      <dd class="text-base font-medium text-[#CCCCCC]">${seats}</dd>
+    </div>
+
+    <!-- Date & Time -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-lg p-6 shadow-md">
+      <dt class="font-semibold mb-2 text-gray-300">Date & Time</dt>
+      <dd class="text-base font-medium text-[#CCCCCC]">${formattedDate}</dd>
+    </div>
+
+    <!-- Grand Total -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-lg p-6 shadow-md">
+      <dt class="font-semibold mb-2 text-gray-300">Grand Total</dt>
+      <dd class="text-yellow-400 text-lg font-bold">₱${grand_total}</dd>
+    </div>
+
+  </div>
+</section>
+
 
     ${menusHtml}
     ${promosHtml}
@@ -563,4 +576,26 @@ $("#rescheduleForm").submit(function (e) {
             alertify.error('An error occurred. Please try again.');
         }
     });
+});
+
+
+
+
+
+
+$(document).ready(function() {
+  // When image is clicked
+  $(document).on("click", ".open-modal", function(e) {
+    e.preventDefault(); // prevent link behavior
+    let imgSrc = $(this).data("img"); 
+    $("#modal_img").attr("src", imgSrc);
+    $("#payment_img_modal").fadeIn();
+  });
+
+  // Close modal
+  $("#close_modal, #payment_img_modal").on("click", function(e) {
+    if (e.target.id === "payment_img_modal" || e.target.id === "close_modal") {
+      $("#payment_img_modal").fadeOut();
+    }
+  });
 });

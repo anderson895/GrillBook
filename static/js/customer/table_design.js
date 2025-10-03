@@ -138,45 +138,70 @@ function openDetailsModal(data) {
   const proofHtml = data.proof_of_payment ? `<div class="flex flex-col sm:flex-row gap-6 max-w-full mx-auto px-4 sm:px-0">
     <section class="flex-1">
       <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">Proof of Payment</h3>
-      <a href="../static/upload/${data.proof_of_payment}" download="${data.proof_of_payment}" class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
-        <img src="../static/upload/${data.proof_of_payment}" alt="Proof of Payment" class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
-        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">download</span>
-      </a>
+       <a href="../static/upload/${data.proof_of_payment}" 
+          class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
+          data-img="../static/upload/${data.proof_of_payment}">
+          
+          <img src="../static/upload/${data.proof_of_payment}" alt="Proof of Payment" 
+              class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
+          
+        
+        </a>
     </section>
     <section class="flex-1">
       <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">Signed Terms</h3>
-      <a href="../static/upload/${data.terms_signed}" download="${data.terms_signed}" class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
-        ${termsPreviewHtml}
-        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">download</span>
-      </a>
+     <a href="../static/upload/${data.terms_signed}" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="View Signed Terms"
+          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+          ${termsPreviewHtml}
+          <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
+            open_in_new
+          </span>
+        </a>
     </section>
   </div>` : '';
 
   $('#modalContent').html(`
-    <section class="mb-10 max-w-full sm:max-w-md mx-auto px-4 sm:px-0 text-center">
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 text-[#CCCCCC] text-sm leading-relaxed">
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Table Code</dt>
-          <dd>${data.table_code}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Seats</dt>
-          <dd>${data.seats}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Date & Time</dt>
-          <dd>${formattedDate}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Grand Total</dt>
-          <dd class="text-yellow-400 font-semibold">₱${data.grand_total}</dd>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="font-semibold mb-1">Status</dt>
-          <dd class="${statusClass} font-semibold capitalize">${data.status}</dd>
-        </div>
-      </dl>
-    </section>
+  <section class="mb-10 max-w-full sm:max-w-2xl mx-auto px-4 sm:px-0">
+  <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-lg p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-[#CCCCCC]">
+
+    <!-- Status -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+      
+      <dt class="font-semibold mb-2">Grand Total</dt>
+      <dd class="text-yellow-400 text-lg font-bold">₱${data.grand_total}</dd>
+    </div>
+
+    <!-- Table Code -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+      <dt class="font-semibold mb-2">Table Code</dt>
+      <dd class="text-base font-medium">${data.table_code}</dd>
+    </div>
+
+    <!-- Seats -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+      <dt class="font-semibold mb-2">Seats</dt>
+      <dd class="text-base font-medium">${data.seats}</dd>
+    </div>
+
+    <!-- Date & Time -->
+    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+      <dt class="font-semibold mb-2">Date & Time</dt>
+      <dd class="text-base font-medium">${formattedDate}</dd>
+    </div>
+
+    <!-- Grand Total (optional: full width) -->
+    <div class="flex flex-col items-center justify-center sm:col-span-2 bg-[#222222]/70 rounded-md p-6">
+      <dt class="font-semibold mb-2">Status</dt>
+      <dd class="px-4 py-2 rounded-full text-sm font-semibold capitalize ${statusClass}">${data.status}</dd>
+    </div>
+
+  </div>
+</section>
+
+
     ${menusHtml}${promosHtml}${groupsHtml}${proofHtml}
   `);
 
@@ -186,3 +211,26 @@ function openDetailsModal(data) {
 // Close modal
 $('#closeModal').on('click', () => $('#detailsModal').addClass('hidden'));
 $('#detailsModal').on('click', e => { if(e.target===e.currentTarget) $('#detailsModal').addClass('hidden'); });
+
+
+
+
+
+
+
+$(document).ready(function() {
+  // When image is clicked
+  $(document).on("click", ".open-modal", function(e) {
+    e.preventDefault(); // prevent link behavior
+    let imgSrc = $(this).data("img"); 
+    $("#modal_img").attr("src", imgSrc);
+    $("#payment_img_modal").fadeIn();
+  });
+
+  // Close modal
+  $("#close_modal, #payment_img_modal").on("click", function(e) {
+    if (e.target.id === "payment_img_modal" || e.target.id === "close_modal") {
+      $("#payment_img_modal").fadeOut();
+    }
+  });
+});
