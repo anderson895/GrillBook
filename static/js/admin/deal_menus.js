@@ -128,7 +128,7 @@ function fetchDealById() {
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="text-lg font-bold text-[#FFD700]">${menu.menu_name}</h3>
                                 <button 
-                                    class="removeBtn text-red-500 hover:text-red-700 transition"
+                                    class="removeBtn cursor-pointer text-red-500 hover:text-red-700 transition"
                                     data-menu_id="${menu.menu_id}" 
                                     data-menu_name="${menu.menu_name}" 
                                     title="Remove"

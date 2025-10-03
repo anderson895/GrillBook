@@ -35,7 +35,7 @@ include "../src/components/admin/nav.php";
   <!-- Add Button -->
   <button
     id="addBtn"
-    class="w-full sm:w-auto bg-[#FFD700] text-black font-semibold 
+    class="w-full cursor-pointer sm:w-auto bg-[#FFD700] text-black font-semibold 
            text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2 rounded-md 
            hover:bg-yellow-500 transition"
   >
@@ -66,7 +66,7 @@ include "../src/components/admin/nav.php";
 <!-- Modal -->
 <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" style="display:none;">
   <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-xl mx-auto p-6 text-[#CCCCCC] relative">
-    <button id="closeAddModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
+    <button id="closeAddModal" class="absolute cursor-pointer top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
 
     <div id="modalContent" class="space-y-2">
       <h3 class="text-lg font-bold text-[#FFD700]">Create Promo Deals</h3>
@@ -93,7 +93,7 @@ include "../src/components/admin/nav.php";
         </div>
 
         <div class="text-right">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500">Create</button>
+          <button type="submit" class="bg-[#FFD700] cursor-pointer text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500">Create</button>
         </div>
       </form>
     </div>

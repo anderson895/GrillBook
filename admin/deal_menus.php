@@ -33,7 +33,7 @@ $deal_id=$_GET['deal_id'];
   <!-- Add Button -->
   <button
     id="addBtn"
-    class="mr-4 bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500 transition"
+    class="mr-4 cursor-pointer bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500 transition"
   >
     + Add Menu
   </button>
@@ -54,7 +54,7 @@ $deal_id=$_GET['deal_id'];
 <!-- Modal -->
 <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" style="display:none;">
   <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-xl mx-auto p-6 text-[#CCCCCC] relative">
-    <button id="closeAddModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
+    <button id="closeAddModal" class="cursor-pointer absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
 
     <div id="modalContent" class="space-y-2">
       <form id="frmAddMenuDeals" class="space-y-4">
@@ -71,7 +71,7 @@ $deal_id=$_GET['deal_id'];
         </div>
 
         <div class="text-center">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500">Add Menu</button>
+          <button type="submit" class="bg-[#FFD700] cursor-pointer text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500">Add Menu</button>
         </div>
       </form>
     </div>

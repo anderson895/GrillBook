@@ -128,10 +128,10 @@ $(document).ready(function () {
                  <td class="p-3 font-semibold">${deal.deal_expiration}</td>
                 <td class="p-3 text-center">
                   <a href="deal_menus?deal_id=${deal.deal_id}&&deal_name=${deal.deal_name}" 
-                    class="inline-block bg-[#FFD700] hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition">
+                    class="cursor-pointer inline-block bg-[#FFD700] hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition">
                     Menus
                   </a>
-                  <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                  <button class="removeBtn cursor-pointer bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
                     data-deal_id='${deal.deal_id}'
                     data-deal_name='${deal.deal_name}'>Remove</button>
                 </td>
