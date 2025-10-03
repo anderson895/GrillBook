@@ -1,4 +1,16 @@
 $(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+
+
     // Open modal with fadeIn
   $(document).on("click", "#payment_qr", function () {
     let imgSrc = $(this).attr("src");

@@ -198,17 +198,35 @@ include "../src/components/customer/footer.php";
         />
       </div>
 
-      <!-- Date -->
-      <div>
-        <label for="date_schedule" class="block mb-1 font-semibold">Date Schedule</label>
-        <input 
-          type="date" 
-          id="date_schedule" 
-          name="date_schedule" 
-          required 
-          class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-        />
-      </div>
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Date -->
+<div>
+  <label for="date_schedule" class="block mb-1 font-semibold">Date Schedule</label>
+  <input 
+    type="text" 
+    id="date_schedule" 
+    name="date_schedule" 
+    required 
+    class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+  />
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      flatpickr("#date_schedule", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+        minDate: "today", // disable past dates
+        onOpen: function(selectedDates, dateStr, instance) {
+          // Enlarge the calendar popup
+          instance.calendarContainer.style.transform = "scale(1.5)";
+          instance.calendarContainer.style.transformOrigin = "top left";
+        }
+      });
+    </script>
 
       <!-- Time -->
       <div>

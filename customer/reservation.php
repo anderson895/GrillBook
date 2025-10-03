@@ -159,12 +159,33 @@ include "../src/components/customer/nav.php";
         </select>
       </div>
 
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
       <!-- New Date -->
       <div class="mb-4">
         <label class="block text-sm font-medium mb-1" for="rescheduleDate">New Date</label>
         <input type="date" id="rescheduleDate" name="newDate" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
       </div>
 
+
+       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+          flatpickr("#rescheduleDate", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            minDate: "today", // disable past dates
+            onOpen: function(selectedDates, dateStr, instance) {
+              // Enlarge the calendar popup
+              instance.calendarContainer.style.transform = "scale(1.5)";
+              instance.calendarContainer.style.transformOrigin = "top left";
+            }
+          });
+        </script>
+
+      
+
+   
       <!-- New Time -->
       <div class="mb-6">
         <label class="block text-sm font-medium mb-1" for="rescheduleTime">New Time</label>
@@ -180,8 +201,6 @@ include "../src/components/customer/nav.php";
 
   </div>
 </div>
-
-
 
 
 
