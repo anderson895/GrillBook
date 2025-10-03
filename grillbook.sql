@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2025 at 06:42 PM
+-- Generation Time: Oct 03, 2025 at 07:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,13 @@ INSERT INTO `deals` (`deal_id`, `deal_name`, `deal_description`, `deal_img_banne
 (10, 'Barkada Promo', '', 'deals_6898a991cbd749.55023147.jpg', '[\"2\",\"5\"]', 'promo_deals', '2025-12-25'),
 (11, 'Bar & Grill', '', 'deals_6898a9da07bbe1.86171904.jpg', '[\"8\",\"7\"]', 'group_deals', NULL),
 (12, 'Ultimate Mixed Drinks', '', 'deals_6898a9f92f09c1.25099592.jpg', '[\"9\",\"8\",\"7\"]', 'group_deals', NULL),
-(13, 'Christmass Sale', '', 'deals_6898ab32964117.30991192.jpg', '[\"8\",\"3\",\"2\"]', 'promo_deals', '2025-09-25');
+(13, 'Christmass Sale', '', 'deals_6898ab32964117.30991192.jpg', '[\"8\",\"3\",\"2\"]', 'promo_deals', '2025-09-25'),
+(14, 'esegf', 'sefsefse', 'deals_68e00a42800368.26974082.webp', '[\"7\",\"5\"]', 'promo_deals', '2025-10-17'),
+(15, 'esrgfgdrg', 'dgdrgdr', 'deals_68e00a594bb9f0.28644501.jpg', '[\"8\"]', 'promo_deals', '2025-11-08'),
+(16, 'efrsgdrgdr', 'i,jil', 'deals_68e00a6b558e38.86893669.jpg', '[\"8\",\"7\"]', 'promo_deals', '2025-11-08'),
+(17, 'drgdrg', 'gyjgyj', 'deals_68e00a73cdef67.21999985.jpg', '[\"6\",\"5\"]', 'group_deals', NULL),
+(18, 'fes', 'hdh', 'deals_68e00a79cbe240.98474318.webp', '[\"5\"]', 'group_deals', NULL),
+(19, 'grdgh', 'tfhtf', 'deals_68e00a83a749a5.07734747.webp', '[\"6\",\"2\"]', 'group_deals', NULL);
 
 -- --------------------------------------------------------
 
@@ -221,7 +227,7 @@ ALTER TABLE `business_hours`
 -- AUTO_INCREMENT for table `deals`
 --
 ALTER TABLE `deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `menu`
