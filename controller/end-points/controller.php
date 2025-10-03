@@ -644,7 +644,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
 
         }else if ($_GET['requestType'] == 'dashboard_analytics') {
-            $db = new global_class();
+         
                 $data = $db->getDataAnalytics();
 
                 if ($data) {
@@ -659,7 +659,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                 }
 
-            
+        }else if ($_GET['requestType'] == 'fetch_all_customer_reservation_no_limit') {
+           
+                session_start();
+                $user_id=$_SESSION['user_id'];
+                $data  = $db->fetch_all_customer_reservation_no_limit($user_id);
+
+                echo json_encode([
+                    'status' => 200,
+                    'data'   => $data
+                ]);
+                exit;
 
         }else{
             echo "404";
