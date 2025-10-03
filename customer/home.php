@@ -357,8 +357,10 @@ include "../src/components/customer/footer.php";
   </div>
 </div>
 
+
+
      <!-- Modal for Enlarged QR -->
-<div id="payment_img_modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" style="display:none;">
+<div id="payment_img_modal" class="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style="display:none;">
   <div class="relative max-w-3xl">
     <img id="modal_img" src="" alt="Enlarged QR" class="max-h-screen max-w-full rounded-lg shadow-lg" />
     <!-- Close button -->
@@ -367,6 +369,7 @@ include "../src/components/customer/footer.php";
     </button>
   </div>
 </div>
+
 
 
 

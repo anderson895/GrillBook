@@ -121,18 +121,39 @@ $(function () {
 
   // ===== Function to update form state based on availability and terms =====
   function updateFormState() {
-    const shouldEnable = isTableAvailable && isTermsAccepted;
-    
-    $("#payment_proof")
-      .prop("disabled", !shouldEnable)
-      .toggleClass("cursor-not-allowed", !shouldEnable)
-      .toggleClass("cursor-pointer", shouldEnable);
+  const shouldEnable = isTableAvailable && isTermsAccepted;
 
-    $("#submitBtn")
-      .prop("disabled", !shouldEnable)
-      .toggleClass("cursor-not-allowed opacity-50", !shouldEnable)
-      .toggleClass("opacity-100 cursor-pointer", shouldEnable);
+  // Payment Proof input
+  $("#payment_proof")
+    .prop("disabled", !shouldEnable)
+    .toggleClass("cursor-not-allowed", !shouldEnable)
+    .toggleClass("cursor-pointer", shouldEnable);
+
+  // Submit Button
+  $("#submitBtn")
+    .prop("disabled", !shouldEnable)
+    .toggleClass("cursor-not-allowed opacity-50", !shouldEnable)
+    .toggleClass("opacity-100 cursor-pointer", shouldEnable);
+
+  // Availability Instruction message
+  if (shouldEnable) {
+    $("#availabilityInstruction")
+      .removeClass("bg-red-500")
+      .addClass("bg-green-600")
+      .html(`
+        <span class="material-icons mr-2">check_circle</span>
+        Table is available and terms accepted. You may now submit your reservation.
+      `);
+  } else {
+    $("#availabilityInstruction")
+      .removeClass("bg-green-600")
+      .addClass("bg-red-500")
+      .html(`
+        <span class="material-icons mr-2">event_busy</span>
+        Please check the availability of your date schedule before submitting.
+      `);
   }
+}
 
   // ===== Terms Checkbox Handling =====
   $("#terms").on("change", function () {
@@ -181,60 +202,71 @@ $(function () {
     const closeTimeFormatted = formatTime24to12(availability.close_time);
 
     if (availability.available === true) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Available!',
-            html: `
-                <p>Table <b>${$("#table_code").val()}</b> is available on 
-                <b>${availability.dayOfWeek}, ${$("#date_schedule").val()}</b> at <b>${chosenTimeFormatted}</b>.</p>
-                <br>
-                <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
-                <span style="color:green; font-weight:bold">
-                    ${openTimeFormatted} – ${closeTimeFormatted}
-                </span>
-            `,
-            confirmButtonText: 'Continue Reservation'
-        });
-        $("#reservationForm input, #reservationForm select").prop('disabled', false);
+    Swal.fire({
+        icon: 'success',
+        title: 'Available!',
+        html: `
+            <p>Table <b>${$("#table_code").val()}</b> is available on 
+            <b>${availability.dayOfWeek}, ${$("#date_schedule").val()}</b> at <b>${chosenTimeFormatted}</b>.</p>
+            <br>
+            <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
+            <span style="color:green; font-weight:bold">
+                ${openTimeFormatted} – ${closeTimeFormatted}
+            </span>
+        `,
+        confirmButtonText: 'Continue Reservation'
+    });
 
-    } else {
-        let reasonText = '';
-        if (availability.reason === "outside_hours") {
-            reasonText = `<p style="color:red"><b>Your chosen time is outside our business hours.</b></p>`;
-        } else if (availability.reason === "conflict") {
-            reasonText = `<p style="color:red"><b>There is already a confirmed reservation.</b></p>`;
-        }
+    // ✅ Mark as available
+    isTableAvailable = true;
+    updateFormState();
 
-        let conflictHTML = '';
-        if (availability.conflicts && availability.conflicts.length > 0) {
-            conflictHTML += `<h4>Existing reservations:</h4><ul>`;
-            availability.conflicts.forEach(conflict => {
-                conflictHTML += `<li>
-                    <b>${formatTime24to12(conflict.time_schedule)}</b> - Status: ${conflict.status}
-                </li>`;
-            });
-            conflictHTML += `</ul>`;
-        }
+    // Enable other fields (if meron kang gusto pang i-enable agad)
+    $("#reservationForm input, #reservationForm select").prop('disabled', false);
 
-        Swal.fire({
-            icon: 'error',
-            title: 'Not Available',
-            html: `
-                <p>Table <b>${$("#table_code").val()}</b> is not available on 
-                <b>${availability.dayOfWeek}, ${$("#date_schedule").val()}</b> at <b>${chosenTimeFormatted}</b>.</p>
-                ${reasonText}
-                ${conflictHTML}
-                <br>
-                <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
-                <span style="color:red; font-weight:bold">
-                    ${openTimeFormatted} – ${closeTimeFormatted}
-                </span>
-            `,
-            confirmButtonText: 'Choose Different Time'
-        });
-
-        $("#reservationForm input, #reservationForm select").prop('disabled', true);
+} else {
+    // kapag hindi available
+    isTableAvailable = false;
+    updateFormState();
+    
+    let reasonText = '';
+    if (availability.reason === "outside_hours") {
+        reasonText = `<p style="color:red"><b>Your chosen time is outside our business hours.</b></p>`;
+    } else if (availability.reason === "conflict") {
+        reasonText = `<p style="color:red"><b>There is already a confirmed reservation.</b></p>`;
     }
+
+    let conflictHTML = '';
+    if (availability.conflicts && availability.conflicts.length > 0) {
+        conflictHTML += `<h4>Existing reservations:</h4><ul>`;
+        availability.conflicts.forEach(conflict => {
+            conflictHTML += `<li>
+                <b>${formatTime24to12(conflict.time_schedule)}</b> - Status: ${conflict.status}
+            </li>`;
+        });
+        conflictHTML += `</ul>`;
+    }
+
+    Swal.fire({
+        icon: 'error',
+        title: 'Not Available',
+        html: `
+            <p>Table <b>${$("#table_code").val()}</b> is not available on 
+            <b>${availability.dayOfWeek}, ${$("#date_schedule").val()}</b> at <b>${chosenTimeFormatted}</b>.</p>
+            ${reasonText}
+            ${conflictHTML}
+            <br>
+            <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
+            <span style="color:red; font-weight:bold">
+                ${openTimeFormatted} – ${closeTimeFormatted}
+            </span>
+        `,
+        confirmButtonText: 'Choose Different Time'
+    });
+
+    $("#reservationForm input, #reservationForm select").prop('disabled', true);
+}
+
 }, error: function(xhr, status, error) {
             console.error('AJAX Error:', error);
             Swal.fire({
