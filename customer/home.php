@@ -176,7 +176,7 @@ include "../src/components/customer/footer.php";
       <button 
         id="closeAddModal" 
         aria-label="Close modal" 
-        class="text-white hover:text-red-500 text-3xl font-bold transition"
+        class="text-white cursor-pointer hover:text-red-500 text-3xl font-bold transition"
       >&times;</button>
     </div>
 
@@ -433,6 +433,46 @@ include "../src/components/customer/footer.php";
     </button>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal background -->
+<div id="detailsModal" 
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm hidden">
+
+  <!-- Modal content -->
+  <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-2xl mx-4 p-8
+              text-[#CCCCCC] relative max-h-[90vh] overflow-y-auto scrollbar-hidden
+              border border-gray-700">
+
+    <!-- Close button -->
+    <button id="closeModal" 
+      class="absolute top-4 cursor-pointer right-4 text-[#FFD700] hover:text-yellow-400 text-3xl font-bold transition
+             focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded"
+      aria-label="Close modal">&times;</button>
+
+    <h2 class="text-3xl font-extrabold mb-6 text-[#FFD700] tracking-wide select-none">Reservation Details</h2>
+    
+    <hr class="border-gray-600 mb-6">
+
+    <div id="modalContent" class="space-y-6 text-base leading-relaxed max-w-full">
+      <!-- Dynamic content injected here -->
+    </div>
+  </div>
+</div>
+
+
 
 
 
