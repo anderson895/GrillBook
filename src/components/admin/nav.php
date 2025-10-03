@@ -81,7 +81,7 @@
       </a>
 
       <a href="logout">
-        <button type="submit" class="flex items-center space-x-3 text-[#CCCCCC] hover:text-red-500 hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+        <button type="submit" class="flex items-center cursor-pointer space-x-3 text-[#CCCCCC] hover:text-red-500 hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
           <span class="material-icons">logout</span>
           <span>Logout</span>
         </button>

@@ -238,15 +238,14 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Proof of Payment
         </h3>
-        <a href="../static/upload/${proof_of_payment}" download="${proof_of_payment}" title="Download Proof of Payment" 
-          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+       <a href="../static/upload/${proof_of_payment}" 
+          class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
+          data-img="../static/upload/${proof_of_payment}">
+          
           <img src="../static/upload/${proof_of_payment}" alt="Proof of Payment" 
-            class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
-        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
-          download
-        </span>
-
+              class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
         </a>
+
       </section>
 
       <!-- Signed Terms -->
@@ -254,11 +253,14 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Signed Terms
         </h3>
-        <a href="../static/upload/${terms_signed}" download="${terms_signed}" title="Download Signed Terms" 
+       <a href="../static/upload/${terms_signed}" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="View Signed Terms"
           class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
           ${termsPreviewHtml}
           <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
-            download
+            open_in_new
           </span>
         </a>
       </section>
@@ -307,6 +309,31 @@ $('#detailsModal').on('click', function(e) {
     $(this).addClass('hidden');
   }
 });
+
+
+
+
+
+$(document).ready(function() {
+  // When image is clicked
+  $(document).on("click", ".open-modal", function(e) {
+    e.preventDefault(); // prevent link behavior
+    let imgSrc = $(this).data("img"); 
+    $("#modal_img").attr("src", imgSrc);
+    $("#payment_img_modal").fadeIn();
+  });
+
+  // Close modal
+  $("#close_modal, #payment_img_modal").on("click", function(e) {
+    if (e.target.id === "payment_img_modal" || e.target.id === "close_modal") {
+      $("#payment_img_modal").fadeOut();
+    }
+  });
+});
+
+
+
+
 
 
 

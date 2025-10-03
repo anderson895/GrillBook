@@ -94,7 +94,7 @@ include "../src/components/headstaff/nav.php";
 
     <!-- Close button -->
     <button id="closeModal" 
-      class="absolute top-4 right-4 text-[#FFD700] hover:text-yellow-400 text-3xl font-bold transition
+      class="absolute cursor-pointer top-4 right-4 text-[#FFD700] hover:text-yellow-400 text-3xl font-bold transition
              focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded"
       aria-label="Close modal">&times;</button>
 
@@ -105,6 +105,21 @@ include "../src/components/headstaff/nav.php";
     <div id="modalContent" class="space-y-6 text-base leading-relaxed max-w-full">
       <!-- Dynamic content injected here -->
     </div>
+  </div>
+</div>
+
+
+
+
+
+     <!-- Modal for Enlarged QR -->
+<div id="payment_img_modal" class="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style="display:none;">
+  <div class="relative max-w-3xl">
+    <img id="modal_img" src="" alt="Enlarged QR" class="max-h-screen max-w-full rounded-lg shadow-lg" />
+    <!-- Close button -->
+    <button id="close_modal" class="cursor-pointer absolute top-2 right-2 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-600">
+      ✕
+    </button>
   </div>
 </div>
 
