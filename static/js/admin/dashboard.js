@@ -2,18 +2,27 @@ let reservationsChart, salesChart;
 
 const initCharts = () => {
   // Reservation Status (Pie)
-  reservationsChart = new ApexCharts(document.querySelector("#reservationsChart"), {
-    chart: {
-      type: "donut",
-      height: 300,
-    },
-    labels: ["Pending", "Confirmed", "Completed"],
-    series: [0, 0, 0],
-    colors: ["#facc15", "#22c55e", "#3b82f6"],
-    legend: {
-      position: "bottom",
-    },
-  });
+ reservationsChart = new ApexCharts(document.querySelector("#reservationsChart"), {
+  chart: {
+    type: "donut",
+    height: 300,
+  },
+  labels: ["Pending", "Confirmed", "Completed"],
+  series: [0, 0, 0],
+  colors: ["#facc15", "#22c55e", "#3b82f6"],
+  legend: {
+    position: "bottom",
+    labels: {
+      colors: "#ffffff" // ✅ legend font color white
+    }
+  },
+  dataLabels: {
+    style: {
+      colors: ["#ffffff"] // ✅ chart labels font color white
+    }
+  }
+});
+
   reservationsChart.render();
 
   // Sales Overview (Bar)
