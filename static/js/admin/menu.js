@@ -9,6 +9,14 @@
     });
 
 
+        // Close kapag na-click sa labas ng modal content
+        $(document).on("click", "#addMenuModal", function (e) {
+        if ($(e.target).is("#addMenuModal")) {
+            $("#addMenuModal").fadeOut();
+        }
+        });
+
+
 
 
 
@@ -150,7 +158,7 @@
 
 
                             <td class="p-3 text-center">
-                                <button class="viewDetailsBtn bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                                <button class="viewDetailsBtn cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
                                 data-menu_id ='${menu.menu_id}'
                                 data-menu_name='${menu.menu_name}'
                                 data-menu_category='${menu.menu_category}'
@@ -158,7 +166,7 @@
                                 data-menu_price='${menu.menu_price}'
                                 
                                 >Details</button>
-                                <button class="removeBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
+                                <button class="removeBtn cursor-pointer bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold transition"
                                 data-menu_id='${menu.menu_id}'
                                 data-menu_name='${menu.menu_name}'>Remove</button>
                             </td>
@@ -218,6 +226,15 @@ $(document).on("click", "#closeMenuDetailsModal", function () {
   $('#menuDetailsModal').fadeOut();
 });
 
+
+
+
+// Close kapag na-click sa labas ng modal content
+$(document).on("click", "#menuDetailsModal", function (e) {
+  if ($(e.target).is("#menuDetailsModal")) {
+    $("#menuDetailsModal").fadeOut();
+  }
+});
 
 
 

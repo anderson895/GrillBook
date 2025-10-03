@@ -29,7 +29,7 @@ include "../src/components/admin/nav.php";
   <!-- Add Button -->
   <button
     id="addMenuBtn"
-    class="w-full sm:w-auto bg-[#FFD700] text-black font-semibold 
+    class="w-full cursor-pointer sm:w-auto bg-[#FFD700] text-black font-semibold 
            text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2 rounded-md 
            hover:bg-yellow-500 transition"
   >
@@ -87,7 +87,7 @@ include "../src/components/admin/nav.php";
 
 <div id="addMenuModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" style="display:none;">
   <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-xl mx-auto p-6 text-[#CCCCCC] relative">
-    <button id="closeAddGettableModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
+    <button id="closeAddGettableModal" class="cursor-pointer absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
 
     <div id="modalContent" class="space-y-4">
       <h3 class="text-lg font-bold text-[#FFD700]">MENU DETAILS</h3>
@@ -135,7 +135,7 @@ include "../src/components/admin/nav.php";
 
         <!-- Submit Button -->
         <div class="text-right">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">Submit</button>
+          <button type="submit" class="cursor-pointer bg-[#FFD700] text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">Submit</button>
         </div>
 
       </form>
@@ -159,7 +159,7 @@ include "../src/components/admin/nav.php";
 
 <div id="menuDetailsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" style="display:none;">
   <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-xl w-full max-w-xl mx-auto p-6 text-[#CCCCCC] relative">
-    <button id="closeMenuDetailsModal" class="absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
+    <button id="closeMenuDetailsModal" class="cursor-pointer absolute top-2 right-2 text-white hover:text-red-500 text-xl">&times;</button>
 
     <div id="modalContent" class="space-y-4">
       <h3 class="text-lg font-bold text-[#FFD700]">DETAILS</h3>
@@ -205,7 +205,7 @@ include "../src/components/admin/nav.php";
         </div>
         <!-- Submit Button -->
         <div class="text-right">
-          <button type="submit" class="bg-[#FFD700] text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">UPDATE</button>
+          <button type="submit" class="bg-[#FFD700] cursor-pointer text-black font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition">UPDATE</button>
         </div>
 
       </form>
