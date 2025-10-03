@@ -934,6 +934,8 @@ public function fetch_all_deals_and_menu($deal_type) {
 
 
 
+
+    
 public function checkAvailability($table_code, $date_schedule, $time_schedule) {
     // 1. Kunin day of week
     $dayOfWeek = date('l', strtotime($date_schedule)); // e.g. "Sunday"

@@ -184,19 +184,26 @@ include "../src/components/customer/footer.php";
       <input type="hidden" id="table_code" name="table_code" />
 
       <!-- Seats -->
-      <div>
-        <label for="seats" class="block mb-1 font-semibold">How many seats</label>
-        <input 
-          type="number" 
-          id="seats" 
-          name="seats" 
-          min="1" 
-          max="6" 
-          placeholder="Enter number of seats" 
-          required 
-          class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-        />
-      </div>
+    <div>
+      <label for="seats" class="block mb-1 font-semibold">How many seats</label>
+      <input 
+        type="number" 
+        id="seats" 
+        name="seats" 
+        min="1" 
+        max="6" 
+        placeholder="Enter number of seats" 
+        required 
+        class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+      />
+      <!-- Warning Message (default visible) -->
+      <p id="seats-warning" class="text-red-500 text-sm mt-1">Maximum number of seats is 6.</p>
+    </div>
+
+    <!-- Legend Section -->
+    <div id="table-legend" class="flex gap-2 mt-2">
+      <!-- Table icons will appear here -->
+    </div>
 
       
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
