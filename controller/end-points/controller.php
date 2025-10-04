@@ -27,11 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }else if ($_POST['requestType'] == 'reschedule') {
                    $reservationId = $_POST['reservationId'] ?? null;
                     $reason = $_POST['reason'] ?? null;
+                    $seats = $_POST['seats'] ?? null;
                     $newDate = $_POST['newDate'] ?? null;
                     $newTime = $_POST['newTime'] ?? null;
 
 
-                    $result = $db->reschedule($reservationId, $reason, $newDate,$newTime);
+                    $result = $db->reschedule($reservationId, $reason,$seats, $newDate,$newTime);
 
                     if (!empty($result['success']) && $result['success']) {
                         echo json_encode([

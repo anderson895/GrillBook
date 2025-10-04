@@ -870,6 +870,9 @@
   .border-\[\#333\] {
     border-color: #333;
   }
+  .border-\[\#FFD700\] {
+    border-color: #FFD700;
+  }
   .border-amber-500 {
     border-color: var(--color-amber-500);
   }
@@ -924,6 +927,9 @@
   .bg-\[\#1A1A1A\] {
     background-color: #1A1A1A;
   }
+  .bg-\[\#1A1A1A\]\/70 {
+    background-color: color-mix(in oklab, #1A1A1A 70%, transparent);
+  }
   .bg-\[\#1A1A1A\]\/90 {
     background-color: color-mix(in oklab, #1A1A1A 90%, transparent);
   }
@@ -938,6 +944,9 @@
   }
   .bg-\[\#2B2B2B\] {
     background-color: #2B2B2B;
+  }
+  .bg-\[\#333\] {
+    background-color: #333;
   }
   .bg-\[\#222222\] {
     background-color: #222222;
@@ -1254,6 +1263,9 @@
   }
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+  .text-\[\#1A1A1A\] {
+    color: #1A1A1A;
   }
   .text-\[\#CCCCCC\] {
     color: #CCCCCC;
@@ -1572,6 +1584,20 @@
     &:hover {
       @media (hover: hover) {
         background-color: #2B2B2B;
+      }
+    }
+  }
+  .hover\:bg-\[\#444\] {
+    &:hover {
+      @media (hover: hover) {
+        background-color: #444;
+      }
+    }
+  }
+  .hover\:bg-\[\#e6c200\] {
+    &:hover {
+      @media (hover: hover) {
+        background-color: #e6c200;
       }
     }
   }

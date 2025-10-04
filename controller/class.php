@@ -148,14 +148,15 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
     $request_details = json_decode($result['request_details'], true);
 
-    if (isset($request_details['newDate']) && isset($request_details['newTime'])) {
+    if (isset($request_details['newDate']) && isset($request_details['newTime'])&& isset($request_details['seats'])) {
         $newDate = $request_details['newDate'];
         $newTime = $request_details['newTime'];
+        $newSeats = $request_details['seats'];
 
         // Update status to 'pending', date_schedule, time_schedule, and clear request_details
         $stmt = $this->conn->prepare(
             "UPDATE reservations 
-             SET status = 'pending', date_schedule = ?, time_schedule = ?, request_details = NULL 
+             SET status = 'pending', date_schedule = ?, time_schedule = ?,seats = ?, request_details = NULL 
              WHERE id = ?"
         );
 
@@ -166,7 +167,7 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
             ];
         }
 
-        $stmt->bind_param("ssi", $newDate, $newTime, $reservation_id);
+        $stmt->bind_param("ssii", $newDate, $newTime,$newSeats, $reservation_id);
 
         if ($stmt->execute()) {
             return [
@@ -1755,12 +1756,13 @@ public function count_all_customer_reservation($user_id) {
 
 
 
-        public function reschedule($reservationId, $reason, $newDate,$newTime) {
+        public function reschedule($reservationId, $reason,$seats, $newDate,$newTime) {
             // Create JSON from reason and new date
             $requestDetails = json_encode([
                 'reason' => $reason,
                 'newDate' => $newDate,
-                'newTime' => $newTime
+                'newTime' => $newTime,
+                'seats' => $seats
             ]);
 
             // Prepare statement

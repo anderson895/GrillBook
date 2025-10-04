@@ -134,23 +134,39 @@ include "../src/components/customer/nav.php";
 
 
 
-
-<div id="rescheduleModal" class="fixed inset-0 hidden items-center justify-center z-50" style="background-color: rgba(0, 0, 0, 0.3);">
-  <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-sm p-6 mx-4 text-black relative">
-    <h2 class="text-lg font-semibold mb-4 text-center">Request New Schedule</h2>
+<div id="rescheduleModal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/40">
+  <div class="bg-[#1A1A1A] rounded-xl shadow-lg w-11/12 max-w-sm p-6 mx-4 text-[#CCCCCC] relative">
+    <h2 class="text-lg font-semibold mb-4 text-center text-[#FFD700]">Request New Schedule</h2>
 
     <!-- Spinner Overlay -->
-    <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50 bg-white/70" style="display:none;">
-        <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    <div id="spinner" class="absolute inset-0 flex items-center justify-center z-50 bg-[#1A1A1A]/70" style="display:none;">
+      <div class="w-12 h-12 border-4 border-[#FFD700] border-t-transparent rounded-full animate-spin"></div>
     </div>
 
     <form id="rescheduleForm">
       <input type="hidden" id="rescheduleReservationId" name="reservationId">
 
+      <!-- Seats -->
+      <div class="mb-4">
+        <label for="seats" class="block mb-1 font-semibold">How many seats</label>
+        <input 
+          type="number" 
+          id="seats" 
+          name="seats" 
+          min="1" 
+          max="6" 
+          placeholder="Enter number of seats" 
+          required 
+          class="w-full rounded-lg bg-[#2A2A2A] text-[#CCCCCC] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+        />
+        <p id="seats-warning" class="text-red-500 text-sm mt-1">Maximum number of seats is 6.</p>
+      </div>
+
       <!-- Reason -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-1" for="rescheduleReason">Reason</label>
-        <select id="rescheduleReason" name="reason" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+        <label class="block mb-1 font-semibold" for="rescheduleReason">Reason</label>
+        <select id="rescheduleReason" name="reason" 
+          class="w-full bg-[#2A2A2A] text-[#CCCCCC] border border-[#333] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
           <option value="" disabled selected>Select reason</option>
           <option value="personal">Personal reason</option>
           <option value="sick">Sick</option>
@@ -159,13 +175,20 @@ include "../src/components/customer/nav.php";
         </select>
       </div>
 
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+     
 
-      <!-- New Date -->
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+
+       <!-- Date -->
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-1" for="rescheduleDate">New Date</label>
-        <input type="date" id="rescheduleDate" name="newDate" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+        <label class="block mb-1 font-semibold" for="rescheduleDate">New Date</label>
+        <input type="date" id="rescheduleDate" name="newDate"
+          class="w-full bg-[#2A2A2A] text-[#CCCCCC] border border-[#333] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
       </div>
+   
 
 
        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -183,22 +206,21 @@ include "../src/components/customer/nav.php";
           });
         </script>
 
-      
 
-   
-      <!-- New Time -->
+
+      <!-- Time -->
       <div class="mb-6">
-        <label class="block text-sm font-medium mb-1" for="rescheduleTime">New Time</label>
-        <input type="time" id="rescheduleTime" name="newTime" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+        <label class="block mb-1 font-semibold" for="rescheduleTime">New Time</label>
+        <input type="time" id="rescheduleTime" name="newTime"
+          class="w-full bg-[#2A2A2A] text-[#CCCCCC] border border-[#333] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
       </div>
 
       <!-- Action Buttons -->
       <div class="flex justify-end space-x-3">
-        <button type="button" id="closeRescheduleModal" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 text-sm">Cancel</button>
-        <button type="submit" id="submitReschedule" class="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600 text-sm">Submit</button>
+        <button type="button" id="closeRescheduleModal" class="px-4 py-2 bg-[#333] hover:bg-[#444] rounded-md text-sm text-[#CCCCCC]">Cancel</button>
+        <button type="submit" id="submitReschedule" class="px-4 py-2 bg-[#FFD700] hover:bg-[#e6c200] rounded-md text-sm text-[#1A1A1A]">Submit</button>
       </div>
     </form>
-
   </div>
 </div>
 

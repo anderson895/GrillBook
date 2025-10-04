@@ -1,3 +1,47 @@
+
+$(document).ready(function () {
+  $("#seats").on("input", function () {
+    let val = $(this).val();
+
+    // Handle non-numeric
+    if (isNaN(val) || val === "") {
+      $("#table-legend").empty();
+      $("#seats-warning").removeClass("hidden"); // Show warning
+      return;
+    }
+
+    val = parseInt(val, 10);
+
+    // Restrict value between 1 and 6
+    if (val < 1) val = 1;
+    if (val > 6) val = 6;
+
+    $(this).val(val);
+
+    // Hide warning if value is valid
+    if (val >= 1 && val <= 6) {
+      $("#seats-warning").addClass("hidden");
+    } else {
+      $("#seats-warning").removeClass("hidden");
+    }
+
+    // Update legend
+    const legendContainer = $("#table-legend");
+    legendContainer.empty();
+    for (let i = 0; i < val; i++) {
+      legendContainer.append('<div class="w-6 h-6 bg-yellow-400 rounded shadow-md"></div>');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
 $(document).ready(function () {
    
 
@@ -599,3 +643,14 @@ $(document).ready(function() {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+

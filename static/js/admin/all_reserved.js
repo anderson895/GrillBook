@@ -223,11 +223,13 @@ $(document).on('click', '#btnViewRequest', function() {
         alert("Invalid request details format.");
         return;
     }
+    
 
     // Safely access properties
     const reason = requestDetails.reason || "-";
     const newDate = requestDetails.newDate || "-";
     let newTime = requestDetails.newTime || "-";
+    let newSeats = requestDetails.seats || "-";
 
     // Convert to 12-hour format with AM/PM
     if (newTime !== "-") {
@@ -250,6 +252,11 @@ $(document).on('click', '#btnViewRequest', function() {
         <div class="flex justify-between border-b border-gray-200 pb-1">
             <span class="font-medium text-gray-600">New Time:</span>
             <span>${newTime}</span>
+        </div>
+
+        <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="font-medium text-gray-600">New Seats:</span>
+            <span>${newSeats}</span>
         </div>
     `;
 
