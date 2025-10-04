@@ -1,7 +1,8 @@
 <?php
-include "../src/components/admin/header.php";
-include "../src/components/admin/nav.php";
+include "../src/components/headstaff/header.php";
+include "../src/components/headstaff/nav.php";
 ?>
+
 <style>
   /* Hide scrollbar but keep scroll */
 .scrollbar-hidden::-webkit-scrollbar {

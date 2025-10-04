@@ -1,6 +1,6 @@
 <?php
-include "../src/components/admin/header.php";
-include "../src/components/admin/nav.php";
+include "../src/components/headstaff/header.php";
+include "../src/components/headstaff/nav.php";
 ?>
 
 <!-- Top Bar -->
@@ -77,7 +77,7 @@ include "../src/components/admin/nav.php";
       </div>
     </div>
     <div class="bg-[#1A1A1A] shadow rounded-xl p-4 flex items-center space-x-4">
-      <span class="material-icons text-[#FFD700] text-4xl">attach_money</span>
+      <span class="material-icons text-[#FFD700] text-4xl">₱</span>
       <div>
         <p class="text-gray-400">Total Sales</p>
         <h2 class="text-3xl font-bold text-green-400" id="totalSales">₱0.00</h2>
