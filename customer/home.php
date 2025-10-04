@@ -15,6 +15,11 @@ include "../src/components/customer/nav.php";
 }
 
 
+/* PREV AND NEXT ARROW */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #707070 !important;               /* White icon/text */
+}
 
 </style>
 

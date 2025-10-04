@@ -596,6 +596,9 @@ function submitReservation(formData) {
     }
   });
 }
+
+
+
 function initSwiper(selector) {
   new Swiper(selector, {
     slidesPerView: 1,
