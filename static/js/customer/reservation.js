@@ -118,6 +118,7 @@ $(document).ready(function () {
       // Reschedule button: enabled if confirmed
       const rescheduleButton = `<button class="rescheduleBtn cursor-pointer bg-green-500 hover:bg-green-600 text-black px-3 py-1 rounded text-xs font-semibold transition ${isConfirmed ? '' : 'cursor-not-allowed opacity-50'}"
           data-reservation_id='${data.id}'
+          data-table_code='${data.table_code}'
           ${isConfirmed ? '' : 'disabled'}
         >
           Re-schedule
@@ -566,6 +567,10 @@ $(document).on('click', '.cancelBtn', function() {
 // Open modal when Reschedule button is clicked
 $(document).on('click', '.rescheduleBtn', function() {
   const reservationId = $(this).data('reservation_id');
+
+   const table_code = $(this).data('table_code');
+   $("#table_code").val(table_code);
+
   $('#rescheduleReservationId').val(reservationId); // set hidden input
   $('#rescheduleReason').val(''); // clear previous reason
   $('#rescheduleDate').val(''); // clear previous date
@@ -585,42 +590,188 @@ $('#rescheduleModal').on('click', function(e) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 $("#rescheduleForm").submit(function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    $('#spinner').show();
-    $('#submitReschedule').prop('disabled', true);
+  $('#spinner').show();
+  $('#submitReschedule').prop('disabled', true);
 
-    var formData = $(this).serializeArray(); 
-    formData.push({ name: 'requestType', value: 'reschedule' });
-    var serializedData = $.param(formData);
+  const table_code = $("#table_code").val();
+  const date = $("#rescheduleDate").val();
+  const time = $("#rescheduleTime").val();
 
-    $.ajax({
-        type: "POST",
-        url: "../controller/end-points/controller.php",
-        data: serializedData,
-        dataType: 'json',
-        success: function (response) {
-            if (response.status === "success") {
-                alertify.success('Request Sent Successfully');
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            } else {
-                $('#spinner').hide();
-                $('#submitReschedule').prop('disabled', false);
-                console.log(response); 
-                alertify.error(response.message);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log(xhr.responseText);
+  if (!table_code || !date || !time) {
+    $('#spinner').hide();
+    $('#submitReschedule').prop('disabled', false);
+    Swal.fire({
+      icon: 'warning',
+      title: 'Missing Information',
+      text: 'Please fill in all fields: Table Code, Date, and Time'
+    });
+    return;
+  }
+
+  // Step 1: Check Availability
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    dataType: "json",
+    data: {
+      requestType: "checkAvailability",
+      table_code: table_code,
+      date_schedule: date,
+      time_schedule: time
+    },
+    success: function (response) {
+      const availability = response.availability;
+
+      const chosenTimeFormatted = formatTime24to12($("#rescheduleTime").val());
+      const openTimeFormatted = formatTime24to12(availability.open_time);
+      const closeTimeFormatted = formatTime24to12(availability.close_time);
+
+      if (availability.available === true) {
+        // Show success alert and confirm to continue
+        Swal.fire({
+          icon: 'success',
+          title: 'Available!',
+          html: `
+            <p>Table <b>${table_code}</b> is available on 
+            <b>${availability.dayOfWeek}, ${date}</b> at <b>${chosenTimeFormatted}</b>.</p>
+            <br>
+            <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
+            <span style="color:green; font-weight:bold">
+              ${openTimeFormatted} – ${closeTimeFormatted}
+            </span>
+          `,
+          confirmButtonText: 'Continue Reservation'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Proceed to submit reschedule form
+            submitRescheduleRequest();
+          } else {
             $('#spinner').hide();
             $('#submitReschedule').prop('disabled', false);
-            alertify.error('An error occurred. Please try again.');
+          }
+        });
+
+      } else {
+        // Handle not available
+        let reasonText = '';
+        if (availability.reason === "outside_hours") {
+          reasonText = `<p style="color:red"><b>Your chosen time is outside our business hours.</b></p>`;
+        } else if (availability.reason === "conflict") {
+          reasonText = `<p style="color:red"><b>There is already a confirmed reservation.</b></p>`;
         }
+
+        let conflictHTML = '';
+        if (availability.conflicts && availability.conflicts.length > 0) {
+          conflictHTML += `<h4>Existing reservations:</h4><ul>`;
+          availability.conflicts.forEach(conflict => {
+            conflictHTML += `<li>
+              <b>${formatTime24to12(conflict.time_schedule)}</b> - Status: ${conflict.status}
+            </li>`;
+          });
+          conflictHTML += `</ul>`;
+        }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Not Available',
+          html: `
+            <p>Table <b>${table_code}</b> is not available on 
+            <b>${availability.dayOfWeek}, ${date}</b> at <b>${chosenTimeFormatted}</b>.</p>
+            ${reasonText}
+            ${conflictHTML}
+            <br>
+            <strong>Business Hours (${availability.dayOfWeek}):</strong><br>
+            <span style="color:red; font-weight:bold">
+              ${openTimeFormatted} – ${closeTimeFormatted}
+            </span>
+          `,
+          confirmButtonText: 'Choose Different Time'
+        });
+
+        $('#spinner').hide();
+        $('#submitReschedule').prop('disabled', false);
+      }
+    },
+    error: function (xhr, status, error) {
+      $('#spinner').hide();
+      $('#submitReschedule').prop('disabled', false);
+      console.log(xhr.responseText);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while checking availability. Please try again.'
+      });
+    }
+  });
+
+  // Step 2: Function to submit final request (only if confirmed)
+  function submitRescheduleRequest() {
+    const formData = $("#rescheduleForm").serializeArray();
+    formData.push({ name: "requestType", value: "reschedule" });
+
+    $.ajax({
+      type: "POST",
+      url: "../controller/end-points/controller.php",
+      data: $.param(formData),
+      dataType: "json",
+      success: function (response) {
+        $('#spinner').hide();
+        $('#submitReschedule').prop('disabled', false);
+
+        if (response.status === "success") {
+          Swal.fire({
+            icon: 'success',
+            title: 'Request Sent Successfully!',
+            timer: 1500,
+            showConfirmButton: false
+          });
+          setTimeout(() => location.reload(), 1500);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Request Failed',
+            text: response.message || 'An unknown error occurred.'
+          });
+        }
+      },
+      error: function (xhr, status, error) {
+        $('#spinner').hide();
+        $('#submitReschedule').prop('disabled', false);
+        console.log(xhr.responseText);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while submitting your request. Please try again.'
+        });
+      }
     });
+  }
 });
+
+// ✅ Utility function: 24h → 12h format
+function formatTime24to12(time) {
+  if (!time) return '';
+  const [hour, minute] = time.split(':');
+  const h = parseInt(hour);
+  const suffix = h >= 12 ? 'PM' : 'AM';
+  const formatted = ((h + 11) % 12 + 1) + ':' + minute.padStart(2, '0') + ' ' + suffix;
+  return formatted;
+}
 
 
 

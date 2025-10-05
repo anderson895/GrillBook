@@ -145,6 +145,7 @@ include "../src/components/customer/nav.php";
 
     <form id="rescheduleForm">
       <input type="hidden" id="rescheduleReservationId" name="reservationId">
+      <input type="hidden" id="table_code" name="table_code" />
 
       <!-- Seats -->
       <div class="mb-4">
@@ -214,6 +215,9 @@ include "../src/components/customer/nav.php";
         <input type="time" id="rescheduleTime" name="newTime"
           class="w-full bg-[#2A2A2A] text-[#CCCCCC] border border-[#333] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFD700]">
       </div>
+
+      
+
 
       <!-- Action Buttons -->
       <div class="flex justify-end space-x-3">
