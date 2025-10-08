@@ -13,15 +13,52 @@ $(document).ready(function () {
   });
 
   // Status → color mapping
-  const statusColors = {
-    "pending": { bg: "var(--color-yellow-200)", border: "var(--color-yellow-500)" },
-    "confirmed": { bg: "var(--color-green-200)", border: "var(--color-green-500)" },
-    "cancelled": { bg: "var(--color-red-200)", border: "var(--color-red-500)" },
-    "request cancel": { bg: "var(--color-orange-200)", border: "var(--color-orange-500)" },
-    "request new schedule": { bg: "var(--color-purple-200)", border: "var(--color-purple-500)" }
-  };
+const statusColors = {
+  "pending": { bg: "var(--color-yellow-200)", border: "var(--color-yellow-500)" },
+  "confirmed": { bg: "var(--color-green-200)", border: "var(--color-green-500)" },
+  "cancelled": { bg: "var(--color-red-200)", border: "var(--color-red-500)" },
+  "request cancel": { bg: "var(--color-orange-200)", border: "var(--color-orange-500)" },
+  "request new schedule": { bg: "var(--color-purple-200)", border: "var(--color-purple-500)" },
+  "available": { bg: "var(--color-blue-200)", border: "var(--color-blue-500)" },
+  "unavailable": { bg: "var(--color-gray-300)", border: "var(--color-gray-500)" }
+};
 
-  // Fetch and update table statuses
+
+  // 🔹 Fetch all table availability (today)
+  function fetchTableAvailability() {
+    $.ajax({
+      url: "../controller/end-points/controller.php",
+      method: "GET",
+      data: { requestType: "fetch_all_table_availability_today" },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === 200 && Array.isArray(response.data)) {
+          response.data.forEach(t => {
+            const cell = $(`.grid [data-value='${t.table_code}']`);
+            const flexEl = cell.find(".table-name").closest(".flex");
+            const color = statusColors[t.status] || {};
+
+            flexEl.css({
+              "background-color": color.bg || "",
+              "border-color": color.border || ""
+            });
+
+            // If unavailable → disable new scheduling
+            if (t.status === "unavailable") {
+              cell.removeClass("setSchedule");
+            } else {
+              cell.addClass("setSchedule");
+            }
+          });
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching table availability:", error);
+      }
+    });
+  }
+
+  // 🔹 Fetch reservation details (customer-specific)
   function fetchReservations() {
     $.ajax({
       url: "../controller/end-points/controller.php",
@@ -32,12 +69,15 @@ $(document).ready(function () {
         if (response.status === 200 && Array.isArray(response.data)) {
           response.data.forEach(res => {
             const cell = $(`.grid [data-value='${res.table_code}']`);
+            const flexEl = cell.find(".table-name").closest(".flex");
             const status = (res.status || "").toLowerCase().trim();
 
             if (cell.length) {
-              const flexEl = cell.find(".table-name").closest(".flex");
-              flexEl.css({ "background-color": statusColors[status]?.bg || "", 
-                           "border-color": statusColors[status]?.border || "" });
+              const color = statusColors[status] || {};
+              flexEl.css({
+                "background-color": color.bg || "",
+                "border-color": color.border || ""
+              });
 
               // Attach reservation data for modal
               cell.data({
@@ -64,17 +104,24 @@ $(document).ready(function () {
     });
   }
 
-  fetchReservations();
-  setInterval(fetchReservations, 1000);
+  // 🔁 Refresh every second
+  function refreshData() {
+    fetchTableAvailability();
+    fetchReservations();
+  }
+
+  refreshData();
+  setInterval(refreshData, 1000);
 });
 
-// Open modal on reserved table click
+
+// 🟨 Modal open (unchanged)
 $(document).on('click', '.grid > div', function () {
   const data = $(this).data();
-  if (!data || !data.id) return; // skip if no reservation
-
+  if (!data || !data.id) return;
   openDetailsModal(data);
 });
+
 
 // Details modal function
 function openDetailsModal(data) {

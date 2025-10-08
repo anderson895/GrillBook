@@ -50,6 +50,17 @@ include "../src/components/customer/nav.php";
     <div class="w-5 h-5 bg-purple-200 border border-purple-500 rounded"></div>
     <span class="font-medium text-gray-700">Request New Schedule</span>
   </div>
+
+  <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer">
+    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    <span class="font-medium text-gray-700">Available</span>
+  </div>
+  <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer">
+    <div class="w-5 h-5 bg-gray-300 border border-gray-500 rounded"></div>
+    <span class="font-medium text-gray-700">Unavailable</span>
+  </div>
+
+
 </div>
 
 
@@ -150,34 +161,36 @@ include "../src/components/customer/nav.php";
 
   </div>
 
-<!-- Schedule Legend Section -->
+
+
+  <!-- Schedule Legend Section -->
 <div class="flex flex-wrap gap-4 mt-6 mb-6">
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    
     <span class="font-medium text-gray-700">Sunday: 5 PM - 3 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    
     <span class="font-medium text-gray-700">Monday: 5 PM - 2 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    
     <span class="font-medium text-gray-700">Tuesday: 5 PM - 2 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+ 
     <span class="font-medium text-gray-700">Wednesday: 5 PM - 2 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    
     <span class="font-medium text-gray-700">Thursday: 5 PM - 2 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+   
     <span class="font-medium text-gray-700">Friday: 7 PM - 4 AM</span>
   </div>
   <div class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
-    <div class="w-5 h-5 bg-blue-200 border border-blue-500 rounded"></div>
+    
     <span class="font-medium text-gray-700">Saturday: 7 PM - 4 AM</span>
   </div>
 </div>

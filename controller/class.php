@@ -1578,6 +1578,22 @@ public function fetch_all_customer_reservation($limit, $offset,$user_id) {
 
 
 
+public function fetch_all_reservations_today() {
+    $query = "SELECT table_code FROM reservations 
+              WHERE DATE(date_schedule) = CURDATE() 
+              AND status NOT IN ('cancelled')";
+    $result = $this->conn->query($query);
+
+    $data = [];
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row['table_code'];
+        }
+    }
+    return $data; // returns array of table codes reserved today
+}
+
+
 
 
 

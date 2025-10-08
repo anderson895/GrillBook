@@ -672,6 +672,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 exit;
 
+        }else if ($_GET['requestType'] === 'fetch_all_table_availability_today') {
+                // Hardcoded table list (same as in HTML)
+                $allTables = [
+                    'G6','G5','Take out 1','Take out 2','F3','F4',
+                    'G4','G3','E4','E8','F1','F2',
+                    'G2','G1','E3','E7','C6','D6','DJ',
+                    'E2','E6','C5','D5','SOUNDECT',
+                    'A5','B6','E1','E5','C4','D4','ACOUSTIC',
+                    'A4','B5','C3','D3','VIP 3','VIP 2',
+                    'A3','B4','RESERV.','C2','D2','BILLIARDS',
+                    'A2','B3','MEETING','C1','D1','VIP 1',
+                    'A1','B2','COMPLI','B1'
+                ];
+
+                // Fetch reserved tables for today
+                $reservedTables = $db->fetch_all_reservations_today();
+
+                // Build availability list
+                $availability = [];
+                foreach ($allTables as $table) {
+                    $availability[] = [
+                        'table_code' => $table,
+                        'status' => in_array($table, $reservedTables) ? 'unavailable' : 'available'
+                    ];
+                }
+
+                echo json_encode([
+                    'status' => 200,
+                    'data' => $availability
+                ]);
+                exit;
         }else{
             echo "404";
         }
