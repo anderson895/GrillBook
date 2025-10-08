@@ -105,13 +105,25 @@ const statusColors = {
   }
 
   // 🔁 Refresh every second
+  // function refreshData() {
+  //   fetchTableAvailability();
+  //   fetchReservations();
+  // }
+
+  // refreshData();
+  // setInterval(refreshData, 1000);
+
+    // ✅ Load data once when page loads
   function refreshData() {
     fetchTableAvailability();
     fetchReservations();
   }
 
-  refreshData();
-  setInterval(refreshData, 1000);
+  refreshData(); // Run once on page load
+
+
+
+
 });
 
 
