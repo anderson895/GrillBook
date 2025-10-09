@@ -51,6 +51,7 @@ include "../src/components/admin/nav.php";
       <tr>
         <th class="p-3">#</th>
         <th class="p-3 text-center">Date</th>
+        <th class="p-3 text-center">Customer Name</th>
         <th class="p-3 text-center">Reservation Code</th>
         <th class="p-3 text-center">Table</th>
         <th class="p-3 text-center">Schedule</th>

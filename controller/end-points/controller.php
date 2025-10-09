@@ -166,12 +166,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
         }else if ($_POST['requestType'] == 'ApproveReservationStatus') {
-
                 $reservation_id = $_POST['reservation_id'];
                 $status = $_POST['status'];
+
+                if($status==="confirmed"){
+                    $result = $db->ApproveReservationStatus_with_validation($reservation_id, $status);
+
+                }else{
+
+                    $result = $db->ApproveReservationStatus($reservation_id, $status);
+
+                }
+               
                 
 
-                $result = $db->ApproveReservationStatus($reservation_id, $status);
+                
 
                 if ($result['success']) {
                     echo json_encode([

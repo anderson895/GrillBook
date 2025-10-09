@@ -212,6 +212,68 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
 
 
+
+       public function ApproveReservationStatus_with_validation($reservation_id, $status) {
+    // First, get the reservation details
+    $stmt = $this->conn->prepare("SELECT table_code, date_schedule, time_schedule, status FROM `reservations` WHERE id = ?");
+    $stmt->bind_param("i", $reservation_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        return [
+            'success' => false,
+            'message' => 'Reservation not found.'
+        ];
+    }
+
+    $reservation = $result->fetch_assoc();
+
+    // Only check if we're trying to approve to "confirmed"
+    if ($status === 'confirmed') {
+        $table_code = $reservation['table_code'];
+        $date_schedule = $reservation['date_schedule'];
+        $time_schedule = $reservation['time_schedule'];
+
+        // Check if another reservation is already confirmed for the same table and schedule
+        $checkStmt = $this->conn->prepare("
+            SELECT COUNT(*) as cnt 
+            FROM `reservations` 
+            WHERE table_code = ? AND date_schedule = ? AND time_schedule = ? AND status = 'confirmed' AND id != ?
+        ");
+        $checkStmt->bind_param("sssi", $table_code, $date_schedule, $time_schedule, $reservation_id);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result()->fetch_assoc();
+
+        if ($checkResult['cnt'] > 0) {
+            return [
+                'success' => false,
+                'message' => 'Cannot approve. Another reservation is already confirmed for the same table and schedule.'
+            ];
+        }
+    }
+
+    // Proceed with the update
+    $updateStmt = $this->conn->prepare("UPDATE `reservations` SET `status` = ? WHERE `id` = ?");
+    $updateStmt->bind_param("si", $status, $reservation_id);
+
+    if ($updateStmt->execute()) {
+        return [
+            'success' => true,
+            'message' => 'Reservation status updated successfully.'
+        ];
+    } else {
+        return [
+            'success' => false,
+            'message' => $updateStmt->error
+        ];
+    }
+}
+
+
+
+
+
     public function fetch_all_menu() {
         $query = $this->conn->prepare("SELECT * FROM menu
         where menu_status='1'
@@ -1039,6 +1101,8 @@ public function fetch_all_reserve_request($limit, $offset) {
     // Step 1: Get reservations only
     $query = $this->conn->prepare("
         SELECT * FROM reservations
+        LEFT JOIN user
+        ON reservations.reserve_user_id = user.user_id 
         WHERE status = 'pending' OR status = 'request cancel'
         ORDER BY id DESC
         LIMIT ? OFFSET ?
