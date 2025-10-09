@@ -518,7 +518,8 @@ function submitReservation(formData) {
                 text: 'Your reservation has been submitted successfully.',
                 confirmButtonText: 'OK'
             }).then(() => {
-                closeModal();
+                // closeModal();
+                location.reload();
             });
         },
         error: function(xhr, status, error) {

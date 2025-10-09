@@ -1580,7 +1580,7 @@ public function fetch_all_customer_reservation($limit, $offset,$user_id) {
 
 public function fetch_all_reservations_today() {
     $query = "SELECT table_code FROM reservations 
-              WHERE DATE(date_schedule) = CURDATE() 
+              WHERE DATE(date_schedule) = CURDATE() AND STATUS ='confirmed' 
               AND status NOT IN ('cancelled')";
     $result = $this->conn->query($query);
 
