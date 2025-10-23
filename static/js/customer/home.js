@@ -570,13 +570,30 @@ function fetchMenus() {
 
               <!-- Quantity Input -->
               <div class="flex items-center justify-center mt-2 space-x-2">
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="menu-${menu.menu_id}" data-change="-1">−</button>
-                <input type="number" min="1" value="1" 
-                  id="menu-${menu.menu_id}"
-                  name="menu_quantity[${menu.menu_id}]" 
-                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="menu-${menu.menu_id}" data-change="1">+</button>
-              </div>
+                  <button 
+                    type="button" 
+                    class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition"
+                    data-target="menu-${menu.menu_id}" 
+                    data-change="-1"
+                  >−</button>
+
+                  <input 
+                    type="number" 
+                    min="1" 
+                    value="1" 
+                    id="menu-${menu.menu_id}"
+                    name="menu_quantity[${menu.menu_id}]" 
+                    class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" 
+                  />
+
+                  <button 
+                    type="button" 
+                    class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition"
+                    data-target="menu-${menu.menu_id}" 
+                    data-change="1"
+                  >+</button>
+                </div>
+
             </div>
           `);
         });
@@ -642,18 +659,38 @@ function fetchPromos() {
 
               <!-- Quantity Input -->
               <div class="flex items-center justify-center mt-2 space-x-2">
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="promo-${deal.deal_id}" data-change="-1">−</button>
-                <input type="number" min="1" value="1" 
+                <button 
+                  type="button" 
+                  class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                  data-target="promo-${deal.deal_id}" 
+                  data-change="-1"
+                >−</button>
+
+                <input 
+                  type="number" 
+                  min="1" 
+                  value="1" 
                   id="promo-${deal.deal_id}"
                   name="promo_quantity[${deal.deal_id}]" 
-                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="promo-${deal.deal_id}" data-change="1">+</button>
+                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" 
+                />
+
+                <button 
+                  type="button" 
+                  class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                  data-target="promo-${deal.deal_id}" 
+                  data-change="1"
+                >+</button>
               </div>
 
-              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
-                  data-id="${deal.deal_id}">
-                  Show Menu
+              <button 
+                type="button" 
+                class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                data-id="${deal.deal_id}"
+              >
+                Show Menu
               </button>
+
               ${menusHTML}
             </div>
           `);
@@ -729,18 +766,38 @@ function fetchGroups() {
 
               <!-- Quantity Input -->
               <div class="flex items-center justify-center mt-2 space-x-2">
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="group-${deal.deal_id}" data-change="-1">−</button>
-                <input type="number" min="1" value="1" 
+                <button 
+                  type="button" 
+                  class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                  data-target="group-${deal.deal_id}" 
+                  data-change="-1"
+                >−</button>
+
+                <input 
+                  type="number" 
+                  min="1" 
+                  value="1" 
                   id="group-${deal.deal_id}"
                   name="group_quantity[${deal.deal_id}]" 
-                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
-                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="group-${deal.deal_id}" data-change="1">+</button>
+                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" 
+                />
+
+                <button 
+                  type="button" 
+                  class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                  data-target="group-${deal.deal_id}" 
+                  data-change="1"
+                >+</button>
               </div>
 
-              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
-                  data-id="${deal.deal_id}">
-                  Show Menu
+              <button 
+                type="button" 
+                class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm cursor-pointer hover:bg-yellow-400 transition hover:scale-105"
+                data-id="${deal.deal_id}"
+              >
+                Show Menu
               </button>
+
               ${menusHTML}
             </div>
           `);
