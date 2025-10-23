@@ -41,31 +41,73 @@ class Mailer extends db_connect
             $qrSize = "300x300";
             $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size={$qrSize}&data={$qrData}";
             $qrImage = @file_get_contents($qrUrl);
-
             if ($qrImage === false) {
-                $qrImage = null; // fallback if QR generation fails
+                $qrImage = null;
             }
 
-            if (strtolower($actionStatus) === "confirmed") {
+            // Normalize status for comparison
+            $status = strtolower(trim($actionStatus));
+
+            // ✉️ Different messages for each status
+            if ($status === "confirmed") {
                 $message = "
                     <h2>Hi {$Fullname},</h2>
-                    <p>Your reservation has been <strong>{$actionStatus}</strong>.</p>
+                    <p>Your reservation has been <strong>confirmed</strong>.</p>
                     <p>Table <strong>{$table_code}</strong> has been reserved for you on: {$formatted}</p>
                     <p>Please arrive on time to enjoy your dining experience with us.</p>
-                    <p><strong>Note:</strong> Please present the QR code below to the cashier upon arrival.</p>
+                    <p><strong>Note:</strong> Present the QR code below to the cashier upon arrival.</p>
                     <p>We look forward to serving you!</p>
                 ";
                 $altMessage = "Hello {$Fullname},\n\nYour reservation {$order_code} has been confirmed.\nTable: {$table_code}\nSchedule: {$formatted}\n\nPlease arrive on time.\nNOTE: Present the QR code to the cashier upon arrival.\nWe look forward to serving you!";
-            } else {
+            } 
+            elseif ($status === "completed") {
                 $message = "
                     <h2>Hi {$Fullname},</h2>
-                    <p>We regret to inform you that your reservation <strong>{$order_code}</strong> has been <strong>{$actionStatus}</strong>.</p>
-                    <p>If you have any questions or would like to reschedule, please contact our support team.</p>
+                    <p>Thank you for dining with us!</p>
+                    <p>Your reservation <strong>{$order_code}</strong> has been successfully <strong>completed</strong>.</p>
+                    <p>We hope you had a wonderful experience at our restaurant.</p>
+                    <p>We look forward to serving you again soon!</p>
+                ";
+                $altMessage = "Hello {$Fullname},\n\nThank you for dining with us!\nYour reservation {$order_code} has been successfully completed.\nWe hope you had a great time and we look forward to seeing you again soon!";
+            }
+            elseif ($status === "cancelled") {
+                $message = "
+                    <h2>Hi {$Fullname},</h2>
+                    <p>We regret to inform you that your reservation <strong>{$order_code}</strong> has been <strong>cancelled</strong>.</p>
+                    <p>If you have any questions or wish to rebook, please contact our support team.</p>
                     <p>We hope to see you another time!</p>
                 ";
-                $altMessage = "Hello {$Fullname},\n\nYour reservation {$order_code} has been declined.\n\nIf you have any questions or wish to reschedule, please contact our support team.\nWe hope to see you another time!";
+                $altMessage = "Hello {$Fullname},\n\nYour reservation {$order_code} has been cancelled.\n\nIf you have any questions or wish to rebook, please contact our support team.\nWe hope to see you another time!";
+            }
+            elseif ($status === "request new schedule") {
+                $message = "
+                    <h2>Hi {$Fullname},</h2>
+                    <p>We’ve received your <strong>request for a new schedule</strong> for reservation <strong>{$order_code}</strong>.</p>
+                    <p>Our team will review your request and confirm the new schedule shortly.</p>
+                    <p>We’ll notify you once it’s approved. Thank you for your patience!</p>
+                ";
+                $altMessage = "Hello {$Fullname},\n\nWe received your request for a new schedule for reservation {$order_code}.\nOur team will review and confirm soon.\nThank you for your patience!";
+            }
+            elseif ($status === "request cancel") {
+                $message = "
+                    <h2>Hi {$Fullname},</h2>
+                    <p>We’ve received your <strong>request to cancel</strong> your reservation <strong>{$order_code}</strong>.</p>
+                    <p>Our team will review your request and confirm the cancellation shortly.</p>
+                    <p>We’ll update you once it’s finalized. Thank you for reaching out!</p>
+                ";
+                $altMessage = "Hello {$Fullname},\n\nWe received your request to cancel reservation {$order_code}.\nOur team will review and confirm shortly.\nThank you for reaching out!";
+            }
+            else {
+                // Fallback message for any unknown status
+                $message = "
+                    <h2>Hi {$Fullname},</h2>
+                    <p>Your reservation status has been updated to: <strong>{$actionStatus}</strong>.</p>
+                    <p>Order Code: {$order_code}</p>
+                ";
+                $altMessage = "Hello {$Fullname},\n\nYour reservation status has been updated to: {$actionStatus}.\nOrder Code: {$order_code}";
             }
 
+            // --- PHPMailer setup ---
             $mail = new PHPMailer(true);
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
@@ -79,8 +121,9 @@ class Mailer extends db_connect
             $mail->addAddress($Email, $Fullname);
             $mail->addReplyTo('rodriguezryan325@gmail.com', 'No Reply');
 
+            // --- Attach QR only for confirmed ---
             $qrCid = null;
-            if ($qrImage !== null) {
+            if ($qrImage !== null && $status === "confirmed") {
                 $qrCid = 'qrcode_' . md5($order_code);
                 $mail->addStringEmbeddedImage($qrImage, $qrCid, "{$order_code}.png", 'base64', 'image/png');
                 $mail->addStringAttachment($qrImage, "{$order_code}.png", 'base64', 'image/png');
@@ -111,7 +154,7 @@ class Mailer extends db_connect
                 </html>
             ";
 
-            $mail->AltBody = $altMessage . ($qrUrl ? "\n\nDownload QR: {$qrUrl}" : "");
+            $mail->AltBody = $altMessage . ($qrUrl ? "\n\nQR: {$qrUrl}" : "");
 
             $mail->send();
             echo json_encode(['status' => 200, 'message' => 'Email sent successfully.']);
@@ -122,6 +165,7 @@ class Mailer extends db_connect
             ]);
         }
     }
+
 
 }
 

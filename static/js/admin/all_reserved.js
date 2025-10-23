@@ -640,9 +640,8 @@ function updateReservationStatus(reservationId, actionStatus) {
         contentType: false,
         dataType: "json",
         success: function (response) {
-            if (response.status === "success") {
-                  // Show spinner right away
-                location.reload();
+             if (response.status === "success") {
+                sendEmailNotification(reservationId, actionStatus, response.message);
             } else {
                 $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
                 alertify.error(response.message || "Error updating info.");
@@ -652,5 +651,33 @@ function updateReservationStatus(reservationId, actionStatus) {
             $('#spinnerOverlay').addClass('hidden'); // hide spinner on error
             alertify.error("Failed to update info. Please try again.");
         }
+    });
+}
+
+
+
+// Send email notification after success
+function sendEmailNotification(reservationId, actionStatus, successMessage) {
+    $.ajax({
+        url: "../controller/end-points/mailer.php",
+        type: 'POST',
+        data: {
+            reservations_id: reservationId,
+            actionStatus: actionStatus
+        },
+        success: function () {
+            finishAction('Success!', successMessage, 'success');
+        },
+        error: function () {
+            finishAction('Email Error!', 'Action succeeded, but mail was not sent.', 'warning');
+        }
+    });
+}
+
+// Final step: show alert and reload
+function finishAction(title, message, type) {
+    $('#spinnerOverlay').addClass('hidden'); // Hide spinner
+    Swal.fire(title, message, type).then(() => {
+        location.reload();
     });
 }

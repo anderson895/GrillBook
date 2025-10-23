@@ -260,6 +260,9 @@
   .pointer-events-none {
     pointer-events: none;
   }
+  .visible {
+    visibility: visible;
+  }
   .absolute {
     position: absolute;
   }
@@ -485,6 +488,9 @@
   .block {
     display: block;
   }
+  .contents {
+    display: contents;
+  }
   .flex {
     display: flex;
   }
@@ -493,6 +499,9 @@
   }
   .hidden {
     display: none;
+  }
+  .inline {
+    display: inline;
   }
   .inline-block {
     display: inline-block;
@@ -1377,6 +1386,9 @@
   .capitalize {
     text-transform: capitalize;
   }
+  .lowercase {
+    text-transform: lowercase;
+  }
   .uppercase {
     text-transform: uppercase;
   }
@@ -1503,6 +1515,9 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
+  }
+  .\[hostname\:port\] {
+    hostname: port;
   }
   .group-hover\:opacity-80 {
     &:is(:where(.group):hover *) {
