@@ -364,7 +364,6 @@ function formatTime24to12(time24) {
 
 
 
-
 $("#frmRequestReservation").on("submit", function (e) {
     e.preventDefault();
 
@@ -380,21 +379,10 @@ $("#frmRequestReservation").on("submit", function (e) {
         return;
     }
 
-    if (isNaN(seats)) {
-        alertify.error("Please enter the number of seats.");
+    if (isNaN(seats) || seats < 1 || seats > 6) {
+        alertify.error("Please enter a valid number of seats (1–6).");
         return;
     }
-
-    if (seats < 1) {
-        alertify.error("You must reserve at least 1 seat.");
-        return;
-    }
-
-    if (seats > 6) {
-        alertify.error("You can only reserve up to 6 seats.");
-        return;
-    }
-
 
     if (!$('#payment_proof').val()) {
         alertify.error("Please upload payment receipt.");
@@ -406,36 +394,51 @@ $("#frmRequestReservation").on("submit", function (e) {
         return; 
     }
 
-    // === Collect selected items ===
+    // === Collect selected items with qty ===
     const selectedMenus = [];
     $('input[name="menu_select[]"]:checked').each(function() {
         const menuCard = $(this).closest('.swiper-slide');
+        const qty = parseInt(menuCard.find('input[name^="menu_quantity"]').val()) || 1;
+        const price = parseFloat(menuCard.find('p:contains("Price:")').text().replace(/[^0-9.]/g, '')) || 0;
+
         selectedMenus.push({
             id: $(this).val(),
             name: menuCard.find('h3').text(),
-            price: parseFloat(menuCard.find('p:contains("Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            price: price,
+            qty: qty,
+            total: price * qty,
             type: 'menu'
         });
     });
 
     const selectedPromos = [];
-    $('#promoContainer input[type="checkbox"]:checked').each(function() {
+    $('#promoContainer input[name="promo_select[]"]:checked').each(function() {
         const dealCard = $(this).closest('.swiper-slide');
+        const qty = parseInt(dealCard.find('input[name^="promo_quantity"]').val()) || 1;
+        const price = parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0;
+
         selectedPromos.push({
             id: $(this).val(),
             name: dealCard.find('h3').text(),
-            price: parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            price: price,
+            qty: qty,
+            total: price * qty,
             type: 'promo_deal'
         });
     });
 
     const selectedGroups = [];
-    $('#groupContainer input[type="checkbox"]:checked').each(function() {
+    $('#groupContainer input[name="group_select[]"]:checked').each(function() {
         const dealCard = $(this).closest('.swiper-slide');
+        const qty = parseInt(dealCard.find('input[name^="group_quantity"]').val()) || 1;
+        const price = parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0;
+
         selectedGroups.push({
             id: $(this).val(),
             name: dealCard.find('h3').text(),
-            price: parseFloat(dealCard.find('p:contains("Total Price:")').text().replace(/[^0-9.]/g, '')) || 0,
+            price: price,
+            qty: qty,
+            total: price * qty,
             type: 'group_deal'
         });
     });
@@ -446,9 +449,9 @@ $("#frmRequestReservation").on("submit", function (e) {
     }
 
     // === Totals ===
-    const totalMenuPrice = selectedMenus.reduce((sum, item) => sum + item.price, 0);
-    const totalPromoPrice = selectedPromos.reduce((sum, item) => sum + item.price, 0);
-    const totalGroupPrice = selectedGroups.reduce((sum, item) => sum + item.price, 0);
+    const totalMenuPrice = selectedMenus.reduce((sum, item) => sum + item.total, 0);
+    const totalPromoPrice = selectedPromos.reduce((sum, item) => sum + item.total, 0);
+    const totalGroupPrice = selectedGroups.reduce((sum, item) => sum + item.total, 0);
     const grandTotal = totalMenuPrice + totalPromoPrice + totalGroupPrice;
 
     // === FormData ===
@@ -466,17 +469,17 @@ $("#frmRequestReservation").on("submit", function (e) {
     let summaryHTML = `<div style="text-align:left;">`;
     if (selectedMenus.length) {
         summaryHTML += `<h4 style="color:#FFD700;">Menus:</h4><ul>`;
-        selectedMenus.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        selectedMenus.forEach(item => summaryHTML += `<li>• ${item.name} (x${item.qty}) - ₱${item.total.toFixed(2)}</li>`);
         summaryHTML += `</ul><p><b>Menu Total:</b> ₱${totalMenuPrice.toFixed(2)}</p><br>`;
     }
     if (selectedPromos.length) {
         summaryHTML += `<h4 style="color:#FFD700;">Promo Deals:</h4><ul>`;
-        selectedPromos.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        selectedPromos.forEach(item => summaryHTML += `<li>• ${item.name} (x${item.qty}) - ₱${item.total.toFixed(2)}</li>`);
         summaryHTML += `</ul><p><b>Promo Total:</b> ₱${totalPromoPrice.toFixed(2)}</p><br>`;
     }
     if (selectedGroups.length) {
         summaryHTML += `<h4 style="color:#FFD700;">Group Deals:</h4><ul>`;
-        selectedGroups.forEach(item => summaryHTML += `<li>• ${item.name}: ₱${item.price.toFixed(2)}</li>`);
+        selectedGroups.forEach(item => summaryHTML += `<li>• ${item.name} (x${item.qty}) - ₱${item.total.toFixed(2)}</li>`);
         summaryHTML += `</ul><p><b>Group Total:</b> ₱${totalGroupPrice.toFixed(2)}</p><br>`;
     }
     summaryHTML += `<hr><h3>Grand Total: ₱${grandTotal.toFixed(2)}</h3></div>`;
@@ -497,6 +500,7 @@ $("#frmRequestReservation").on("submit", function (e) {
         }
     });
 });
+
 
 // === AJAX submission function ===
 function submitReservation(formData) {
@@ -537,7 +541,7 @@ function submitReservation(formData) {
 
 
   // ===== Fetch functions (keeping your existing functions) =====
- function fetchMenus() {
+function fetchMenus() {
   $.ajax({
     url: "../controller/end-points/controller.php",
     method: "GET",
@@ -545,7 +549,7 @@ function submitReservation(formData) {
     dataType: "json",
     success: function (response) {
       if (response.status === 200 && response.data.length > 0) {
-        const container = $("#menuContainer").empty(); // swiper-wrapper
+        const container = $("#menuContainer").empty(); 
 
         response.data.forEach(menu => {
           container.append(`
@@ -556,18 +560,29 @@ function submitReservation(formData) {
                   value="${menu.menu_id}" name="menu_select[]" />
               </div>
 
-              <!-- Button instead of link -->
+              <!-- Menu Info -->
               <button type="button" class="w-full text-left focus:outline-none" data-id="${menu.menu_id}">
                 <img src="../static/upload/${menu.menu_image_banner}" 
                   alt="${menu.menu_name}" class="w-full h-40 object-cover rounded-lg mb-4" />
                 <h3 class="text-xl font-bold text-[#FFD700] mb-1">${menu.menu_name}</h3>
-                <p class="text-[#CCCCCC] text-sm mb-1">Price: ${menu.menu_price}</p>
+                <p class="text-[#CCCCCC] text-sm mb-2">Price: ₱${menu.menu_price}</p>
               </button>
+
+              <!-- Quantity Input -->
+              <div class="flex items-center justify-center mt-2 space-x-2">
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="menu-${menu.menu_id}" data-change="-1">−</button>
+                <input type="number" min="1" value="1" 
+                  id="menu-${menu.menu_id}"
+                  name="menu_quantity[${menu.menu_id}]" 
+                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="menu-${menu.menu_id}" data-change="1">+</button>
+              </div>
             </div>
           `);
         });
 
         initSwiper(".menuSwiper");
+        attachQtyHandlers();
       } else {
         console.error("No menu found or bad response.");
       }
@@ -580,190 +595,195 @@ function submitReservation(formData) {
 
 
 
+function fetchPromos() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_deals_and_menu", deal_type: "promo_deals" },
+    dataType: "json",
+    success: function (res) {
+      const container = $("#promoContainer").empty();
 
-
-  function fetchPromos() {
-    $.ajax({
-      url: "../controller/end-points/controller.php",
-      method: "GET",
-      data: { requestType: "fetch_all_deals_and_menu", deal_type: "promo_deals" },
-      dataType: "json",
-      success: function (res) {
-        const container = $("#promoContainer").empty();
-
-        if (res.status === 200 && res.data.length > 0) {
-          res.data.forEach(deal => {
-            let menusHTML = '';
-            if (deal.menus && deal.menus.length > 0) {
-              menusHTML = `
-                <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
-                  ${deal.menus.map(menu => `
-                    <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
-                      <img src="../static/upload/${menu.menu_image_banner}" 
-                           alt="${menu.menu_name}" 
-                           class="w-12 h-12 object-cover rounded-md mr-3" />
-                      <div class="flex-1">
-                        <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
-                        <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
-                      </div>
+      if (res.status === 200 && res.data.length > 0) {
+        res.data.forEach(deal => {
+          let menusHTML = '';
+          if (deal.menus && deal.menus.length > 0) {
+            menusHTML = `
+              <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
+                ${deal.menus.map(menu => `
+                  <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
+                    <img src="../static/upload/${menu.menu_image_banner}" 
+                         alt="${menu.menu_name}" 
+                         class="w-12 h-12 object-cover rounded-md mr-3" />
+                    <div class="flex-1">
+                      <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
+                      <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
                     </div>
-                  `).join('')}
-                </div>
-              `;
-            }
-
-            container.append(`
-              <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-                <input type="checkbox" 
-                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                    value="${deal.deal_id}" 
-                    name="promo_select[]" />
-                <button type="button" 
-                    class="w-full text-left focus:outline-none" 
-                    data-id="${deal.deal_id}">
-                    <img src="../static/upload/${deal.deal_img_banner}" 
-                        alt="${deal.deal_name}" 
-                        class="w-full h-40 object-cover rounded-lg mb-4" />
-                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                    <p class="text-[#CCCCCC] text-sm mb-1">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
-                </button>
-                <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
-                    data-id="${deal.deal_id}">
-                    Show Menu
-                </button>
-                ${menusHTML}
+                  </div>
+                `).join('')}
               </div>
-            `);
-          });
+            `;
+          }
 
-          initSwiper(".promoSwiper");
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+              <input type="checkbox" 
+                  class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                  value="${deal.deal_id}" 
+                  name="promo_select[]" />
 
-          $(".toggle-menu-btn").off("click").on("click", function () {
-            const id = $(this).data("id");
-            const menuList = $(`#menuList-${id}`);
-            const isHidden = menuList.hasClass("hidden");
+              <button type="button" class="w-full text-left focus:outline-none" data-id="${deal.deal_id}">
+                <img src="../static/upload/${deal.deal_img_banner}" 
+                    alt="${deal.deal_name}" 
+                    class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-2">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
+              </button>
 
-            if (isHidden) {
-              menuList.removeClass("hidden");
-              $(this).text("Hide Menu");
-            } else {
-              menuList.addClass("hidden");
-              $(this).text("Show Menu");
-            }
-          });
+              <!-- Quantity Input -->
+              <div class="flex items-center justify-center mt-2 space-x-2">
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="promo-${deal.deal_id}" data-change="-1">−</button>
+                <input type="number" min="1" value="1" 
+                  id="promo-${deal.deal_id}"
+                  name="promo_quantity[${deal.deal_id}]" 
+                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="promo-${deal.deal_id}" data-change="1">+</button>
+              </div>
 
-        } else {
-          $("#promo_section").hide();
-        }
-      },
-      error: function(xhr, status, error) {
-        console.error("Error fetching promos:", status, error);
+              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
+                  data-id="${deal.deal_id}">
+                  Show Menu
+              </button>
+              ${menusHTML}
+            </div>
+          `);
+        });
+
+        initSwiper(".promoSwiper");
+        attachQtyHandlers();
+
+        $(".toggle-menu-btn").off("click").on("click", function () {
+          const id = $(this).data("id");
+          const menuList = $(`#menuList-${id}`);
+          const isHidden = menuList.hasClass("hidden");
+          $(this).text(isHidden ? "Hide Menu" : "Show Menu");
+          menuList.toggleClass("hidden");
+        });
+
+      } else {
+        $("#promo_section").hide();
       }
-    });
-  }
-
-
-
-function initSwiper(selector) {
-  new Swiper(selector, {
-    slidesPerView: 1,
-    spaceBetween: 20,
-    loop: true, // infinite swipe
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
     },
-    breakpoints: {
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 },
+    error: function(xhr, status, error) {
+      console.error("Error fetching promos:", status, error);
+    }
+  });
+}
+
+
+
+function fetchGroups() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_deals_and_menu", deal_type: "group_deals" },
+    dataType: "json",
+    success: function (res) {
+      const container = $("#groupContainer").empty();
+
+      if (res.status === 200 && res.data.length > 0) {
+        res.data.forEach(deal => {
+          let menusHTML = '';
+          if (deal.menus && deal.menus.length > 0) {
+            menusHTML = `
+              <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
+                ${deal.menus.map(menu => `
+                  <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
+                    <img src="../static/upload/${menu.menu_image_banner}" 
+                         alt="${menu.menu_name}" 
+                         class="w-12 h-12 object-cover rounded-md mr-3" />
+                    <div class="flex-1">
+                      <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
+                      <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          container.append(`
+            <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
+              <input type="checkbox" 
+                  class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
+                  value="${deal.deal_id}" 
+                  name="group_select[]" />
+
+              <button type="button" class="w-full text-left focus:outline-none" data-id="${deal.deal_id}">
+                <img src="../static/upload/${deal.deal_img_banner}" 
+                    alt="${deal.deal_name}" 
+                    class="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
+                <p class="text-[#CCCCCC] text-sm mb-2">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
+              </button>
+
+              <!-- Quantity Input -->
+              <div class="flex items-center justify-center mt-2 space-x-2">
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="group-${deal.deal_id}" data-change="-1">−</button>
+                <input type="number" min="1" value="1" 
+                  id="group-${deal.deal_id}"
+                  name="group_quantity[${deal.deal_id}]" 
+                  class="w-16 text-center rounded-md bg-[#1E1E1E] border border-[#555] text-white p-1" />
+                <button type="button" class="qty-btn bg-[#FFD700] text-black px-2 rounded-md text-lg font-bold" data-target="group-${deal.deal_id}" data-change="1">+</button>
+              </div>
+
+              <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
+                  data-id="${deal.deal_id}">
+                  Show Menu
+              </button>
+              ${menusHTML}
+            </div>
+          `);
+        });
+
+        initSwiper(".groupSwiper");
+        attachQtyHandlers();
+
+        $(".toggle-menu-btn").off("click").on("click", function () {
+          const id = $(this).data("id");
+          const menuList = $(`#menuList-${id}`);
+          const isHidden = menuList.hasClass("hidden");
+          $(this).text(isHidden ? "Hide Menu" : "Show Menu");
+          menuList.toggleClass("hidden");
+        });
+
+      } else {
+        container.html('<p class="text-gray-400">No group deals found.</p>');
+      }
     },
+    error: function(xhr, status, error) {
+      console.error("Error fetching group deals:", status, error);
+    }
+  });
+}
+
+
+
+/* ✅ Universal quantity button handler */
+function attachQtyHandlers() {
+  $(".qty-btn").off("click").on("click", function () {
+    const targetId = $(this).data("target");
+    const input = $(`#${targetId}`);
+    let value = parseInt(input.val()) || 1;
+    const change = parseInt($(this).data("change"));
+    value = Math.max(1, value + change);
+    input.val(value);
   });
 }
 
 
 
 
-
-
-  function fetchGroups() {
-    $.ajax({
-      url: "../controller/end-points/controller.php",
-      method: "GET",
-      data: { requestType: "fetch_all_deals_and_menu", deal_type: "group_deals" },
-      dataType: "json",
-      success: function (res) {
-        const container = $("#groupContainer").empty();
-
-        if (res.status === 200 && res.data.length > 0) {
-          res.data.forEach(deal => {
-            let menusHTML = '';
-            if (deal.menus && deal.menus.length > 0) {
-              menusHTML = `
-                <div class="mt-3 space-y-2 hidden menu-list" id="menuList-${deal.deal_id}">
-                  ${deal.menus.map(menu => `
-                    <div class="flex items-center bg-[#1E1E1E] p-2 rounded-lg">
-                      <img src="../static/upload/${menu.menu_image_banner}" 
-                           alt="${menu.menu_name}" 
-                           class="w-12 h-12 object-cover rounded-md mr-3" />
-                      <div class="flex-1">
-                        <p class="text-[#FFD700] font-semibold">${menu.menu_name}</p>
-                        <p class="text-[#CCCCCC] text-sm">₱${parseFloat(menu.menu_price).toFixed(2)}</p>
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              `;
-            }
-
-            container.append(`
-              <div class="swiper-slide bg-[#2B2B2B] p-6 rounded-xl border border-[#333] w-72 shadow-lg relative text-center">
-                <input type="checkbox" 
-                    class="absolute top-3 left-3 w-5 h-5 accent-[#FFD700] cursor-pointer" 
-                    value="${deal.deal_id}" 
-                    name="group_select[]" />
-                <button type="button" 
-                    class="w-full text-left focus:outline-none" 
-                    data-id="${deal.deal_id}">
-                    <img src="../static/upload/${deal.deal_img_banner}" 
-                        alt="${deal.deal_name}" 
-                        class="w-full h-40 object-cover rounded-lg mb-4" />
-                    <h3 class="text-xl font-bold text-[#FFD700] mb-1">${deal.deal_name}</h3>
-                    <p class="text-[#CCCCCC] text-sm mb-1">Total Price: ₱${parseFloat(deal.total_price).toFixed(2)}</p>
-                </button>
-                <button type="button" class="toggle-menu-btn mt-3 px-3 py-1 bg-[#FFD700] text-black rounded-lg text-sm" 
-                    data-id="${deal.deal_id}">
-                    Show Menu
-                </button>
-                ${menusHTML}
-              </div>
-            `);
-          });
-
-          initSwiper(".groupSwiper");
-
-          $(".toggle-menu-btn").off("click").on("click", function () {
-            const id = $(this).data("id");
-            const menuList = $(`#menuList-${id}`);
-            const isHidden = menuList.hasClass("hidden");
-
-            if (isHidden) {
-              menuList.removeClass("hidden");
-              $(this).text("Hide Menu");
-            } else {
-              menuList.addClass("hidden");
-              $(this).text("Show Menu");
-            }
-          });
-
-        } else {
-          container.html('<p class="text-gray-400">No group deals found.</p>');
-        }
-      },
-      error: function(xhr, status, error) {
-        console.error("Error fetching group deals:", status, error);
-      }
-    });
-  }
 
 });
 
