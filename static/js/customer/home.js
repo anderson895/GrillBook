@@ -32,8 +32,6 @@ $(document).ready(function () {
 
     }
   });
-
-  // Optional: siguraduhing naka-display na agad pag-load ng page
   $("#seats-warning").removeClass("hidden");
 });
 
@@ -537,23 +535,6 @@ function submitReservation(formData) {
 }
 
 
-  // ===== Initialize Swiper functions (keeping your existing functions) =====
-  function initSwiper(selector) {
-    return new Swiper(selector, {
-      loop: true,
-      slidesPerView: 1.2,
-      spaceBetween: 20,
-      breakpoints: {
-        640: { slidesPerView: 1.5 },
-        768: { slidesPerView: 2.5 },
-        1024: { slidesPerView: 3 },
-      },
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-    });
-  }
 
   // ===== Fetch functions (keeping your existing functions) =====
  function fetchMenus() {
@@ -598,22 +579,6 @@ function submitReservation(formData) {
 }
 
 
-
-function initSwiper(selector) {
-  new Swiper(selector, {
-    slidesPerView: 1,
-    spaceBetween: 20,
-    loop: true, // <-- infinite looping
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 },
-    },
-  });
-}
 
 
 
