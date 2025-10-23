@@ -66,15 +66,6 @@ const statusColors = {
       data: { requestType: "fetch_all_customer_reservation_no_limit" },
       dataType: "json",
       success: function (response) {
-
-        //   if (response.status === 200 && Array.isArray(response.data)) {
-        //   response.data
-        //     .filter(res => res.status !== "completed") // ← huwag isama ang mga completed
-        //     .forEach(res => {
-        //       console.log(res.status);
-        //     });
-        // }
-
        
 
         if (response.status === 200 && Array.isArray(response.data)) {
@@ -162,22 +153,30 @@ function openDetailsModal(data) {
     catch { return []; }
   }
 
+  // ✅ Updated buildList to include qty and total price
   function buildList(items, title) {
     if (!items.length) return '';
     return `
       <section class="mb-6 max-w-full sm:max-w-lg mx-auto px-4 sm:px-0">
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1">${title}</h3>
         <ul class="space-y-3 max-h-52 overflow-y-auto pr-2 scrollbar-hidden">
-          ${items.map(item => `
-            <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
-              <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" 
-                   alt="${item.name}" class="w-10 h-10 rounded object-cover flex-shrink-0" />
-              <div class="truncate">
-                <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
-                <p class="text-yellow-400 text-xs mt-1">₱${item.price}</p>
-              </div>
-            </li>
-          `).join('')}
+          ${items.map(item => {
+            const qty = item.qty || 1;
+            const price = parseFloat(item.price) || 0;
+            const total = (price * qty).toFixed(2);
+            return `
+              <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
+                <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" 
+                     alt="${item.name}" class="w-10 h-10 rounded object-cover flex-shrink-0" />
+                <div class="flex-1 truncate">
+                  <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
+                  <p class="text-yellow-400 text-xs mt-1">
+                    ₱${price.toFixed(2)} × ${qty} = <span class="text-[#FFD700] font-semibold">₱${total}</span>
+                  </p>
+                </div>
+              </li>
+            `;
+          }).join('')}
         </ul>
       </section>`;
   }
@@ -208,78 +207,64 @@ function openDetailsModal(data) {
     }
   }
 
-  const proofHtml = data.proof_of_payment ? `<div class="flex flex-col sm:flex-row gap-6 max-w-full mx-auto px-4 sm:px-0">
+  const proofHtml = data.proof_of_payment ? `
+  <div class="flex flex-col sm:flex-row gap-6 max-w-full mx-auto px-4 sm:px-0">
     <section class="flex-1">
       <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">Proof of Payment</h3>
-       <a href="../static/upload/${data.proof_of_payment}" 
-          class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
-          data-img="../static/upload/${data.proof_of_payment}">
-          
-          <img src="../static/upload/${data.proof_of_payment}" alt="Proof of Payment" 
-              class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
-          
-        
-        </a>
+      <a href="../static/upload/${data.proof_of_payment}" 
+         class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
+         data-img="../static/upload/${data.proof_of_payment}">
+        <img src="../static/upload/${data.proof_of_payment}" alt="Proof of Payment" 
+             class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
+      </a>
     </section>
+
     <section class="flex-1">
       <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">Signed Terms</h3>
-     <a href="../static/upload/${data.terms_signed}" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          title="View Signed Terms"
-          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
-          ${termsPreviewHtml}
-          <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
-            open_in_new
-          </span>
-        </a>
+      <a href="../static/upload/${data.terms_signed}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         title="View Signed Terms"
+         class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+        ${termsPreviewHtml}
+        <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
+          open_in_new
+        </span>
+      </a>
     </section>
   </div>` : '';
 
   $('#modalContent').html(`
   <section class="mb-10 max-w-full sm:max-w-2xl mx-auto px-4 sm:px-0">
-  <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-lg p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-[#CCCCCC]">
-
-    <!-- Status -->
-    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
-      
-      <dt class="font-semibold mb-2">Grand Total</dt>
-      <dd class="text-yellow-400 text-lg font-bold">₱${data.grand_total}</dd>
+    <div class="bg-[#1A1A1A]/90 backdrop-blur-md rounded-lg shadow-lg p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-[#CCCCCC]">
+      <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+        <dt class="font-semibold mb-2">Grand Total</dt>
+        <dd class="text-yellow-400 text-lg font-bold">₱${data.grand_total}</dd>
+      </div>
+      <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+        <dt class="font-semibold mb-2">Table Code</dt>
+        <dd class="text-base font-medium">${data.table_code}</dd>
+      </div>
+      <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+        <dt class="font-semibold mb-2">Seats</dt>
+        <dd class="text-base font-medium">${data.seats}</dd>
+      </div>
+      <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
+        <dt class="font-semibold mb-2">Date & Time</dt>
+        <dd class="text-base font-medium">${formattedDate}</dd>
+      </div>
+      <div class="flex flex-col items-center justify-center sm:col-span-2 bg-[#222222]/70 rounded-md p-6">
+        <dt class="font-semibold mb-2">Status</dt>
+        <dd class="px-4 py-2 rounded-full text-sm font-semibold capitalize ${statusClass}">${data.status}</dd>
+      </div>
     </div>
-
-    <!-- Table Code -->
-    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
-      <dt class="font-semibold mb-2">Table Code</dt>
-      <dd class="text-base font-medium">${data.table_code}</dd>
-    </div>
-
-    <!-- Seats -->
-    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
-      <dt class="font-semibold mb-2">Seats</dt>
-      <dd class="text-base font-medium">${data.seats}</dd>
-    </div>
-
-    <!-- Date & Time -->
-    <div class="flex flex-col items-center justify-center bg-[#222222]/70 rounded-md p-6">
-      <dt class="font-semibold mb-2">Date & Time</dt>
-      <dd class="text-base font-medium">${formattedDate}</dd>
-    </div>
-
-    <!-- Grand Total (optional: full width) -->
-    <div class="flex flex-col items-center justify-center sm:col-span-2 bg-[#222222]/70 rounded-md p-6">
-      <dt class="font-semibold mb-2">Status</dt>
-      <dd class="px-4 py-2 rounded-full text-sm font-semibold capitalize ${statusClass}">${data.status}</dd>
-    </div>
-
-  </div>
-</section>
-
-
-    ${menusHtml}${promosHtml}${groupsHtml}${proofHtml}
+  </section>
+  ${menusHtml}${promosHtml}${groupsHtml}${proofHtml}
   `);
 
   $('#detailsModal').removeClass('hidden');
 }
+
 
 // Close modal
 $('#closeModal').on('click', () => $('#detailsModal').addClass('hidden'));

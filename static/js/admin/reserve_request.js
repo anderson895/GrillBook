@@ -168,7 +168,6 @@ $(document).on('click', '.viewDetailsBtn', function() {
   const grand_total = $(this).data('grand_total');
   const proof_of_payment = $(this).data('proof_of_payment');
   const terms_signed = $(this).data('terms_signed');
-  
 
   function safeParse(data) {
     try { return JSON.parse(decodeURIComponent(data)); }
@@ -185,23 +184,31 @@ $(document).on('click', '.viewDetailsBtn', function() {
     hour12: false
   });
 
+  // ✅ Updated buildList with qty and total
   function buildList(items, title) {
     if (!items.length) return '';
     return `
       <section class="mb-6 max-w-full sm:max-w-lg mx-auto px-4 sm:px-0">
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1">${title}</h3>
         <ul class="space-y-3 max-h-52 overflow-y-auto pr-2 scrollbar-hidden">
-          ${items.map(item => `
-            <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
-              <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" 
-                   alt="${item.name}" 
-                   class="w-10 h-10 rounded object-cover flex-shrink-0" />
-              <div class="truncate">
-                <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
-                <p class="text-yellow-400 text-xs mt-1">₱${item.price}</p>
-              </div>
-            </li>
-          `).join('')}
+          ${items.map(item => {
+            const qty = item.qty || 1;
+            const price = parseFloat(item.price) || 0;
+            const total = (price * qty).toFixed(2);
+            return `
+              <li class="flex items-center space-x-4 bg-[#222222] rounded-md p-3 shadow-md hover:shadow-yellow-500 transition cursor-default">
+                <img src="../static/upload/${item.details?.menu_image_banner || item.details?.deal_img_banner || ''}" 
+                     alt="${item.name}" 
+                     class="w-10 h-10 rounded object-cover flex-shrink-0" />
+                <div class="truncate">
+                  <p class="text-[#CCCCCC] text-sm font-semibold leading-tight truncate">${item.name}</p>
+                  <p class="text-yellow-400 text-xs mt-1">
+                    ₱${price.toFixed(2)} × ${qty} = <span class="text-[#FFD700] font-semibold">₱${total}</span>
+                  </p>
+                </div>
+              </li>
+            `;
+          }).join('')}
         </ul>
       </section>
     `;
@@ -216,18 +223,14 @@ $(document).on('click', '.viewDetailsBtn', function() {
   if (terms_signed) {
     const fileExt = terms_signed.split('.').pop().toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
-      // Show image preview
       termsPreviewHtml = `<img src="../static/upload/${terms_signed}" alt="Signed Terms" class="w-full max-h-56 object-cover rounded-md transition duration-300 group-hover:opacity-80" />`;
     } else {
-      // Show icon for non-image
       termsPreviewHtml = `
         <div class="flex flex-col items-center justify-center h-56 w-[20rem] max-w-full text-gray-300 bg-[#222222] rounded-md">
           <span class="material-icons text-[8rem] leading-none">description</span>
           <p class="text-base mt-3">${fileExt.toUpperCase()} File</p>
         </div>
-
       `;
-
     }
   }
 
@@ -239,14 +242,12 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Proof of Payment
         </h3>
-       <a href="../static/upload/${proof_of_payment}" 
-          class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
-          data-img="../static/upload/${proof_of_payment}">
-          
+        <a href="../static/upload/${proof_of_payment}" 
+           class="open-modal relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer" 
+           data-img="../static/upload/${proof_of_payment}">
           <img src="../static/upload/${proof_of_payment}" alt="Proof of Payment" 
-              class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
+               class="w-full max-h-56 rounded-md object-cover transition duration-300 group-hover:opacity-80" />
         </a>
-
       </section>
 
       <!-- Signed Terms -->
@@ -254,11 +255,11 @@ $(document).on('click', '.viewDetailsBtn', function() {
         <h3 class="text-base font-semibold text-[#FFD700] mb-3 tracking-wide border-b border-gray-600 pb-1 select-none">
           Signed Terms
         </h3>
-       <a href="../static/upload/${terms_signed}" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          title="View Signed Terms"
-          class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
+        <a href="../static/upload/${terms_signed}" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           title="View Signed Terms"
+           class="relative inline-block rounded-md overflow-hidden shadow-xl group cursor-pointer">
           ${termsPreviewHtml}
           <span class="material-icons absolute inset-0 flex items-center justify-center text-yellow-400 text-8xl opacity-0 group-hover:opacity-100 transition pointer-events-none">
             open_in_new
@@ -299,6 +300,7 @@ $(document).on('click', '.viewDetailsBtn', function() {
 
   $('#detailsModal').removeClass('hidden');
 });
+
 
 
 // Close modal handlers
