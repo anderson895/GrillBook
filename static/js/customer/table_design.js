@@ -66,40 +66,54 @@ const statusColors = {
       data: { requestType: "fetch_all_customer_reservation_no_limit" },
       dataType: "json",
       success: function (response) {
+
+        //   if (response.status === 200 && Array.isArray(response.data)) {
+        //   response.data
+        //     .filter(res => res.status !== "completed") // ← huwag isama ang mga completed
+        //     .forEach(res => {
+        //       console.log(res.status);
+        //     });
+        // }
+
+       
+
         if (response.status === 200 && Array.isArray(response.data)) {
-          response.data.forEach(res => {
-            const cell = $(`.grid [data-value='${res.table_code}']`);
-            const flexEl = cell.find(".table-name").closest(".flex");
-            const status = (res.status || "").toLowerCase().trim();
+          response.data
+            .filter(res => res.status?.toLowerCase().trim() !== "completed") // ← huwag isama ang completed
+            .forEach(res => {
+              const cell = $(`.grid [data-value='${res.table_code}']`);
+              const flexEl = cell.find(".table-name").closest(".flex");
+              const status = (res.status || "").toLowerCase().trim();
 
-            if (cell.length) {
-              const color = statusColors[status] || {};
-              flexEl.css({
-                "background-color": color.bg || "",
-                "border-color": color.border || ""
-              });
+              if (cell.length) {
+                const color = statusColors[status] || {};
+                flexEl.css({
+                  "background-color": color.bg || "",
+                  "border-color": color.border || ""
+                });
 
-              // Attach reservation data for modal
-              cell.data({
-                id: res.id,
-                table_code: res.table_code,
-                seats: res.seats,
-                date_schedule: res.date_schedule,
-                time_schedule: res.time_schedule,
-                grand_total: res.grand_total,
-                proof_of_payment: res.proof_of_payment,
-                terms_signed: res.termsFileSigned,
-                status: res.status,
-                menus_details: encodeURIComponent(JSON.stringify(res.menus_details || [])),
-                promos_details: encodeURIComponent(JSON.stringify(res.promos_details || [])),
-                groups_details: encodeURIComponent(JSON.stringify(res.groups_details || []))
-              });
+                // Attach reservation data for modal
+                cell.data({
+                  id: res.id,
+                  table_code: res.table_code,
+                  seats: res.seats,
+                  date_schedule: res.date_schedule,
+                  time_schedule: res.time_schedule,
+                  grand_total: res.grand_total,
+                  proof_of_payment: res.proof_of_payment,
+                  terms_signed: res.termsFileSigned,
+                  status: res.status,
+                  menus_details: encodeURIComponent(JSON.stringify(res.menus_details || [])),
+                  promos_details: encodeURIComponent(JSON.stringify(res.promos_details || [])),
+                  groups_details: encodeURIComponent(JSON.stringify(res.groups_details || []))
+                });
 
-              // Remove setSchedule class for reserved tables
-              cell.removeClass('setSchedule');
-            }
-          });
+                // Remove setSchedule class for reserved tables
+                cell.removeClass('setSchedule');
+              }
+            });
         }
+
       }
     });
   }
