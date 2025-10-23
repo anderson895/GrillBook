@@ -7,10 +7,12 @@ $(document).ready(function () {
   $("#seats").on("input", function () {
     let val = $(this).val();
 
+    // Palaging naka-display ang seat warning
+    $("#seats-warning").removeClass("hidden");
+
     // Handle non-numeric
     if (isNaN(val) || val === "") {
       $("#table-legend").empty();
-      $("#seats-warning").removeClass("hidden"); // Show warning
       return;
     }
 
@@ -22,20 +24,17 @@ $(document).ready(function () {
 
     $(this).val(val);
 
-    // Hide warning if value is valid
-    if (val >= 1 && val <= 6) {
-      $("#seats-warning").addClass("hidden");
-    } else {
-      $("#seats-warning").removeClass("hidden");
-    }
-
     // Update legend
     const legendContainer = $("#table-legend");
     legendContainer.empty();
     for (let i = 0; i < val; i++) {
-      legendContainer.append('<div class="w-6 h-6 bg-yellow-400 rounded shadow-md"></div>');
+      legendContainer.append('<span class="material-icons text-yellow-500 text-3xl">person</span>');
+
     }
   });
+
+  // Optional: siguraduhing naka-display na agad pag-load ng page
+  $("#seats-warning").removeClass("hidden");
 });
 
 
