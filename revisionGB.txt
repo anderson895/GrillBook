@@ -7,7 +7,7 @@ Minor Revision:
 
 ✔- add indication that the restaurant is still closed but can still booked
 
-- change restaurant schedule into "operating hours"
+✔- change restaurant schedule into "operating hours"
 
 - indicate inside the reservation the operating schedules
 
