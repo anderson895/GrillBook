@@ -43,6 +43,9 @@ $(document).ready(function () {
     // Update table legend
     const legendContainer = $("#table-legend");
     legendContainer.empty();
+
+    legendContainer.append('Seats:');
+
     for (let i = 0; i < val; i++) {
       legendContainer.append('<span class="material-icons text-yellow-500 text-3xl">person</span>');
     }
