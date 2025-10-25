@@ -127,7 +127,7 @@ const statusColors = {
   refreshData(); // Run once on page load
 
 
-
+  setInterval(refreshData, 1000);
 
 });
 

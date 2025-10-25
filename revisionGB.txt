@@ -1,50 +1,32 @@
---Major--
-table status legend 
-	-pending inquiry (gray)
-	-inquiry approved (yellow)
-	-pending booking (orange)
-	-reserved (green) 
-
---Major--
-over seats
-	-admin receive email notif
-	-enter how many seats
-	
---Minor--
-calendar layout
-	-legends
-	-size
+Minor Revision:
 
 
+✔- change the icon of reserv to user icon with max 6 ppl
 
---Minor----
-Menu List,Promo Deals,Group Deals (arrow left, arrow right) for slider 
+✔- order quantity 
 
+✔- add indication that the restaurant is still closed but can still booked
 
---Minor---
-✔Terms And Condition
-	✔-open new tab not auto download
+- change restaurant schedule into "operating hours"
 
+- indicate inside the reservation the operating schedules
 
---Minor---
-✔Payment Method--
-	✔-enlarge screen on modal
+- indicate to the user that the reservation is for approval
 
+✔- sorting in admin side
 
---Major
-Customer can cancel Booking (pending)
-	-request new schedule
-	
+✔- why did the reservation details "completed" showed to the customer side
 
--- Minor
-Dashboard
-	-Dollar Sign Change to Peso
-	-text color on reservation status
+✔- completed is back to available
+
+✔- If the transaction is completed there are email notification to the customer with all details included transaction number/details
+
+✔- Navigation Bar and Heading for admin and staff are steady or fix if the mouse is scrolling the data list
 
 
-	-
+Major Revision:
 
 
-
-
-
+- reports module (only completed should he shown with complete details)
+- email verification - registration
+- table layout for admin (Walk-in and Online)

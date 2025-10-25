@@ -2,39 +2,59 @@ $(document).ready(function () {
 
 
 
-
 $(document).ready(function () {
+  // Show initial warning on load
+  $("#seats-warning").show().text("Please enter number of seats.");
+
   $("#seats").on("input", function () {
-    let val = $(this).val();
+    let val = $(this).val().trim();
 
-    // Palaging naka-display ang seat warning
-    $("#seats-warning").removeClass("hidden");
+    // Always hide the warning when user starts typing
+    $("#seats-warning").hide();
 
-    // Handle non-numeric
-    if (isNaN(val) || val === "") {
+    // If input is empty → show warning and stop
+    if (val === "") {
+      $("#seats-warning").show().text("Please enter number of seats.");
+      $("#table-legend").empty();
+      return;
+    }
+
+    // If not a number → show warning
+    if (isNaN(val)) {
+      $("#seats-warning").show().text("Please enter a valid number.");
       $("#table-legend").empty();
       return;
     }
 
     val = parseInt(val, 10);
 
-    // Restrict value between 1 and 6
-    if (val < 1) val = 1;
-    if (val > 6) val = 6;
+    // Restrict between 1 and 6
+    if (val > 6) {
+      $("#seats-warning").show().text("Maximum number of seats is 6.");
+      val = 6;
+    } else if (val < 1) {
+      $("#seats-warning").show().text("Minimum number of seats is 1.");
+      val = 1;
+    }
 
+    // Apply corrected value back to input
     $(this).val(val);
 
-    // Update legend
+    // Update table legend
     const legendContainer = $("#table-legend");
     legendContainer.empty();
     for (let i = 0; i < val; i++) {
       legendContainer.append('<span class="material-icons text-yellow-500 text-3xl">person</span>');
-
     }
   });
-  $("#seats-warning").removeClass("hidden");
-});
 
+  // On load, if no input yet → show warning
+  if ($("#seats").val().trim() === "") {
+    $("#seats-warning").show().text("Please enter number of seats.");
+  } else {
+    $("#seats-warning").hide();
+  }
+});
 
 
 

@@ -40,14 +40,26 @@ include "../src/components/admin/nav.php";
     placeholder="Search..."
   />
 
+  <select
+    name="filterStatus"
+    id="filterStatus"
+    class="block w-full md:w-60 px-4 py-2 border border-gray-700 rounded-lg bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition hover:border-gray-500"
+  >
+    <option value="all">All</option>
+    <option value="pending">Pending</option>
+    <option value="request cancel">Request Cancel</option>
+  </select>
+
+
+
 
 </div>
 
 
 <!-- Table Container -->
-<div class="overflow-x-auto rounded-md">
+<div class="max-h-[500px] overflow-y-auto overflow-x-hidden rounded-md border border-gray-700">
   <table class="w-full text-sm text-left text-[#CCCCCC]">
-    <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs">
+    <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs sticky top-0 z-10">
       <tr>
         <th class="p-3">#</th>
         <th class="p-3 text-center">Date</th>

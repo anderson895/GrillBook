@@ -1236,7 +1236,7 @@ public function fetch_all_reserved($limit, $offset) {
         SELECT * FROM reservations
         LEFT JOIN user
         ON reservations.reserve_user_id = user.user_id 
-        WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed'|| status = 'request new schedule')
+        WHERE archived_by_admin='0' AND (status = 'confirmed' || status = 'completed'|| status = 'request new schedule'|| status = 'cancelled')
         ORDER BY id DESC
         LIMIT ? OFFSET ?
     ");
@@ -1352,7 +1352,7 @@ public function fetch_all_reserved($limit, $offset) {
         public function count_all_reserved() {
             $result = $this->conn->query("
                 SELECT COUNT(*) as total 
-                FROM reservations where status = 'confirmed' || status = 'complete'
+                FROM reservations where archived_by_admin='0' AND (status = 'confirmed' || status = 'completed'|| status = 'request new schedule'|| status = 'cancelled')
             ");
             $row = $result->fetch_assoc();
             return (int)$row['total'];

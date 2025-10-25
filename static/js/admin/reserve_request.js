@@ -1,50 +1,47 @@
 $(document).ready(function () {
-   
 
   // Fetch data
   let currentPage = 1;
-  let limit = 10; 
+  let limit = 10;
 
   function loadTable(page = 1) {
     currentPage = page;
 
-   $.ajax({
-    url: "../controller/end-points/controller.php",
-    method: "GET",
-    data: { 
-      requestType: "fetch_all_reserve_request",
-      page: page,
-      limit: limit
-    },
-    dataType: "json",
-    beforeSend: function () {
-      // Show loading spinner
-      $('#outputTableBody').html(`
-        <tr>
-          <td colspan="11" class="p-6 text-center">
-            <div class="flex items-center justify-center space-x-2">
-              <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-              <span class="text-yellow-400 font-medium">Loading...</span>
-            </div>
-          </td>
-        </tr>
-      `);
-      $('#pagination').empty();
-    },
-    success: function (res) {
-      let count = 1;
-      $('#outputTableBody').empty();
+    $.ajax({
+      url: "../controller/end-points/controller.php",
+      method: "GET",
+      data: {
+        requestType: "fetch_all_reserve_request",
+        page: page,
+        limit: limit
+      },
+      dataType: "json",
+      beforeSend: function () {
+        // Show loading spinner
+        $('#outputTableBody').html(`
+          <tr>
+            <td colspan="11" class="p-6 text-center">
+              <div class="flex items-center justify-center space-x-2">
+                <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+                <span class="text-yellow-400 font-medium">Loading...</span>
+              </div>
+            </td>
+          </tr>
+        `);
+        $('#pagination').empty();
+      },
+      success: function (res) {
+        let count = 1;
+        $('#outputTableBody').empty();
 
-      if (res.status === 200 && res.data.length > 0) {
-        res.data.forEach(data => {
+        if (res.status === 200 && res.data.length > 0) {
+          res.data.forEach(data => {
+            const dateObj = new Date(data.created_at);
 
-           const dateObj = new Date(data.created_at);
-
-            // Para sa word format ng date
             const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
             const created_at = dateObj.toLocaleDateString('en-US', dateOptions);
 
-            const timeString = data.time_schedule; // example: "14:30" or "14:30:00"
+            const timeString = data.time_schedule;
             const [hour, minute] = timeString.split(':');
             const timeDate = new Date();
             timeDate.setHours(parseInt(hour), parseInt(minute));
@@ -52,88 +49,93 @@ $(document).ready(function () {
             const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
             const time_schedule = timeDate.toLocaleTimeString('en-US', timeOptions);
 
+            // Add data-status attribute for easier filtering
+            $('#outputTableBody').append(`
+              <tr class="hover:bg-[#2B2B2B] transition-colors" 
+                  data-status="${(data.status || '').toLowerCase().trim()}">
+                <td class="p-3 text-center font-mono">${count++}</td>
+                <td class="p-3 text-center font-mono">${created_at}</td>
+                <td class="p-3 text-center font-mono">${data.user_fname} ${data.user_lname}</td>
+                <td class="p-3 text-center font-mono">${data.reserve_unique_code}</td>
+                <td class="p-3 text-center font-semibold">${data.table_code}</td>
+                <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
+                <td class="p-3 text-center font-semibold">${time_schedule}</td>
+                <td class="p-3 text-center font-semibold">${data.grand_total}</td>
+                <td class="p-3 text-center font-semibold 
+                    ${data.status === 'request cancel' ? 'text-red-500' : data.status === 'pending' ? 'text-yellow-500' : 'text-black'}">
+                    ${data.status}
+                </td>
+                <td class="p-3 text-center">
+                    <button
+                      class="viewDetailsBtn cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
+                      data-id='${data.id}'
+                      data-reservation_code='${data.reserve_unique_code}'
+                      data-table_code='${data.table_code}'
+                      data-seats='${data.seats}'
+                      data-date_schedule='${data.date_schedule}'
+                      data-time_schedule='${data.time_schedule}'
+                      data-grand_total='${data.grand_total}'
+                      data-selected_menus='${encodeURIComponent(data.selected_menus)}'
+                      data-selected_promos='${encodeURIComponent(data.selected_promos)}'
+                      data-selected_groups='${encodeURIComponent(data.selected_groups)}'
+                      data-menus_details='${encodeURIComponent(JSON.stringify(data.menus_details))}'
+                      data-promos_details='${encodeURIComponent(JSON.stringify(data.promos_details))}'
+                      data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
+                      data-proof_of_payment='${data.proof_of_payment}'
+                      data-terms_signed='${data.termsFileSigned}'
+                    >
+                      DETAILS 
+                    </button>
+                </td>
+              </tr>
+            `);
+          });
 
+          renderPagination(res.total, limit, currentPage);
 
+          // ✅ Apply filters right after data is loaded (to keep active filters working)
+          applyFilters();
+
+        } else {
           $('#outputTableBody').append(`
-            <tr class="hover:bg-[#2B2B2B] transition-colors">
-              <td class="p-3 text-center font-mono">${count++}</td>
-              <td class="p-3 text-center font-mono">${created_at}</td>
-              <td class="p-3 text-center font-mono">${data.user_fname} ${data.user_lname}</td>
-              <td class="p-3 text-center font-mono">${data.reserve_unique_code}</td>
-              <td class="p-3 text-center font-semibold">${data.table_code}</td>
-              <td class="p-3 text-center font-semibold">${data.date_schedule}</td>
-              <td class="p-3 text-center font-semibold">${time_schedule}</td>
-              <td class="p-3 text-center font-semibold">${data.grand_total}</td>
-              <td class="p-3 text-center font-semibold capitalize 
-                  ${data.status === 'request cancel' ? 'text-red-500' : data.status === 'pending' ? 'text-yellow-500' : 'text-black'}">
-                  ${data.status}
-              </td>
-
-             
-              <td class="p-3 text-center">
-                  <button
-                    class="viewDetailsBtn cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-semibold transition"
-                    data-id='${data.id}'
-                    data-reservation_code='${data.reserve_unique_code}'
-                    data-table_code='${data.table_code}'
-                    data-seats='${data.seats}'
-                    data-date_schedule='${data.date_schedule}'
-                    data-time_schedule='${data.time_schedule}'
-                    data-grand_total='${data.grand_total}'
-                    data-selected_menus='${encodeURIComponent(data.selected_menus)}'
-                    data-selected_promos='${encodeURIComponent(data.selected_promos)}'
-                    data-selected_groups='${encodeURIComponent(data.selected_groups)}'
-                    data-menus_details='${encodeURIComponent(JSON.stringify(data.menus_details))}'
-                    data-promos_details='${encodeURIComponent(JSON.stringify(data.promos_details))}'
-                    data-groups_details='${encodeURIComponent(JSON.stringify(data.groups_details))}'
-                    data-proof_of_payment='${data.proof_of_payment}'
-                    data-terms_signed='${data.termsFileSigned}'
-                  >
-                    DETAILS 
-                  </button>
-              </td>
+            <tr>
+              <td colspan="11" class="p-4 text-center text-gray-400 italic">No record found</td>
             </tr>
           `);
-        });
-
-        renderPagination(res.total, limit, currentPage);
-
-      } else {
-        $('#outputTableBody').append(`
-          <tr>
-            <td colspan="11" class="p-4 text-center text-gray-400 italic">No record found</td>
-          </tr>
-        `);
-        $('#pagination').empty();
+          $('#pagination').empty();
+        }
       }
-    }
-  });
-
+    });
   }
 
+  // Pagination
   function renderPagination(totalRows, limit, currentPage) {
     let totalPages = Math.ceil(totalRows / limit);
     let paginationHTML = '';
 
     if (totalPages > 1) {
       paginationHTML += `
-        <button class="px-3 py-1 bg-gray-700 text-white rounded ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">Prev</button>
+        <button class="px-3 py-1 bg-gray-700 text-white rounded ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+          ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">Prev</button>
       `;
 
       for (let i = 1; i <= totalPages; i++) {
         paginationHTML += `
-          <button class="px-3 py-1 mx-1 rounded ${i === currentPage ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-white'}" data-page="${i}">${i}</button>
+          <button class="px-3 py-1 mx-1 rounded ${i === currentPage ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-white'}" 
+            data-page="${i}">${i}</button>
         `;
       }
 
       paginationHTML += `
-        <button class="px-3 py-1 bg-gray-700 text-white rounded ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next</button>
+        <button class="px-3 py-1 bg-gray-700 text-white rounded ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
+          ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next</button>
       `;
     }
 
     $('#pagination').html(paginationHTML);
   }
 
+  // Pagination button click
   $(document).on('click', '#pagination button', function () {
     let page = $(this).data('page');
     if (page) loadTable(page);
@@ -142,17 +144,27 @@ $(document).ready(function () {
   // Initial load
   loadTable();
 
+  // 🔍 Unified filter function
+  function applyFilters() {
+    const term = $('#searchInput').val().toLowerCase().trim();
+    const selectedStatus = $('#filterStatus').val().toLowerCase().trim(); // 'all', 'pending', etc.
 
-
-  // Search filter
-  $('#searchInput').on('input', function () {
-    const term = $(this).val().toLowerCase();
     $('#outputTableBody tr').each(function () {
-      $(this).toggle($(this).text().toLowerCase().includes(term));
-    });
-  });
+      const rowStatusAttr = ($(this).attr('data-status') || '').toLowerCase().trim();
+      const statusText = rowStatusAttr || ($(this).find('td:nth-child(9)').text() || '').toLowerCase().trim();
+      const rowText = $(this).text().toLowerCase();
 
-    
+      const matchesStatus = (selectedStatus === 'all') || (statusText === selectedStatus);
+      const matchesSearch = term === '' || rowText.includes(term);
+
+      $(this).toggle(matchesStatus && matchesSearch);
+    });
+  }
+
+  // 🧭 Filter + Search event listeners
+  $('#filterStatus').on('change', applyFilters);
+  $('#searchInput').on('input', applyFilters);
+
 });
 
 

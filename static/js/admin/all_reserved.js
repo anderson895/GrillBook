@@ -176,14 +176,26 @@ $(document).ready(function () {
 
 
 
-  // Search filter
-  $('#searchInput').on('input', function () {
-    const term = $(this).val().toLowerCase();
-    $('#outputTableBody tr').each(function () {
-      $(this).toggle($(this).text().toLowerCase().includes(term));
-    });
-  });
+ // 🔍 Unified filter function
+  function applyFilters() {
+    const term = $('#searchInput').val().toLowerCase().trim();
+    const selectedStatus = $('#filterStatus').val().toLowerCase().trim(); // 'all', 'pending', etc.
 
+    $('#outputTableBody tr').each(function () {
+      const rowStatusAttr = ($(this).attr('data-status') || '').toLowerCase().trim();
+      const statusText = rowStatusAttr || ($(this).find('td:nth-child(9)').text() || '').toLowerCase().trim();
+      const rowText = $(this).text().toLowerCase();
+
+      const matchesStatus = (selectedStatus === 'all') || (statusText === selectedStatus);
+      const matchesSearch = term === '' || rowText.includes(term);
+
+      $(this).toggle(matchesStatus && matchesSearch);
+    });
+  }
+
+  // 🧭 Filter + Search event listeners
+  $('#filterStatus').on('change', applyFilters);
+  $('#searchInput').on('input', applyFilters);
     
 
 

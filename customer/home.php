@@ -255,7 +255,7 @@ include "../src/components/customer/footer.php";
         class="w-full rounded-lg bg-[#2A2A2A] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
       />
       <!-- Warning Message (default visible) -->
-     <p id="seats-warning" class="text-red-600 text-sm mt-2 font-medium rounded-lg p-2 inline-block">
+     <p id="seats-warning" class="text-red-600 text-sm mt-2 font-medium rounded-lg p-2 inline-block ">
       Maximum number of seats is 6.
       </p>
 

@@ -40,14 +40,29 @@ include "../src/components/admin/nav.php";
     placeholder="Search..."
   />
 
+  <select
+    name="filterStatus"
+    id="filterStatus"
+    class="block w-full md:w-60 px-4 py-2 border border-gray-700 rounded-lg bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition hover:border-gray-500"
+  >
+    <option value="all">All</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="cancelled">Cancelled</option>
+   
+    <option value="request new schedule">Request New Schedule</option>
+  </select>
+
+
+
 
 </div>
 
 
 <!-- Table Container -->
-<div class="overflow-x-auto rounded-md">
+<!-- Scrollable Table Container -->
+<div class="max-h-[500px] overflow-y-auto overflow-x-hidden rounded-md border border-gray-700">
   <table class="w-full text-sm text-left text-[#CCCCCC]">
-    <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs">
+    <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs sticky top-0 z-10">
       <tr>
         <th class="p-3">#</th>
         <th class="p-3 text-center">Account Name</th>
@@ -61,11 +76,13 @@ include "../src/components/admin/nav.php";
         <th class="p-3 text-center">Action</th>
       </tr>
     </thead>
+
     <tbody id="outputTableBody" class="divide-y divide-gray-700">
       <!-- Dynamic Data -->
     </tbody>
   </table>
 </div>
+
 
 <!-- Pagination -->
 <div id="pagination" class="mt-4 flex justify-center gap-2"></div>

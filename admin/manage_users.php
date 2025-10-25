@@ -43,9 +43,9 @@ include "../src/components/admin/nav.php";
 
 
   <!-- Table Container -->
-  <div class="overflow-x-auto rounded-md">
-    <table class="w-full text-sm text-left text-[#CCCCCC]">
-      <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs">
+ <div class="max-h-[500px] overflow-y-auto overflow-x-hidden rounded-md border border-gray-700">
+  <table class="w-full text-sm text-left text-[#CCCCCC]">
+    <thead class="bg-[#0D0D0D] text-[#FFD700] uppercase text-xs sticky top-0 z-10">
         <tr>
 
           <th class="p-3">#</th>
