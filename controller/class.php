@@ -43,6 +43,7 @@ class global_class extends db_connect
 
 
 
+
 public function UpdateAccount($user_id, $first_name, $last_name, $email, $password) {
     // Start building the query
     $queryStr = "UPDATE `user` SET `user_fname` = ?, `user_lname` = ?, `user_email` = ?";
@@ -442,8 +443,9 @@ public function isEmailExist($email) {
     $stmt->execute();
     $stmt->store_result();
 
-    return $stmt->num_rows > 0; // Returns true if email exists, false otherwise
+    return $stmt->num_rows > 0; 
 }
+
 
 // Register a new customer
 public function RegisterCustomer($first_name, $last_name, $email, $password) {
@@ -1220,8 +1222,6 @@ public function fetch_all_reserve_request($limit, $offset) {
 }
 
 
-
-
 public function count_all_reserve_request() {
     $result = $this->conn->query("
         SELECT COUNT(*) as total 
@@ -1234,6 +1234,49 @@ public function count_all_reserve_request() {
 
 
 // ALL RESERVED
+
+
+public function getCompletedReservations() {
+    $sql = "SELECT r.*, u.user_fname, u.user_lname, u.user_email
+            FROM reservations r
+            JOIN user u ON r.reserve_user_id = u.user_id
+            WHERE r.status = 'completed'
+            ORDER BY r.date_schedule DESC, r.time_schedule DESC";
+    $result = $this->conn->query($sql);
+
+    $data = [];
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+
+            // Helper function to decode JSON and return array of objects
+            $decodeItems = function($json) {
+                $items = json_decode($json, true);
+                if(!$items || !is_array($items)) return [];
+                
+                // Keep only relevant fields
+                return array_map(function($item) {
+                    return [
+                        'name' => $item['name'],
+                        'price'=> $item['price'],
+                        'qty'  => $item['qty']
+                    ];
+                }, $items);
+            };
+
+            $row['selected_menus']  = $decodeItems($row['selected_menus']);
+            $row['selected_promos'] = $decodeItems($row['selected_promos']);
+            $row['selected_groups'] = $decodeItems($row['selected_groups']);
+
+            $data[] = $row;
+        }
+    }
+    return $data;
+}
+
+
+
+
+
 
 
 public function fetch_all_reserved($limit, $offset) {

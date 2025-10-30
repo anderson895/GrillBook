@@ -707,6 +707,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 exit;
 
+        }else if ($_GET['requestType'] == 'fetch_report') {
+           
+                 $completedReservations = $db->getCompletedReservations();
+                echo json_encode($completedReservations);
+                exit;
+
         }else if ($_GET['requestType'] === 'fetch_all_table_availability_today') {
                 // Hardcoded table list (same as in HTML)
                 $allTables = [

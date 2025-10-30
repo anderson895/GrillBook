@@ -47,6 +47,7 @@ include "../src/components/admin/nav.php";
   >
     <option value="all">All</option>
     <option value="confirmed">Confirmed</option>
+    <option value="completed">Completed</option>
     <option value="cancelled">Cancelled</option>
    
     <option value="request new schedule">Request New Schedule</option>
