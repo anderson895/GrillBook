@@ -37,6 +37,10 @@ $timeLeft = max(0, 300 - (time() - $user['code_generated_time'])); // 5 minutes 
             >
                 Verify
             </button>
+            <button id="resendCode" class="cursor-pointer w-full mt-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-colors duration-200">
+                Resend Verification Code
+            </button>
+
         </form>
     </div>
 </div>
@@ -49,35 +53,42 @@ include "src/components/footer.php";
 $(document).ready(function() {
     const $otpInputs = $('.otp-box');
     const $btnVerify = $('#btnVerify');
+    const $resendBtn = $('#resendCode');
     const $timer = $('#timer');
 
-    // Remaining time passed from PHP
-    let timeLeft = <?php echo $timeLeft; ?>; // seconds
+    // Remaining time from PHP
+    let timeLeft = <?php echo $timeLeft; ?>;
+    let expiredNotified = false; // prevent repeated alerts
+    let countdown;
 
-    if (timeLeft <= 0) {
-        // Already expired
-        $timer.text('00:00');
-        alertify.error('Verification code expired.');
-        $otpInputs.prop('disabled', true);
-        $btnVerify.prop('disabled', true);
-        return;
+    // Autofocus first input
+    $otpInputs.first().focus();
+
+    // Function to start/restart countdown
+    function startCountdown() {
+        clearInterval(countdown);
+        expiredNotified = false;
+
+        countdown = setInterval(function() {
+            if (timeLeft < 0) timeLeft = 0;
+
+            const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const seconds = (timeLeft % 60).toString().padStart(2, '0');
+            $timer.text(`${minutes}:${seconds}`);
+
+            if (timeLeft === 0 && !expiredNotified) {
+                $otpInputs.prop('disabled', true);
+                $btnVerify.prop('disabled', true);
+                alertify.error('Verification code expired.');
+                expiredNotified = true;
+            }
+
+            timeLeft--;
+        }, 1000);
     }
 
-    // Countdown timer
-    const countdown = setInterval(function() {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        $timer.text(`${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`);
-
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            alertify.error('Verification code expired.');
-            $otpInputs.prop('disabled', true);
-            $btnVerify.prop('disabled', true);
-        }
-
-        timeLeft--;
-    }, 1000);
+    // Start initial countdown
+    startCountdown();
 
     // Auto-focus next input
     $otpInputs.on('input', function() {
@@ -119,13 +130,54 @@ $(document).ready(function() {
                     setTimeout(() => { window.location.href = 'login'; }, 1500);
                 } else {
                     alertify.error(response.message);
-                    $otpInputs.val('');
-                    $otpInputs.first().focus();
+                    $otpInputs.val('').first().focus();
                 }
             },
             error: function() {
                 $btnVerify.prop('disabled', false).text('Verify');
                 alertify.error('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // Resend verification button
+    $resendBtn.click(function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Resending...',
+            text: 'Please wait while we resend your verification code.',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "controller/end-points/verification_mailer.php",
+            data: { requestType: "ResendVerification" },
+            dataType: 'json',
+            success: function(response) {
+                Swal.close();
+
+                if (response.status === 'success') {
+                    alertify.success('Verification code resent! Timer reset to 5 minutes.');
+
+                    // Reset inputs and enable
+                    $otpInputs.prop('disabled', false).val('');
+                    $btnVerify.prop('disabled', false);
+                    $otpInputs.first().focus();
+
+                    // Reset timer to 5 minutes
+                    timeLeft = 300;
+                    startCountdown();
+                } else {
+                    alertify.error(response.message);
+                }
+            },
+            error: function() {
+                Swal.close();
+                alertify.error('Error sending verification code. Try again.');
             }
         });
     });

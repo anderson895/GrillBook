@@ -21,18 +21,17 @@ $(document).ready(function () {
             text: 'Please wait while we register your account.',
             allowOutsideClick: false,
             allowEscapeKey: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => Swal.showLoading()
         });
 
+        // Serialize form data
         const formData = $(this).serializeArray();
-        formData.push({ name: 'requestType', value: 'RegisterCustomer' });
+        formData.push({ name: 'requestType', value: 'RegisterCustomer' }); // ensure requestType is sent
 
         $.ajax({
             type: "POST",
             url: "controller/end-points/verification_mailer.php",
-            data: $.param(formData),
+            data: $.param(formData), // send properly encoded
             dataType: 'json',
             success: function (response) {
                 Swal.close(); // close the loader
@@ -44,7 +43,7 @@ $(document).ready(function () {
                         text: 'Verification code sent!',
                         confirmButtonColor: '#3085d6'
                     }).then(() => {
-                        window.location.href = "verification"; // redirect
+                        window.location.href = "verification"; // redirect to verification page
                     });
                 } else {
                     Swal.fire({
