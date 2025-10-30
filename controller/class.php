@@ -434,16 +434,21 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
 
 
 
+// Check if an email is already registered
+public function isEmailExist($email) {
+    $query = "SELECT user_id FROM `user` WHERE `user_email` = ?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
 
-  public function RegisterCustomer($first_name, $last_name, $email, $password) {
-    // Check if the email already exists
-    $checkQuery = "SELECT user_id FROM `user` WHERE `user_email` = ?";
-    $checkStmt = $this->conn->prepare($checkQuery);
-    $checkStmt->bind_param("s", $email);
-    $checkStmt->execute();
-    $checkStmt->store_result();
+    return $stmt->num_rows > 0; // Returns true if email exists, false otherwise
+}
 
-    if ($checkStmt->num_rows > 0) {
+// Register a new customer
+public function RegisterCustomer($first_name, $last_name, $email, $password) {
+    // Use the separate function to check email
+    if ($this->isEmailExist($email)) {
         return [
             'success' => false,
             'message' => 'Email already registered.'
@@ -472,6 +477,7 @@ public function UpdateAccount($user_id, $first_name, $last_name, $email, $passwo
         ];
     }
 }
+
 
 
 

@@ -1,51 +1,70 @@
 $(document).ready(function () {
 
-  $("#frmRegister").submit(function (e) {
-    e.preventDefault();
+    $("#frmRegister").submit(function (e) {
+        e.preventDefault();
 
-    // Get password values
-    var password = $("#password").val();
-    var confirmPassword = $("#confirm_password").val();
+        const password = $("#password").val();
+        const confirmPassword = $("#confirm_password").val();
 
-    // Confirm password validation
-    if (password !== confirmPassword) {
-      alertify.error("Passwords do not match.");
-      return; // Stop form submission
-    }
-
-    $('#spinner').show();
-    $('#btnLogin').prop('disabled', true);
-
-    var formData = $(this).serializeArray();
-    formData.push({ name: 'requestType', value: 'RegisterCustomer' });
-    var serializedData = $.param(formData);
-
-    $.ajax({
-      type: "POST",
-      url: "controller/end-points/controller.php",
-      data: serializedData,
-      dataType: 'json',
-      success: function (response) {
-        console.log(response.status);
-
-        if (response.status === "success") {
-          alertify.success('Registration Successful');
-          setTimeout(function () {
-            window.location.href = "login";
-          }, 1000);
-        } else {
-          $('#spinner').hide();
-          $('#btnLogin').prop('disabled', false);
-          console.log(response);
-          alertify.error(response.message);
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Passwords do not match',
+                confirmButtonColor: '#3085d6',
+            });
+            return;
         }
-      },
-      error: function () {
-        $('#spinner').hide();
-        $('#btnLogin').prop('disabled', false);
-        alertify.error('An error occurred. Please try again.');
-      }
+
+        // Show Swal loader
+        Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we register your account.',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const formData = $(this).serializeArray();
+        formData.push({ name: 'requestType', value: 'RegisterCustomer' });
+
+        $.ajax({
+            type: "POST",
+            url: "controller/end-points/verification_mailer.php",
+            data: $.param(formData),
+            dataType: 'json',
+            success: function (response) {
+                Swal.close(); // close the loader
+
+                if (response.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Successful',
+                        text: 'Verification code sent!',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        window.location.href = "verification"; // redirect
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registration Failed',
+                        text: response.message,
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            },
+            error: function () {
+                Swal.close(); // close the loader
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred. Please try again.',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
+        });
     });
-  });
 
 });

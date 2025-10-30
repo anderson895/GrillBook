@@ -60,7 +60,7 @@ include "src/components/header.php";
       </div>
 
       <!-- Submit Button -->
-      <button type="submit"
+      <button type="submit" id="btnRegister"
               class="w-full cursor-pointer bg-yellow-400 text-black font-bold py-2 rounded-full hover:bg-yellow-300 transition">
         Register
       </button>

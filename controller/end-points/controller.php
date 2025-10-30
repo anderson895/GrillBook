@@ -64,14 +64,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
         }else if ($_POST['requestType'] == 'RegisterCustomer') {
-                $first_name = $_POST['first_name'];
-                $last_name  = $_POST['last_name'];
-                $email      = $_POST['email'];
-                $password   = $_POST['password'];
+
+                session_start();
+
+                $first_name = $_SESSION['register_data']['first_name'];
+                $last_name  = $_SESSION['register_data']['last_name'];
+                $email      = $_SESSION['register_data']['email'];
+                $password   = $_SESSION['register_data']['password'];
 
                 $result = $db->RegisterCustomer($first_name, $last_name, $email, $password);
 
                 if ($result['success']) {
+                    // Clear the registration session after success
+                    unset($_SESSION['register_data']);
+
                     echo json_encode([
                         'status' => 'success',
                         'message' => $result['message'],
