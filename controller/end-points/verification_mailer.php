@@ -24,7 +24,7 @@ if ($db->isEmailExist($email)) {
 }
 
 // Generate verification code
-$verification_code = rand(100000, 999999);
+$verification_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
 // Store user info and code in session
 $_SESSION['register_data'] = [

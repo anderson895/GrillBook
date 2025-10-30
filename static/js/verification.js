@@ -1,24 +1,20 @@
-const sessionVerificationCode = sessionStorage.getItem('verificationCode');
-
 $("#frmVerify").submit(function(e) {
     e.preventDefault();
 
-    const code = $('input[name="verification_code"]').val().trim();
+    // Collect OTP from all boxes
+    let code = '';
+    $('.otp-box').each(function() {
+        code += $(this).val().trim();
+    });
 
-    if (!code) {
-        alertify.error('Please enter the verification code.');
-        return;
-    }
-
-    // Check against session-stored code first
-    if (code !== sessionVerificationCode) {
-        alertify.error('Invalid verification code.');
+    if (code.length < 6) {
+        alertify.error('Please enter the full verification code.');
         return;
     }
 
     $('#btnVerify').prop('disabled', true).text('Verifying...');
 
-    // Only call controller.php if the code matches
+    // Always call server to verify code securely
     $.ajax({
         type: "POST",
         url: "controller/end-points/controller.php",
@@ -37,6 +33,9 @@ $("#frmVerify").submit(function(e) {
                 }, 1500);
             } else {
                 alertify.error(response.message);
+                // Clear boxes on wrong code
+                $('.otp-box').val('');
+                $('.otp-box').first().focus();
             }
         },
         error: function() {
