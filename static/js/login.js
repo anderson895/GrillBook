@@ -15,43 +15,47 @@ $(document).ready(function () {
       url: "controller/end-points/controller.php",
       data: serializedData,
       dataType: 'json',
-      success: function (response) {
-        console.log(response.status);
+     success: function (response) {
+    console.log(response.status);
 
-        if (response.status === "success") {
-          // ✅ Get status message and color
-          const { message: statusMessage, color } = getRestaurantStatus();
+    if (response.status === "success") {
 
-          const position = response.user_position;
-          const routes = {
+        const position = response.user_position;
+        const routes = {
             admin: "admin/dashboard",
             headstaff: "headstaff/dashboard",
             customer: "customer/home"
-          };
+        };
 
-          // ✅ Show Swal with colored text
-          Swal.fire({
+        // ✅ Only show restaurant schedule if NOT admin
+        let swalHtml = '';
+        if (position !== 'admin') {
+            const { message: statusMessage, color } = getRestaurantStatus();
+            swalHtml = `<span style="color:${color}; font-weight:600;">${statusMessage}</span>`;
+        }
+
+        Swal.fire({
             title: 'Login Successful 🎉',
-            html: `<span style="color:${color}; font-weight:600;">${statusMessage}</span>`,
+            html: swalHtml,
             icon: 'success',
             confirmButtonText: 'OK'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed && routes[position]) {
-              window.location.href = routes[position];
+                window.location.href = routes[position];
             }
-          });
+        });
 
-        } else {
-          $('#spinner').hide();
-          $('#btnLogin').prop('disabled', false);
-          Swal.fire({
+    } else {
+        $('#spinner').hide();
+        $('#btnLogin').prop('disabled', false);
+        Swal.fire({
             title: 'Login Failed ❌',
             text: response.message,
             icon: 'error',
             confirmButtonText: 'Try Again'
-          });
-        }
-      },
+        });
+    }
+},
       error: function () {
         $('#spinner').hide();
         $('#btnLogin').prop('disabled', false);
