@@ -16,6 +16,7 @@ class RegisterUser {
     private $password;
     private $verificationCode;
     private $codeExpiry = 300; // 5 minutes
+    private $resendCooldown = 300; // 5 minutes
 
     public function __construct($db, $postData = []) {
         $this->db = $db;
@@ -45,10 +46,23 @@ class RegisterUser {
         }
 
         $user = &$_SESSION['register_data'];
+        $current_time = time();
 
-        // Always regenerate code on resend
+        // Initialize last_resend_time if not set
+        if (!isset($user['last_resend_time'])) {
+            $user['last_resend_time'] = 0;
+        }
+
+        // Check cooldown
+        $remainingCooldown = $this->resendCooldown - ($current_time - $user['last_resend_time']);
+        if ($remainingCooldown > 0) {
+            return ['status' => 'error', 'message' => "Please wait {$remainingCooldown} seconds before resending."];
+        }
+
+        // Regenerate verification code
         $user['verification_code'] = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-        $user['code_generated_time'] = time();
+        $user['code_generated_time'] = $current_time;
+        $user['last_resend_time'] = $current_time;
 
         $this->firstName = $user['first_name'];
         $this->lastName  = $user['last_name'];
@@ -76,7 +90,8 @@ class RegisterUser {
             'email'      => $this->email,
             'password'   => $this->password,
             'verification_code' => $this->verificationCode,
-            'code_generated_time' => time()
+            'code_generated_time' => time(),
+            'last_resend_time' => 0
         ];
     }
 
@@ -117,7 +132,6 @@ class RegisterUser {
 
 // --- Handle requests ---
 $db = new global_class();
-
 $requestType = $_POST['requestType'] ?? '';
 
 if ($requestType === 'RegisterCustomer') {

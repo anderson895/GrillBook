@@ -8,11 +8,18 @@ if (!isset($_SESSION['register_data'])) {
     exit;
 }
 
-$user = $_SESSION['register_data'];
+$user = &$_SESSION['register_data'];
 
-// Calculate remaining time in seconds
-$timeLeft = max(0, 300 - (time() - $user['code_generated_time'])); // 5 minutes = 300s
+// Verification code expiration (5 minutes)
+$timeLeft = max(0, 300 - (time() - $user['code_generated_time']));
+
+// Resend cooldown (5 minutes)
+if (!isset($user['last_resend_time'])) {
+    $user['last_resend_time'] = 0;
+}
+$resendCooldown = max(0, 300 - (time() - $user['last_resend_time']));
 ?>
+
 
 <div class="min-h-screen flex flex-col items-center justify-center bg-black px-4">
 
@@ -45,9 +52,9 @@ $timeLeft = max(0, 300 - (time() - $user['code_generated_time'])); // 5 minutes 
     </div>
 </div>
 
-<?php
-include "src/components/footer.php";
-?>
+<?php include "src/components/footer.php"; ?>
+
+
 
 <script>
 $(document).ready(function() {
@@ -56,15 +63,13 @@ $(document).ready(function() {
     const $resendBtn = $('#resendCode');
     const $timer = $('#timer');
 
-    // Remaining time from PHP
     let timeLeft = <?php echo $timeLeft; ?>;
-    let expiredNotified = false; // prevent repeated alerts
+    let resendCooldown = <?php echo $resendCooldown; ?>; // <-- persist cooldown from session
+    let expiredNotified = false;
     let countdown;
 
-    // Autofocus first input
     $otpInputs.first().focus();
 
-    // Function to start/restart countdown
     function startCountdown() {
         clearInterval(countdown);
         expiredNotified = false;
@@ -72,8 +77,8 @@ $(document).ready(function() {
         countdown = setInterval(function() {
             if (timeLeft < 0) timeLeft = 0;
 
-            const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const seconds = (timeLeft % 60).toString().padStart(2, '0');
+            const minutes = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+            const seconds = (timeLeft % 60).toString().padStart(2,'0');
             $timer.text(`${minutes}:${seconds}`);
 
             if (timeLeft === 0 && !expiredNotified) {
@@ -83,11 +88,19 @@ $(document).ready(function() {
                 expiredNotified = true;
             }
 
+            if (resendCooldown > 0) {
+                resendCooldown--;
+                const rMin = Math.floor(resendCooldown / 60).toString().padStart(2,'0');
+                const rSec = (resendCooldown % 60).toString().padStart(2,'0');
+                $resendBtn.prop('disabled', true).text(`Resend available in ${rMin}:${rSec}`);
+            } else {
+                $resendBtn.prop('disabled', false).text('Resend Verification Code');
+            }
+
             timeLeft--;
         }, 1000);
     }
 
-    // Start initial countdown
     startCountdown();
 
     // Auto-focus next input
@@ -115,7 +128,7 @@ $(document).ready(function() {
             return;
         }
 
-        $btnVerify.prop('disabled', true).text('Verifying...');
+        $btnVerify.prop('disabled', true).text('Verifying..');
 
         $.ajax({
             type: "POST",
@@ -123,7 +136,7 @@ $(document).ready(function() {
             data: { verification_code: code, requestType: "RegisterCustomer" },
             dataType: 'json',
             success: function(response) {
-                $btnVerify.prop('disabled', false).text('Verify');
+                $btnVerify.prop('disabled', false).text('Verifying...');
 
                 if (response.status === 'success') {
                     alertify.success(response.message);
@@ -140,9 +153,16 @@ $(document).ready(function() {
         });
     });
 
-    // Resend verification button
+        // Resend button
     $resendBtn.click(function(e) {
         e.preventDefault();
+
+        if (resendCooldown > 0) {
+            const rMin = Math.floor(resendCooldown / 60).toString().padStart(2,'0');
+            const rSec = (resendCooldown % 60).toString().padStart(2,'0');
+            alertify.warning(`You can resend the code in ${rMin}:${rSec} minutes.`);
+            return;
+        }
 
         Swal.fire({
             title: 'Resending...',
@@ -163,13 +183,16 @@ $(document).ready(function() {
                 if (response.status === 'success') {
                     alertify.success('Verification code resent! Timer reset to 5 minutes.');
 
-                    // Reset inputs and enable
                     $otpInputs.prop('disabled', false).val('');
                     $btnVerify.prop('disabled', false);
                     $otpInputs.first().focus();
 
-                    // Reset timer to 5 minutes
+                    // Reset both timers
                     timeLeft = 300;
+
+                    // Reset cooldown after successful resend
+                    resendCooldown = 300;
+
                     startCountdown();
                 } else {
                     alertify.error(response.message);
@@ -181,5 +204,7 @@ $(document).ready(function() {
             }
         });
     });
+
 });
+
 </script>
