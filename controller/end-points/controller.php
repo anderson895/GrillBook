@@ -64,30 +64,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
         }else if ($_POST['requestType'] == 'RegisterCustomer') {
+                    
+                    session_start();
+                                    // Check if verification code is expired (5 minutes = 300 seconds)
+                    if (time() - $_SESSION['register_data']['code_generated_time'] > 300) {
+                        unset($_SESSION['register_data']); // remove expired session
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'Verification code expired.'
+                        ]);
+                        exit;
+                    }
 
-                session_start();
+                    // Optional: check if code matches (if you pass it via POST)
+                    if (isset($_POST['verification_code'])) {
+                        $input_code = $_POST['verification_code'];
+                        if ($input_code !== $_SESSION['register_data']['verification_code']) {
+                            echo json_encode([
+                                'status' => 'error',
+                                'message' => 'Invalid verification code.'
+                            ]);
+                            exit;
+                        }
+                    }
 
-                $first_name = $_SESSION['register_data']['first_name'];
-                $last_name  = $_SESSION['register_data']['last_name'];
-                $email      = $_SESSION['register_data']['email'];
-                $password   = $_SESSION['register_data']['password'];
+                    // All good, register customer
+                    $first_name = $_SESSION['register_data']['first_name'];
+                    $last_name  = $_SESSION['register_data']['last_name'];
+                    $email      = $_SESSION['register_data']['email'];
+                    $password   = $_SESSION['register_data']['password'];
 
-                $result = $db->RegisterCustomer($first_name, $last_name, $email, $password);
+                    $result = $db->RegisterCustomer($first_name, $last_name, $email, $password);
 
-                if ($result['success']) {
-                    // Clear the registration session after success
-                    unset($_SESSION['register_data']);
-
-                    echo json_encode([
-                        'status' => 'success',
-                        'message' => $result['message'],
-                    ]);
-                } else {
-                    echo json_encode([
-                        'status' => 'error',
-                        'message' => $result['message']
-                    ]);
-                }
+                    if ($result['success']) {
+                        unset($_SESSION['register_data']); // remove session after successful registration
+                        echo json_encode([
+                            'status' => 'success',
+                            'message' => $result['message'],
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => $result['message']
+                        ]);
+                    }
 
         }else if ($_POST['requestType'] == 'UpdateAccount') {
 

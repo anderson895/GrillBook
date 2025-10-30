@@ -44,3 +44,33 @@ $("#frmVerify").submit(function(e) {
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
+ $(document).ready(function() {
+            const $otpInputs = $('.otp-box');
+
+            // Move focus automatically
+            $otpInputs.on('input', function() {
+                const nextInput = $(this).next('.otp-box');
+                if (this.value.length === 1 && nextInput.length) {
+                    nextInput.focus();
+                }
+            });
+
+            // Handle backspace
+            $otpInputs.on('keydown', function(e) {
+                if (e.key === "Backspace" && !this.value) {
+                    $(this).prev('.otp-box').focus();
+                }
+            });
+
+            
+});

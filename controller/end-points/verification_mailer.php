@@ -20,19 +20,20 @@ if ($db->isEmailExist($email)) {
         'status' => 'error',
         'message' => 'Email already registered.'
     ]);
-    exit; // stop execution if email exists
+    exit;
 }
 
 // Generate verification code
 $verification_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-// Store user info and code in session
+// Store user info, code, and timestamp in session
 $_SESSION['register_data'] = [
     'first_name' => $first_name,
     'last_name'  => $last_name,
     'email'      => $email,
     'password'   => $password,
-    'verification_code' => $verification_code
+    'verification_code' => $verification_code,
+    'code_generated_time' => time() // store current timestamp
 ];
 
 // PHPMailer setup
@@ -42,7 +43,7 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'rodriguezryan325@gmail.com';
-    $mail->Password = 'ofvf yxut wpcc iecx'; // use .env in production
+    $mail->Password = 'ofvf yxut wpcc iecx';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
 
@@ -55,7 +56,7 @@ try {
     $mail->Body = "
         <h2>Hello $fullname!</h2>
         <p>Your verification code is: <b>$verification_code</b></p>
-        <p>Use this code to verify your account.</p>
+        <p>This code will expire in 5 minutes.</p>
     ";
 
     $mail->send();
