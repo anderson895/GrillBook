@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 07:37 AM
+-- Generation Time: Oct 30, 2025 at 10:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -146,28 +146,8 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`, `archived_by_admin`, `archived_by_customer`, `request_details`) VALUES
-(64, 4, 'RESV001', 'T01', 4, '2025-11-05', '18:00:00', 500.00, 50.00, 100.00, 650.00, '[2,3]', '[10]', '[9]', 'terms_001.pdf', 'payment_001.jpg', '2025-10-30 06:34:15', '2025-10-30 06:34:15', 'pending', 0, 0, NULL),
-(65, 29, 'RESV002', 'T02', 2, '2025-11-06', '19:00:00', 300.00, 0.00, 0.00, 300.00, '[6]', '[]', '[]', 'terms_002.pdf', 'payment_002.jpg', '2025-10-30 06:34:15', '2025-10-30 06:34:15', 'pending', 0, 0, NULL),
-(66, 31, 'RESV003', 'T03', 6, '2025-11-07', '20:00:00', 1000.00, 150.00, 200.00, 1350.00, '[2,6]', '[10]', '[9]', 'terms_003.pdf', 'payment_003.jpg', '2025-10-30 06:34:15', '2025-10-30 06:34:15', 'pending', 0, 0, NULL),
-(94, 4, 'RESV101', 'T01', 2, '2025-11-01', '18:00:00', 200.00, 0.00, 0.00, 200.00, '[2,3]', '[]', '[]', 'terms_101.pdf', 'payment_101.jpg', '2025-10-30 06:35:54', '2025-10-30 06:35:54', 'pending', 0, 0, NULL),
-(95, 29, 'RESV102', 'T02', 4, '2025-11-02', '19:00:00', 450.00, 50.00, 0.00, 500.00, '[2,6]', '[10]', '[]', 'terms_102.pdf', 'payment_102.jpg', '2025-10-30 06:35:54', '2025-10-30 06:35:54', 'pending', 0, 0, NULL),
-(96, 31, 'RESV103', 'T03', 6, '2025-11-03', '20:00:00', 800.00, 100.00, 50.00, 950.00, '[2,3,6]', '[10]', '[9]', 'terms_103.pdf', 'payment_103.jpg', '2025-10-30 06:35:54', '2025-10-30 06:35:54', 'pending', 0, 0, NULL),
-(97, 2, 'RESV104', 'T04', 3, '2025-11-04', '18:30:00', 300.00, 0.00, 0.00, 300.00, '[3,6]', '[]', '[]', 'terms_104.pdf', 'payment_104.jpg', '2025-10-30 06:35:54', '2025-10-30 06:35:54', 'pending', 0, 0, NULL),
-(98, 2, 'RESV128', 'T05', 4, '2025-11-28', '18:00:00', 400.00, 50.00, 0.00, 450.00, '[2,3]', '[10]', '[]', 'terms_128.pdf', 'payment_128.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'confirmed', 0, 0, NULL),
-(99, 4, 'RESV129', 'T06', 2, '2025-11-29', '19:00:00', 200.00, 0.00, 0.00, 200.00, '[6]', '[]', '[]', 'terms_129.pdf', 'payment_129.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'cancelled', 0, 0, NULL),
-(100, 29, 'RESV130', 'T07', 3, '2025-11-30', '18:30:00', 300.00, 0.00, 50.00, 350.00, '[2,3]', '[]', '[9]', 'terms_130.pdf', 'payment_130.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'completed', 0, 0, NULL),
-(101, 31, 'RESV131', 'T08', 5, '2025-12-01', '19:15:00', 500.00, 50.00, 100.00, 650.00, '[2,6]', '[10]', '[9]', 'terms_131.pdf', 'payment_131.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'request cancel', 0, 0, NULL),
-(102, 2, 'RESV132', 'T09', 2, '2025-12-02', '20:00:00', 200.00, 0.00, 0.00, 200.00, '[2]', '[]', '[]', 'terms_132.pdf', 'payment_132.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'request new schedule', 0, 0, NULL),
-(103, 4, 'RESV133', 'T10', 4, '2025-12-03', '18:45:00', 400.00, 50.00, 0.00, 450.00, '[3,6]', '[10]', '[]', 'terms_133.pdf', 'payment_133.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'pending', 0, 0, NULL),
-(104, 29, 'RESV134', 'T11', 3, '2025-12-04', '19:30:00', 350.00, 0.00, 50.00, 400.00, '[2,3]', '[]', '[9]', 'terms_134.pdf', 'payment_134.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'confirmed', 0, 0, NULL),
-(105, 31, 'RESV135', 'T12', 6, '2025-12-05', '20:15:00', 900.00, 100.00, 100.00, 1100.00, '[2,3,6]', '[10]', '[9]', 'terms_135.pdf', 'payment_135.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'cancelled', 0, 0, NULL),
-(106, 2, 'RESV136', 'T13', 2, '2025-12-06', '18:00:00', 200.00, 0.00, 0.00, 200.00, '[2]', '[]', '[]', 'terms_136.pdf', 'payment_136.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'completed', 0, 0, NULL),
-(107, 4, 'RESV137', 'T14', 4, '2025-12-07', '19:00:00', 450.00, 50.00, 0.00, 500.00, '[2,6]', '[10]', '[]', 'terms_137.pdf', 'payment_137.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'request cancel', 0, 0, NULL),
-(108, 29, 'RESV138', 'T15', 6, '2025-12-08', '20:00:00', 800.00, 100.00, 50.00, 950.00, '[2,3,6]', '[10]', '[9]', 'terms_138.pdf', 'payment_138.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'request new schedule', 0, 0, NULL),
-(109, 31, 'RESV139', 'T16', 3, '2025-12-09', '18:30:00', 300.00, 0.00, 0.00, 300.00, '[3,6]', '[]', '[]', 'terms_139.pdf', 'payment_139.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'pending', 0, 0, NULL),
-(110, 2, 'RESV140', 'T17', 5, '2025-12-10', '19:15:00', 500.00, 50.00, 100.00, 650.00, '[2,6]', '[10]', '[9]', 'terms_140.pdf', 'payment_140.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'confirmed', 0, 0, NULL),
-(111, 4, 'RESV141', 'T18', 2, '2025-12-11', '20:00:00', 200.00, 0.00, 0.00, 200.00, '[2]', '[]', '[]', 'terms_141.pdf', 'payment_141.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'cancelled', 0, 0, NULL),
-(112, 29, 'RESV142', 'T19', 4, '2025-12-12', '18:45:00', 400.00, 50.00, 0.00, 450.00, '[3,6]', '[10]', '[]', 'terms_142.pdf', 'payment_142.jpg', '2025-10-30 06:36:41', '2025-10-30 06:36:41', 'completed', 0, 0, NULL);
+(113, 31, 'MAN3DV9C', 'G5', 6, '2025-10-30', '19:08:00', 0.00, 350.00, 0.00, 350.00, '[]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"}]', '[]', 'terms_69030f1b61a6d3.66546569.pdf', 'proof_69030f1b617138.70348974.webp', '2025-10-30 07:09:15', '2025-10-30 08:37:40', 'pending', 0, 0, NULL),
+(114, 31, 'V7H3UFYX', 'E7', 4, '2025-10-30', '19:14:00', 830.00, 1220.00, 840.00, 2890.00, '[{\"id\":\"9\",\"name\":\"Green apple Shake\",\"price\":180,\"qty\":1,\"total\":180,\"type\":\"menu\"},{\"id\":\"8\",\"name\":\"Manggo Shake\",\"price\":200,\"qty\":1,\"total\":200,\"type\":\"menu\"},{\"id\":\"7\",\"name\":\"Strawbery Shake\",\"price\":150,\"qty\":3,\"total\":450,\"type\":\"menu\"}]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"},{\"id\":\"15\",\"name\":\"esrgfgdrg\",\"price\":200,\"qty\":3,\"total\":600,\"type\":\"promo_deal\"},{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"qty\":1,\"total\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"19\",\"name\":\"grdgh\",\"price\":450,\"qty\":1,\"total\":450,\"type\":\"group_deal\"},{\"id\":\"18\",\"name\":\"fes\",\"price\":70,\"qty\":1,\"total\":70,\"type\":\"group_deal\"},{\"id\":\"17\",\"name\":\"drgdrg\",\"price\":320,\"qty\":1,\"total\":320,\"type\":\"group_deal\"}]', 'terms_69031073a88ab1.16988091.jpg', 'proof_69031073a86398.43199133.webp', '2025-10-30 07:14:59', '2025-10-30 07:16:08', 'completed', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -228,6 +208,31 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_p
 (63, 'Clara', 'Lopez', 'clara.lopez1@gmail.com', '$2y$10$dummyhashedpassword29', 'customer', 1),
 (64, 'Derek', 'Hill', 'derek.hill1@gmail.com', '$2y$10$dummyhashedpassword30', 'customer', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `walkin_tables`
+--
+
+CREATE TABLE `walkin_tables` (
+  `walkin_id` int(11) NOT NULL,
+  `walkin_table_code` varchar(50) NOT NULL,
+  `walkin_status` enum('available','unavailable') DEFAULT 'available',
+  `walkin_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `walkin_updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `walkin_tables`
+--
+
+INSERT INTO `walkin_tables` (`walkin_id`, `walkin_table_code`, `walkin_status`, `walkin_created_at`, `walkin_updated_at`) VALUES
+(3, 'DJ', 'unavailable', '2025-10-30 09:06:12', '2025-10-30 09:06:12'),
+(4, 'RESERV.', 'available', '2025-10-30 09:11:27', '2025-10-30 09:47:21'),
+(5, 'D1', 'unavailable', '2025-10-30 09:16:59', '2025-10-30 09:16:59'),
+(8, 'E5', 'unavailable', '2025-10-30 09:47:26', '2025-10-30 09:48:23'),
+(13, 'B1', 'unavailable', '2025-10-30 09:49:28', '2025-10-30 09:49:28');
+
 --
 -- Indexes for dumped tables
 --
@@ -264,6 +269,13 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `walkin_tables`
+--
+ALTER TABLE `walkin_tables`
+  ADD PRIMARY KEY (`walkin_id`),
+  ADD UNIQUE KEY `table_code` (`walkin_table_code`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -289,13 +301,19 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT for table `walkin_tables`
+--
+ALTER TABLE `walkin_tables`
+  MODIFY `walkin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

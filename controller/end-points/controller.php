@@ -116,8 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $last_name = $_POST['last_name'];
                 $password = $_POST['password'];
                 $email = $_POST['email'];
-
-                // Update user information in the database
+                
                 $updateSuccess = $db->UpdateAccount($user_id, $first_name, $last_name, $email, $password);
 
                 if ($updateSuccess) {
@@ -125,6 +124,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     echo json_encode(['status' => 'error', 'message' => 'Failed to update profile']);
                 }
+
+
+        }else if ($_POST['requestType'] == 'set_table_unavailable_walking') {
+
+               $table_code = $_POST['table_code'];
+
+                // Call your function to set table unavailable for walk-in
+                $updateSuccess = $db->set_table_unavailable_walking($table_code);
+
+                if ($updateSuccess) {
+                    echo json_encode(['status' => 'success', 'message' => 'Table successfully set to Not Available']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to update table status']);
+                }
+                exit;
+
+
+        }else if ($_POST['requestType'] == 'set_table_available_from_walkin') {
+
+               $table_code = $_POST['table_code'];
+
+                // Call your function to set table unavailable for walk-in
+                $updateSuccess = $db->set_table_available_from_walkin($table_code);
+
+                if ($updateSuccess) {
+                    echo json_encode(['status' => 'success', 'message' => 'Table successfully set to Not Available']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to update table status']);
+                }
+                exit;
 
 
         }else if ($_POST['requestType'] == 'updateArchived') {
@@ -707,6 +736,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 exit;
 
+        }else if ($_GET['requestType'] == 'fetch_all_admin_reservation_no_limit') {
+           
+               
+                $data  = $db->fetch_all_admin_reservation_no_limit();
+
+                echo json_encode([
+                    'status' => 200,
+                    'data'   => $data
+                ]);
+                exit;
+
         }else if ($_GET['requestType'] == 'fetch_report') {
            
                  $completedReservations = $db->getCompletedReservations();
@@ -714,6 +754,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
 
         }else if ($_GET['requestType'] === 'fetch_all_table_availability_today') {
+
+                session_start();
+
+                
+                // if($_SESSION['user_position']==="admin"){
+                //     echo "";
+                // }else if($_SESSION['user_position']==="customer"){
+                //     echo "";
+                // }
+
+
                 // Hardcoded table list (same as in HTML)
                 $allTables = [
                     'G6','G5','Take out 1','Take out 2','F3','F4',
