@@ -1710,120 +1710,6 @@ public function fetch_all_reservations_today() {
 
 
 
-public function fetch_all_customer_reservation_no_limit($user_id) {
-    // Step 1: Get reservations only (no LIMIT and OFFSET)
-    $query = $this->conn->prepare("
-        SELECT * FROM reservations
-        WHERE reserve_user_id = ?
-        AND archived_by_customer = 0
-        ORDER BY id DESC
-    ");
-    $query->bind_param("i", $user_id);
-    $query->execute();
-    $result = $query->get_result();
-    $reservations = $result->fetch_all(MYSQLI_ASSOC);
-
-    if (!$reservations) return [];
-
-    // Step 2: Collect all unique menu, promo, and group IDs
-    $menu_ids = [];
-    $promo_ids = [];
-    $group_ids = [];
-
-    foreach ($reservations as $res) {
-        $menus = json_decode($res['selected_menus'], true) ?: [];
-        $promos = json_decode($res['selected_promos'], true) ?: [];
-        $groups = json_decode($res['selected_groups'], true) ?: [];
-
-        foreach ($menus as $m) {
-            $id = (int)$m['id'];
-            if (!in_array($id, $menu_ids, true)) $menu_ids[] = $id;
-        }
-        foreach ($promos as $p) {
-            $id = (int)$p['id'];
-            if (!in_array($id, $promo_ids, true)) $promo_ids[] = $id;
-        }
-        foreach ($groups as $g) {
-            $id = (int)$g['id'];
-            if (!in_array($id, $group_ids, true)) $group_ids[] = $id;
-        }
-    }
-
-    // Step 3: Fetch menus
-    $menus = [];
-    if ($menu_ids) {
-        $placeholders = implode(',', array_fill(0, count($menu_ids), '?'));
-        $types = str_repeat('i', count($menu_ids));
-        $stmt = $this->conn->prepare("SELECT * FROM menu WHERE menu_id IN ($placeholders)");
-        $stmt->bind_param($types, ...$menu_ids);
-        $stmt->execute();
-        $resMenus = $stmt->get_result();
-        while ($row = $resMenus->fetch_assoc()) {
-            $menus[$row['menu_id']] = $row;
-        }
-    }
-
-    // Step 4: Fetch promos
-    $promos = [];
-    if ($promo_ids) {
-        $placeholders = implode(',', array_fill(0, count($promo_ids), '?'));
-        $types = str_repeat('i', count($promo_ids));
-        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
-        $stmt->bind_param($types, ...$promo_ids);
-        $stmt->execute();
-        $resPromos = $stmt->get_result();
-        while ($row = $resPromos->fetch_assoc()) {
-            $promos[$row['deal_id']] = $row;
-        }
-    }
-
-    // Step 5: Fetch groups (assuming groups are stored in `deals` table like promos)
-    $groups = [];
-    if ($group_ids) {
-        $placeholders = implode(',', array_fill(0, count($group_ids), '?'));
-        $types = str_repeat('i', count($group_ids));
-        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
-        $stmt->bind_param($types, ...$group_ids);
-        $stmt->execute();
-        $resGroups = $stmt->get_result();
-        while ($row = $resGroups->fetch_assoc()) {
-            $groups[$row['deal_id']] = $row;
-        }
-    }
-
-    // Step 6: Attach full menu, promo, and group details to reservations
-    foreach ($reservations as &$res) {
-        $resMenus = json_decode($res['selected_menus'], true) ?: [];
-        foreach ($resMenus as &$menuItem) {
-            $menuId = (int)$menuItem['id'];
-            if (isset($menus[$menuId])) {
-                $menuItem['details'] = $menus[$menuId];
-            }
-        }
-        $res['menus_details'] = $resMenus;
-
-        $resPromos = json_decode($res['selected_promos'], true) ?: [];
-        foreach ($resPromos as &$promoItem) {
-            $promoId = (int)$promoItem['id'];
-            if (isset($promos[$promoId])) {
-                $promoItem['details'] = $promos[$promoId];
-            }
-        }
-        $res['promos_details'] = $resPromos;
-
-        $resGroups = json_decode($res['selected_groups'], true) ?: [];
-        foreach ($resGroups as &$groupItem) {
-            $groupId = (int)$groupItem['id'];
-            if (isset($groups[$groupId])) {
-                $groupItem['details'] = $groups[$groupId];
-            }
-        }
-        $res['groups_details'] = $resGroups;
-    }
-
-    return $reservations;
-}
-
 
 
 
@@ -1935,7 +1821,7 @@ public function count_all_customer_reservation($user_id) {
 
 
 
-
+//FOR ADMIN
 
 public function fetch_all_admin_reservation_no_limit() {
     // Step 1: Get reservations only (no LIMIT)
@@ -2034,6 +1920,105 @@ public function fetch_all_admin_reservation_no_limit() {
 
 
 
+// FOR CUSTOMER
+public function fetch_all_customer_reservation_no_limit($user_id) {
+    // Step 1: Get reservations for the customer
+    $query = $this->conn->prepare("
+        SELECT * FROM reservations
+        WHERE reserve_user_id = ?
+        AND archived_by_customer = 0
+        ORDER BY id DESC
+    ");
+    $query->bind_param("i", $user_id);
+    $query->execute();
+    $result = $query->get_result();
+    $reservations = $result->fetch_all(MYSQLI_ASSOC) ?: [];
+
+    // Step 2: Collect unique menu, promo, and group IDs
+    $menu_ids = $promo_ids = $group_ids = [];
+    foreach ($reservations as &$res) {
+        $menus = json_decode($res['selected_menus'], true) ?: [];
+        $promos = json_decode($res['selected_promos'], true) ?: [];
+        $groups = json_decode($res['selected_groups'], true) ?: [];
+
+        foreach ($menus as $m) if (!in_array((int)$m['id'], $menu_ids, true)) $menu_ids[] = (int)$m['id'];
+        foreach ($promos as $p) if (!in_array((int)$p['id'], $promo_ids, true)) $promo_ids[] = (int)$p['id'];
+        foreach ($groups as $g) if (!in_array((int)$g['id'], $group_ids, true)) $group_ids[] = (int)$g['id'];
+
+        // Add source field for reservations
+        $res['is_walkin'] = false;
+        $res['source'] = 'reservation';
+    }
+
+    // Step 3: Fetch menus
+    $menus = [];
+    if ($menu_ids) {
+        $placeholders = implode(',', array_fill(0, count($menu_ids), '?'));
+        $types = str_repeat('i', count($menu_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM menu WHERE menu_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$menu_ids);
+        $stmt->execute();
+        $resMenus = $stmt->get_result();
+        while ($row = $resMenus->fetch_assoc()) $menus[$row['menu_id']] = $row;
+    }
+
+    // Step 4: Fetch promos
+    $promos = [];
+    if ($promo_ids) {
+        $placeholders = implode(',', array_fill(0, count($promo_ids), '?'));
+        $types = str_repeat('i', count($promo_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$promo_ids);
+        $stmt->execute();
+        $resPromos = $stmt->get_result();
+        while ($row = $resPromos->fetch_assoc()) $promos[$row['deal_id']] = $row;
+    }
+
+    // Step 5: Fetch groups
+    $groups = [];
+    if ($group_ids) {
+        $placeholders = implode(',', array_fill(0, count($group_ids), '?'));
+        $types = str_repeat('i', count($group_ids));
+        $stmt = $this->conn->prepare("SELECT * FROM deals WHERE deal_id IN ($placeholders)");
+        $stmt->bind_param($types, ...$group_ids);
+        $stmt->execute();
+        $resGroups = $stmt->get_result();
+        while ($row = $resGroups->fetch_assoc()) $groups[$row['deal_id']] = $row;
+    }
+
+    // Step 6: Attach details
+    foreach ($reservations as &$res) {
+        $resMenus = json_decode($res['selected_menus'], true) ?: [];
+        foreach ($resMenus as &$menuItem) $menuItem['details'] = $menus[(int)$menuItem['id']] ?? [];
+        $res['menus_details'] = $resMenus;
+
+        $resPromos = json_decode($res['selected_promos'], true) ?: [];
+        foreach ($resPromos as &$promoItem) $promoItem['details'] = $promos[(int)$promoItem['id']] ?? [];
+        $res['promos_details'] = $resPromos;
+
+        $resGroups = json_decode($res['selected_groups'], true) ?: [];
+        foreach ($resGroups as &$groupItem) $groupItem['details'] = $groups[(int)$groupItem['id']] ?? [];
+        $res['groups_details'] = $resGroups;
+    }
+
+    // Step 7: Fetch walk-in unavailable tables
+    $walkins = [];
+    $result = $this->conn->query("SELECT * FROM walkin_tables WHERE walkin_status = 'unavailable'");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $walkins[] = [
+                'id' => $row['walkin_id'],
+                'table_code' => $row['walkin_table_code'],
+                'status' => $row['walkin_status'],
+                'is_walkin' => true,
+                'source' => 'walkin'
+            ];
+        }
+    }
+
+    // Step 8: Merge walk-ins with reservations
+    return array_merge($reservations, $walkins);
+}
 
 
 

@@ -73,7 +73,7 @@ include "../src/components/customer/nav.php";
       
       <!-- Scrollable Grid Only -->
       <div class="overflow-auto scrollbar-hidden">
-  <div class="grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] h-[80vh] min-h-[600px]">
+  <div class="table-grid grid grid-cols-12 grid-rows-[repeat(10,minmax(0,1fr))] gap-2 sm:gap-4 p-2 sm:p-4 min-w-[768px] h-[80vh] min-h-[600px]">
     
     <!-- Template -->
     <template id="table-template">

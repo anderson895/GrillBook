@@ -59,30 +59,35 @@ const statusColors = {
   }
 
   // 🔹 Fetch reservation details (customer-specific)
-  function fetchReservations() {
-    $.ajax({
-      url: "../controller/end-points/controller.php",
-      method: "GET",
-      data: { requestType: "fetch_all_customer_reservation_no_limit" },
-      dataType: "json",
-      success: function (response) {
-       
+  function fetchReservationsAndWalkin() {
+  $.ajax({
+    url: "../controller/end-points/controller.php",
+    method: "GET",
+    data: { requestType: "fetch_all_admin_reservation_no_limit" },
+    dataType: "json",
+    success: function (response) {
 
-        if (response.status === 200 && Array.isArray(response.data)) {
-          response.data
-            .filter(res => res.status?.toLowerCase().trim() !== "completed") // ← huwag isama ang completed
-            .forEach(res => {
-              const cell = $(`.grid [data-value='${res.table_code}']`);
-              const flexEl = cell.find(".table-name").closest(".flex");
-              const status = (res.status || "").toLowerCase().trim();
+      if (response.status === 200 && Array.isArray(response.data)) {
 
-              if (cell.length) {
-                const color = statusColors[status] || {};
-                flexEl.css({
-                  "background-color": color.bg || "",
-                  "border-color": color.border || ""
-                });
+        response.data
+          .filter(res => res.status?.toLowerCase().trim() !== "completed")
+          .forEach(res => {
+            const cell = $(`.table-grid [data-value='${res.table_code}']`);
+            const flexEl = cell.find(".table-name").closest(".flex");
 
+            // Determine if walk-in or reservation
+            const isWalkin = res.is_walkin === true;
+
+            // Set colors for walk-in or reservation
+            const status = isWalkin ? "unavailable" : (res.status || "").toLowerCase().trim();
+            const color = statusColors[status] || {};
+            flexEl.css({
+              "background-color": color.bg || "",
+              "border-color": color.border || ""
+            });
+
+            if (cell.length) {
+              if (!isWalkin) {
                 // Attach reservation data for modal
                 cell.data({
                   id: res.id,
@@ -101,43 +106,57 @@ const statusColors = {
 
                 // Remove setSchedule class for reserved tables
                 cell.removeClass('setSchedule');
+              } else {
+                // Mark walk-in tables
+                cell.data({ is_walkin: true });
+                cell.removeClass('setSchedule'); // Walk-ins cannot be scheduled
               }
-            });
-        }
-
+            }
+          });
       }
-    });
-  }
 
-  // 🔁 Refresh every second
-  // function refreshData() {
-  //   fetchTableAvailability();
-  //   fetchReservations();
-  // }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error fetching reservations/walk-ins:", error);
+    }
+  });
+}
 
-  // refreshData();
-  // setInterval(refreshData, 1000);
-
-    // ✅ Load data once when page loads
+ 
   function refreshData() {
     fetchTableAvailability();
-    fetchReservations();
+    fetchReservationsAndWalkin();
   }
 
-  refreshData(); // Run once on page load
-
-
-  setInterval(refreshData, 1000);
+  refreshData(); 
+  // setInterval(refreshData, 1000);
 
 });
 
 
 // 🟨 Modal open (unchanged)
-$(document).on('click', '.grid > div', function () {
-  const data = $(this).data();
-  if (!data || !data.id) return;
-  openDetailsModal(data);
-});
+// Click handler for all table cells
+$(document).on('click', '.table-grid > div', function () {
+    const data = $(this).data();
+    const tableName = $(this).find('.table-name').text().trim();
+   
+
+    // Check if walk-in
+    if (data.is_walkin) {
+          Swal.fire({
+              title: `Table ${tableName} is not available`,
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'OK',
+          });
+          return; // Exit so modal won't open
+      }
+
+
+          // Otherwise, open reservation modal
+          if (!data || !data.id) return;
+          openDetailsModal(data);
+      });
 
 
 // Details modal function
