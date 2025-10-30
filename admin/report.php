@@ -18,6 +18,7 @@ include "../src/components/admin/nav.php";
     </button>
 </div>
 
+
 <!-- Printable Area -->
 <div id="printArea" class="p-6 bg-gray-900 text-white rounded-md shadow-md
     print:bg-white print:text-black print:shadow-none print:p-8 print:mx-auto print:my-4 print:max-w-[210mm]">

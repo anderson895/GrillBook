@@ -1,4 +1,5 @@
-
+<body class="bg-[#1A1A1A]">
+  
 <!-- Layout Wrapper -->
 <div class="min-h-screen flex flex-col lg:flex-row">
 
@@ -14,14 +15,13 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="space-y-4 text-left text-[#CCCCCC]">
-      
+    <nav class="space-y-4 text-left text-[#CCCCCC] overflow-y-auto h-[calc(100vh-120px)]">
       <a href="dashboard" class="nav-link flex items-center space-x-3 hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">dashboard</span>
         <span>Dashboard</span>
       </a>
 
-      <!--  Dropdown Button -->
+      <!-- Deals Dropdown -->
       <button id="toggleDeals" class="w-full flex cursor-pointer items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
           <span class="material-icons">sell</span>
@@ -29,16 +29,12 @@
         </div>
         <span id="deals_dropdownIcon" class="material-icons transition-transform duration-300">expand_more</span>
       </button>
-
-      <!-- Dropdown Menu -->
-      <div id="dealsDropdown" class="ml-8 space-y-2" style="display: none;">
+      <div id="dealsDropdown" class="ml-8 space-y-2 hidden">
         <a href="group_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Group Deals</a>
         <a href="promo_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Promo Deals</a>
       </div>
 
-
-    
-      <!--  Dropdown Button -->
+      <!-- Reservation Dropdown -->
       <button id="toggleReservation" class="w-full cursor-pointer flex items-center justify-between text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
           <span class="material-icons">event</span>
@@ -46,42 +42,30 @@
         </div>
         <span id="reserve_dropdownIcon" class="material-icons transition-transform duration-300">expand_more</span>
       </button>
-
-      <!-- Dropdown Menu -->
-      <div id="reserveDropdown" class="ml-8 space-y-2" style="display: none;">
-       
+      <div id="reserveDropdown" class="ml-8 space-y-2 hidden">
         <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Reservation Request</a>
         <a href="all_reserved" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All</a>
       </div>
-
 
       <a href="menu" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">local_dining</span>
         <span>Menu</span>
       </a>
 
-
-    <a href="manage_users" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-      <span class="material-icons">group</span>
-      <span>Users</span>
-    </a>
-
+      <a href="manage_users" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+        <span class="material-icons">group</span>
+        <span>Users</span>
+      </a>
 
       <a href="backup" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">backup</span>
-
         <span>Backup</span>
       </a>
 
-
-
       <a href="report" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
-          <span class="material-icons">assignment</span>
-          <span>Report</span>
+        <span class="material-icons">assignment</span>
+        <span>Report</span>
       </a>
-
-
-
 
       <a href="settings" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">settings</span>
@@ -101,15 +85,15 @@
   <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden lg:hidden z-40"></div>
 
   <!-- Main Content -->
-  <main class="flex-1 bg-[#1A1A1A] p-8 lg:p-12">
+  <main class="flex-1 bg-[#1A1A1A] p-8 lg:p-12 overflow-auto h-screen">
     <!-- Mobile menu button -->
     <button id="menuButton" class="lg:hidden text-[#FFD700] bg-white/10 hover:bg-white/20 p-2 rounded-md transition duration-300 mb-4">
       <span class="material-icons">menu</span> 
     </button>
 
-  
-
-   
+    
+  <div class="min-h-screen"> <!-- min-h-screen  to fix the sidebar while scrolling-->
+    
 
 
    

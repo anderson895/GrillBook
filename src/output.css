@@ -499,11 +499,17 @@
   .mb-20 {
     margin-bottom: calc(var(--spacing) * 20);
   }
+  .ml-0 {
+    margin-left: calc(var(--spacing) * 0);
+  }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
   .ml-8 {
     margin-left: calc(var(--spacing) * 8);
+  }
+  .ml-64 {
+    margin-left: calc(var(--spacing) * 64);
   }
   .\!block {
     display: block !important;
@@ -585,6 +591,15 @@
   }
   .h-\[110vh\] {
     height: 110vh;
+  }
+  .h-\[2000px\] {
+    height: 2000px;
+  }
+  .h-\[calc\(100vh-120px\)\] {
+    height: calc(100vh - 120px);
+  }
+  .h-screen {
+    height: 100vh;
   }
   .max-h-52 {
     max-height: calc(var(--spacing) * 52);
@@ -2109,6 +2124,11 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
+  .md\:px-6 {
+    @media (width >= 48rem) {
+      padding-inline: calc(var(--spacing) * 6);
+    }
+  }
   .md\:text-xl {
     @media (width >= 48rem) {
       font-size: var(--text-xl);
@@ -2120,6 +2140,11 @@
       position: static;
     }
   }
+  .lg\:ml-64 {
+    @media (width >= 64rem) {
+      margin-left: calc(var(--spacing) * 64);
+    }
+  }
   .lg\:hidden {
     @media (width >= 64rem) {
       display: none;
@@ -2128,6 +2153,11 @@
   .lg\:w-1\/5 {
     @media (width >= 64rem) {
       width: calc(1/5 * 100%);
+    }
+  }
+  .lg\:w-64 {
+    @media (width >= 64rem) {
+      width: calc(var(--spacing) * 64);
     }
   }
   .lg\:translate-x-0 {
@@ -2156,9 +2186,24 @@
       padding: calc(var(--spacing) * 12);
     }
   }
+  .lg\:px-0 {
+    @media (width >= 64rem) {
+      padding-inline: calc(var(--spacing) * 0);
+    }
+  }
   .lg\:px-8 {
     @media (width >= 64rem) {
       padding-inline: calc(var(--spacing) * 8);
+    }
+  }
+  .lg\:pl-\[20\%\] {
+    @media (width >= 64rem) {
+      padding-left: 20%;
+    }
+  }
+  .xl\:ml-72 {
+    @media (width >= 80rem) {
+      margin-left: calc(var(--spacing) * 72);
     }
   }
   .xl\:w-1\/6 {
@@ -2169,6 +2214,16 @@
   .xl\:grid-cols-4 {
     @media (width >= 80rem) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .xl\:px-0 {
+    @media (width >= 80rem) {
+      padding-inline: calc(var(--spacing) * 0);
+    }
+  }
+  .xl\:pl-\[16\.6667\%\] {
+    @media (width >= 80rem) {
+      padding-left: 16.6667%;
     }
   }
   .print\:mx-auto {
