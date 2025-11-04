@@ -1234,25 +1234,41 @@ public function count_all_reserve_request() {
 
 // ALL RESERVED
 
+public function getCompletedReservations($filter = 'all') {
+    $dateCondition = "";
 
-public function getCompletedReservations() {
+    switch ($filter) {
+        case 'daily':
+            $dateCondition = "AND DATE(r.date_schedule) = CURDATE()";
+            break;
+        case 'weekly':
+            $dateCondition = "AND YEARWEEK(r.date_schedule, 1) = YEARWEEK(CURDATE(), 1)";
+            break;
+        case 'monthly':
+            $dateCondition = "AND MONTH(r.date_schedule) = MONTH(CURDATE()) AND YEAR(r.date_schedule) = YEAR(CURDATE())";
+            break;
+        case 'yearly':
+            $dateCondition = "AND YEAR(r.date_schedule) = YEAR(CURDATE())";
+            break;
+        default:
+            $dateCondition = ""; // Show all completed
+    }
+
     $sql = "SELECT r.*, u.user_fname, u.user_lname, u.user_email
             FROM reservations r
             JOIN user u ON r.reserve_user_id = u.user_id
-            WHERE r.status = 'completed'
+            WHERE r.status = 'completed' $dateCondition
             ORDER BY r.date_schedule DESC, r.time_schedule DESC";
+
     $result = $this->conn->query($sql);
 
     $data = [];
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
 
-            // Helper function to decode JSON and return array of objects
             $decodeItems = function($json) {
                 $items = json_decode($json, true);
                 if(!$items || !is_array($items)) return [];
-                
-                // Keep only relevant fields
                 return array_map(function($item) {
                     return [
                         'name' => $item['name'],
@@ -1271,6 +1287,7 @@ public function getCompletedReservations() {
     }
     return $data;
 }
+
 
 
 

@@ -748,11 +748,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
 
         }else if ($_GET['requestType'] == 'fetch_report') {
-           
-                 $completedReservations = $db->getCompletedReservations();
-                echo json_encode($completedReservations);
-                exit;
-
+            $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+            $completedReservations = $db->getCompletedReservations($filter);
+            echo json_encode($completedReservations);
+            exit;
         }else if ($_GET['requestType'] === 'fetch_all_table_availability_today') {
 
                 session_start();

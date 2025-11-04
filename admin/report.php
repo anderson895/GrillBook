@@ -43,7 +43,17 @@ include "../src/components/admin/nav.php";
 
     <!-- Reports Table -->
     <div class="overflow-x-auto print:overflow-visible">
-        <table class="min-w-full bg-gray-800 text-white rounded-md shadow-md print:bg-white print:text-black print:shadow-none print:border print:border-black" id="reportTable">
+<!-- Filter Buttons (hidden when printing) -->
+<div class="mb-4 flex gap-2 print:hidden">
+  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="daily">Daily</button>
+  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="weekly">Weekly</button>
+  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="monthly">Monthly</button>
+  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="yearly">Yearly</button>
+  <button class="filter-btn bg-yellow-400 text-black py-2 px-4 rounded font-bold hover:bg-yellow-500" data-filter="all">All</button>
+</div>
+
+
+    <table class="min-w-full bg-gray-800 text-white rounded-md shadow-md print:bg-white print:text-black print:shadow-none print:border print:border-black" id="reportTable">
             <thead class="bg-gray-700 print:bg-gray-200">
                 <tr>
                     <th class="py-3 px-4 text-left print:border print:border-black">Reservation Code</th>
@@ -156,16 +166,16 @@ include "../src/components/admin/footer.php";
 
 <script>
 $(document).ready(function() {
-    function loadReports() {
+    function loadReports(filter = 'all') {
         $.ajax({
             url: "../controller/end-points/controller.php",
             method: "GET",
-            data: { requestType: "fetch_report" },
+            data: { requestType: "fetch_report", filter: filter },
             dataType: "json",
             success: function(data) {
                 let html = '';
                 let totalMenu = 0, totalPromo = 0, totalGroup = 0, totalGrand = 0;
-                let totalCount = data.length; // Count of completed reservations
+                let totalCount = data.length;
 
                 if(totalCount > 0){
                     data.forEach(res => {
@@ -181,29 +191,38 @@ $(document).ready(function() {
                             <td class="py-2 px-5">₱${parseFloat(res.group_total).toFixed(2)}</td>
                             <td class="py-2 px-5 font-bold">₱${parseFloat(res.grand_total).toFixed(2)}</td>
                         </tr>`;
-
                         totalMenu += parseFloat(res.menu_total);
                         totalPromo += parseFloat(res.promo_total);
                         totalGroup += parseFloat(res.group_total);
                         totalGrand += parseFloat(res.grand_total);
                     });
                 } else {
-                    html = `<tr><td colspan="10" class="py-4 text-center text-gray-400">No completed reservations found.</td></tr>`;
-                    totalCount = 0;
+                    html = `<tr><td colspan="10" class="py-4 text-center text-gray-400">No completed reservations found for this period.</td></tr>`;
                 }
 
                 $('#reportBody').html(html);
-
                 $('#totalMenu').text(`₱${totalMenu.toFixed(2)}`);
                 $('#totalPromo').text(`₱${totalPromo.toFixed(2)}`);
                 $('#totalGroup').text(`₱${totalGroup.toFixed(2)}`);
                 $('#totalGrand').text(`₱${totalGrand.toFixed(2)}`);
-
                 $('#totalCompleteCount').text(totalCount);
             }
         });
     }
 
+    // Load all initially
     loadReports();
+
+    // Filter button click
+    $('.filter-btn').on('click', function() {
+        const filter = $(this).data('filter');
+        $('.filter-btn').removeClass('bg-yellow-400 text-black').addClass('bg-gray-700 text-white');
+        $(this).removeClass('bg-gray-700 text-white').addClass('bg-yellow-400 text-black');
+        loadReports(filter);
+    });
+
+    // Print
+    $('#printReport').click(() => window.print());
 });
+
 </script>
