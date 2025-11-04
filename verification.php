@@ -20,37 +20,45 @@ if (!isset($user['last_resend_time'])) {
 $resendCooldown = max(0, 300 - (time() - $user['last_resend_time']));
 ?>
 
+<div class="min-h-screen flex flex-col items-center justify-center bg-black px-4 py-8">
 
-<div class="min-h-screen flex flex-col items-center justify-center bg-black px-4">
+  <p class="mb-4 text-yellow-400 text-base sm:text-lg text-center">
+    Verification code expires in: <span id="timer" class="font-semibold"></span>
+  </p>
 
-    <p class="mb-4 text-yellow-400 text-lg">
-        Verification code expires in: <span id="timer"></span>
-    </p>
+  <div class="bg-gray-900 p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-sm sm:max-w-md text-center">
+    <h2 class="text-2xl sm:text-3xl font-bold text-yellow-400 mb-6">Verify Your Account</h2>
 
-    <div class="bg-gray-900 p-8 rounded-xl shadow-lg w-full max-w-md text-center">
-        <h2 class="text-3xl font-bold text-yellow-400 mb-6">Verify Your Account</h2>
+    <form id="frmVerify" class="space-y-6">
+      <div class="flex justify-center gap-2 sm:gap-3 flex-nowrap">
+        <?php for ($i = 0; $i < 6; $i++): ?>
+          <input 
+            type="text" 
+            maxlength="1" 
+            class="otp-box w-10 h-10 sm:w-12 sm:h-12 text-center text-yellow-400 bg-black border-2 border-yellow-400 rounded-md text-lg sm:text-2xl focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
+          />
+        <?php endfor; ?>
+      </div>
 
-        <form id="frmVerify" class="space-y-6">
-            <div class="flex justify-between gap-2">
-                <?php for ($i = 0; $i < 6; $i++): ?>
-                    <input type="text" maxlength="1" class="otp-box w-12 h-12 text-center text-yellow-400 bg-black border-2 border-yellow-400 rounded-lg text-2xl focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-                <?php endfor; ?>
-            </div>
+      <button 
+        type="submit" 
+        id="btnVerify" 
+        class="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-3 rounded-lg transition-colors duration-200 text-base sm:text-lg"
+      >
+        Verify
+      </button>
 
-            <button 
-                type="submit" 
-                id="btnVerify" 
-                class="cursor-pointer w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-3 rounded-lg transition-colors duration-200"
-            >
-                Verify
-            </button>
-            <button id="resendCode" class="cursor-pointer w-full mt-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-colors duration-200">
-                Resend Verification Code
-            </button>
-
-        </form>
-    </div>
+      <button 
+        id="resendCode" 
+        type="button"
+        class="w-full mt-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-colors duration-200 text-base sm:text-lg"
+      >
+        Resend Verification Code
+      </button>
+    </form>
+  </div>
 </div>
+
 
 <?php include "src/components/footer.php"; ?>
 
