@@ -45,11 +45,11 @@ include "../src/components/admin/nav.php";
     <div class="overflow-x-auto print:overflow-visible">
 <!-- Filter Buttons (hidden when printing) -->
 <div class="mb-4 flex gap-2 print:hidden">
-  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="daily">Daily</button>
-  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="weekly">Weekly</button>
-  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="monthly">Monthly</button>
-  <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="yearly">Yearly</button>
-  <button class="filter-btn bg-yellow-400 text-black py-2 px-4 rounded font-bold hover:bg-yellow-500" data-filter="all">All</button>
+  <button class="filter-btn cursor-pointer bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="daily">Daily</button>
+  <button class="filter-btn cursor-pointer bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="weekly">Weekly</button>
+  <button class="filter-btn cursor-pointer bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="monthly">Monthly</button>
+  <button class="filter-btn cursor-pointer bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600" data-filter="yearly">Yearly</button>
+  <button class="filter-btn cursor-pointer bg-yellow-400 text-black py-2 px-4 rounded font-bold hover:bg-yellow-500" data-filter="all">All</button>
 </div>
 
 
