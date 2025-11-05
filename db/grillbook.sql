@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2025 at 10:50 AM
+-- Generation Time: Nov 05, 2025 at 02:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -146,8 +146,8 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`id`, `reserve_user_id`, `reserve_unique_code`, `table_code`, `seats`, `date_schedule`, `time_schedule`, `menu_total`, `promo_total`, `group_total`, `grand_total`, `selected_menus`, `selected_promos`, `selected_groups`, `termsFileSigned`, `proof_of_payment`, `created_at`, `updated_at`, `status`, `archived_by_admin`, `archived_by_customer`, `request_details`) VALUES
-(113, 31, 'MAN3DV9C', 'G5', 6, '2025-10-30', '19:08:00', 0.00, 350.00, 0.00, 350.00, '[]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"}]', '[]', 'terms_69030f1b61a6d3.66546569.pdf', 'proof_69030f1b617138.70348974.webp', '2025-10-30 07:09:15', '2025-10-30 08:37:40', 'pending', 0, 0, NULL),
-(114, 31, 'V7H3UFYX', 'E7', 4, '2025-10-30', '19:14:00', 830.00, 1220.00, 840.00, 2890.00, '[{\"id\":\"9\",\"name\":\"Green apple Shake\",\"price\":180,\"qty\":1,\"total\":180,\"type\":\"menu\"},{\"id\":\"8\",\"name\":\"Manggo Shake\",\"price\":200,\"qty\":1,\"total\":200,\"type\":\"menu\"},{\"id\":\"7\",\"name\":\"Strawbery Shake\",\"price\":150,\"qty\":3,\"total\":450,\"type\":\"menu\"}]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"},{\"id\":\"15\",\"name\":\"esrgfgdrg\",\"price\":200,\"qty\":3,\"total\":600,\"type\":\"promo_deal\"},{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"qty\":1,\"total\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"19\",\"name\":\"grdgh\",\"price\":450,\"qty\":1,\"total\":450,\"type\":\"group_deal\"},{\"id\":\"18\",\"name\":\"fes\",\"price\":70,\"qty\":1,\"total\":70,\"type\":\"group_deal\"},{\"id\":\"17\",\"name\":\"drgdrg\",\"price\":320,\"qty\":1,\"total\":320,\"type\":\"group_deal\"}]', 'terms_69031073a88ab1.16988091.jpg', 'proof_69031073a86398.43199133.webp', '2025-10-30 07:14:59', '2025-10-30 07:16:08', 'completed', 0, 0, NULL);
+(113, 31, 'MAN3DV9C', 'G5', 6, '2025-12-29', '19:08:00', 0.00, 350.00, 0.00, 350.00, '[]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"}]', '[]', 'terms_69030f1b61a6d3.66546569.pdf', 'proof_69030f1b617138.70348974.webp', '2025-10-30 07:09:15', '2025-11-04 12:45:05', 'pending', 0, 0, NULL),
+(114, 31, 'V7H3UFYX', 'E7', 4, '2025-11-30', '19:14:00', 830.00, 1220.00, 840.00, 2890.00, '[{\"id\":\"9\",\"name\":\"Green apple Shake\",\"price\":180,\"qty\":1,\"total\":180,\"type\":\"menu\"},{\"id\":\"8\",\"name\":\"Manggo Shake\",\"price\":200,\"qty\":1,\"total\":200,\"type\":\"menu\"},{\"id\":\"7\",\"name\":\"Strawbery Shake\",\"price\":150,\"qty\":3,\"total\":450,\"type\":\"menu\"}]', '[{\"id\":\"16\",\"name\":\"efrsgdrgdr\",\"price\":350,\"qty\":1,\"total\":350,\"type\":\"promo_deal\"},{\"id\":\"15\",\"name\":\"esrgfgdrg\",\"price\":200,\"qty\":3,\"total\":600,\"type\":\"promo_deal\"},{\"id\":\"10\",\"name\":\"Barkada Promo\",\"price\":270,\"qty\":1,\"total\":270,\"type\":\"promo_deal\"}]', '[{\"id\":\"19\",\"name\":\"grdgh\",\"price\":450,\"qty\":1,\"total\":450,\"type\":\"group_deal\"},{\"id\":\"18\",\"name\":\"fes\",\"price\":70,\"qty\":1,\"total\":70,\"type\":\"group_deal\"},{\"id\":\"17\",\"name\":\"drgdrg\",\"price\":320,\"qty\":1,\"total\":320,\"type\":\"group_deal\"}]', 'terms_69031073a88ab1.16988091.jpg', 'proof_69031073a86398.43199133.webp', '2025-10-30 07:14:59', '2025-11-04 12:45:01', 'completed', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,7 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_email`, `user_p
 (4, 'john', 'doe', 'jdoe@gmail.com', '$2y$10$bE11O2FVvkuB8Qq2EFHjOOB3ZY5eftxoEXx9GUe2pphKGumQ2hx0q', 'customer', 1),
 (29, 'john', 'doe', 'ardeleonpoultrysupplies@gmail.com', '$2y$10$e7.g0U2S48ty6aHBY8j6KuEqy4XZM.X03RyVRudcnuxt6E8XvlUJC', 'customer', 1),
 (31, 'maria', 'doe', 'mypet02025@gmail.com', '$2y$10$zQaEEBkGL6Y5nqeopk8LBepGEK6.31jRkE3fdknZhX8p7Mzkc4tJC', 'customer', 1),
-(32, 'Alice', 'Smith', 'alice.smith@gmail.com', '$2y$10$dummyhashedpassword1', 'customer', 1),
+(32, 'Alice', 'Smith', 'headstaff@gmail.com', '$2y$10$u2Ccdb8we85KJB8O2IHsu.XXFQnZnOdNP3.6fXMLD0uD27deFGqnO', 'headstaff', 1),
 (33, 'Bob', 'Johnson', 'bob.johnson@gmail.com', '$2y$10$dummyhashedpassword2', 'customer', 1),
 (34, 'Charlie', 'Brown', 'charlie.brown@gmail.com', '$2y$10$dummyhashedpassword3', 'customer', 1),
 (35, 'Alice', 'Smith', 'alice.smith1@gmail.com', '$2y$10$dummyhashedpassword1', 'customer', 1),
@@ -231,7 +231,12 @@ INSERT INTO `walkin_tables` (`walkin_id`, `walkin_table_code`, `walkin_status`, 
 (4, 'RESERV.', 'available', '2025-10-30 09:11:27', '2025-10-30 09:47:21'),
 (5, 'D1', 'unavailable', '2025-10-30 09:16:59', '2025-10-30 09:16:59'),
 (8, 'E5', 'unavailable', '2025-10-30 09:47:26', '2025-10-30 09:48:23'),
-(13, 'B1', 'unavailable', '2025-10-30 09:49:28', '2025-10-30 09:49:28');
+(13, 'B1', 'unavailable', '2025-10-30 09:49:28', '2025-10-30 09:49:28'),
+(14, 'COMPLI', 'unavailable', '2025-10-30 10:15:15', '2025-10-30 10:15:15'),
+(16, 'G5', 'unavailable', '2025-10-30 11:07:08', '2025-10-30 11:07:08'),
+(18, 'G2', 'unavailable', '2025-10-30 11:08:45', '2025-10-30 11:08:45'),
+(19, 'G4', 'unavailable', '2025-11-04 12:49:47', '2025-11-04 12:49:47'),
+(20, 'E8', 'unavailable', '2025-11-04 12:49:50', '2025-11-04 12:49:50');
 
 --
 -- Indexes for dumped tables
@@ -313,7 +318,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `walkin_tables`
 --
 ALTER TABLE `walkin_tables`
-  MODIFY `walkin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `walkin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
