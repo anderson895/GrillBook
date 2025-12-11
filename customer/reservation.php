@@ -22,10 +22,19 @@ if (!$userLoggedIn || !$userIsCustomer) {
 include "../src/components/customer/header.php";
 include "../src/components/customer/nav.php";
 
+
+
+/**
+ * 
+ *  $username = "u777088444_grillbook";
+    $password = "Grillbook123@";
+    $database = "u777088444_grillbook";
+ */
+
 $host = 'localhost';
-$dbname = 'grillbook';
-$username = 'root';
-$password = '';
+$dbname = 'u777088444_grillbook';
+$username = 'u777088444_grillbook';
+$password = 'Grillbook123@';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

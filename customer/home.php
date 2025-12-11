@@ -96,7 +96,7 @@ $dbname = 'grillbook';
 $username = 'root';
 $password = '';
 date_default_timezone_set('Asia/Manila');
-echo $today = date('Y-m-d');
+ $today = date('Y-m-d');
 // $currentDateTime = date('Y-m-d H:i:s');
 
 
@@ -217,9 +217,7 @@ try {
 }
 
 function getStatusClass($status) {
-
     
-
     switch($status) {
         case 'confirmed':
             return 'bg-success';
@@ -2426,8 +2424,6 @@ function isNonReservableFacility($tableName) {
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-
-    
     const CONTROLLER_URL = "../controller/end-points/controller.php";
     console.log("Controller URL:", CONTROLLER_URL);
     

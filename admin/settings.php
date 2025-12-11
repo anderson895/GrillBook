@@ -4,9 +4,9 @@ include "../src/components/admin/nav.php";
 
 // Database connection using MySQLi (same as your other file)
 $host = "localhost";
-$username = "root";
-$password = "";
-$database = "grillbook";
+ $username = "u777088444_grillbook";
+    $password = "Grillbook123@";
+    $database = "u777088444_grillbook";
 $conn = new mysqli($host, $username, $password, $database);
 
 if ($conn->connect_error) {

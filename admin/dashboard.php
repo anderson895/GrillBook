@@ -3,9 +3,9 @@ include "../src/components/admin/header.php";
 include "../src/components/admin/nav.php";
 
 $host = 'localhost';
-$dbname = 'grillbook';
-$username = 'root';
-$password = '';
+$dbname = 'u777088444_grillbook';
+$username = 'u777088444_grillbook';
+$password = 'Grillbook123@';
 
 $tableStatusMap = [];
 $dashboardStats = [

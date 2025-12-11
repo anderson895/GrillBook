@@ -1,10 +1,17 @@
 <?php
 if (!defined('db_host')) {
     define("db_host", "localhost");
-    define("db_user", "root");
-    define("db_pass", "");
-    define("db_name", "grillbook");
+    define("db_user", "u777088444_grillbook");
+    define("db_pass", "Grillbook123@");
+    define("db_name", "u777088444_grillbook");
 }
+/**
+ * 
+ * $username = "u777088444_grillbook";
+    $password = "Grillbook123@";
+    $database = "u777088444_grillbook";
+ */
+
 
 if (!class_exists('db_connect')) {
     class db_connect
