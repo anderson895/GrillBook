@@ -5,21 +5,41 @@
     <!-- Logo and Title -->
     <div class="flex items-center space-x-3">
       <img src="../static/logo.jpg" alt="GrillBook Logo" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-yellow-400">
-      <a href="admin/../"><h1 class="text-xl sm:text-2xl font-extrabold text-yellow-400 tracking-wide">GrillBook</h1></a>
+      <a href="home.php"><h1 class="text-xl sm:text-2xl font-extrabold text-yellow-400 tracking-wide">GrillBook</h1></a>
     </div>
 
     <!-- Centered Navigation Links -->
     <div class="hidden md:flex flex-1 justify-center space-x-6 items-center">
-      <a href="home" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Home</a>
-      <a href="reservation" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Reservation</a>
-      <a href="backup" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Backup</a>
+      <a href="home.php" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Home</a>
+      <?php if (isset($_SESSION['user_id']) && $_SESSION['user_position'] === 'customer'): ?>
+        <a href="reservation.php" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Reservation</a>
+      <?php else: ?>
+        <!-- Show registration link instead for non-logged-in users -->
+        <a href="registration.php" class="text-yellow-400 hover:text-white transition duration-300 font-medium" onclick="return showReservationMessage(event)">Reservation</a>
+      <?php endif; ?>
     </div>
 
     <!-- Login/Register (Right Side) -->
     <div class="hidden md:flex space-x-6 items-center">
-      <a href="settings" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300"><?=$_SESSION['user_fname'];?></a>
-      <a href="logout" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Logout</a>
-    
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="settings.php" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300">
+    <?php 
+    if (isset($_SESSION['user_fname']) && !empty($_SESSION['user_fname'])) {
+        echo htmlspecialchars($_SESSION['user_fname']);
+    } elseif (isset($_SESSION['email'])) {
+        // Show first part of email if no name is set
+        $emailParts = explode('@', $_SESSION['email']);
+        echo htmlspecialchars($emailParts[0]);
+    } else {
+        echo 'Profile';
+    }
+    ?>
+</a>
+        <a href="logout.php" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Logout</a>
+      <?php else: ?>
+        <a href="login.php" class="text-yellow-400 hover:text-white transition duration-300 font-medium">Login</a>
+        <a href="registration.php" class="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-full font-semibold shadow-md transition duration-300">Register</a>
+      <?php endif; ?>
     </div>
 
     <!-- Mobile Hamburger Menu Button -->
@@ -48,15 +68,26 @@
     <h2 class="text-2xl font-extrabold tracking-wide text-yellow-300">GrillBook</h2>
   </div>
 
-  <!-- Navigation Buttons (Centered by default on mobile) -->
-  <a href="home" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Home</a>
-  <a href="reservation" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a> 
-  <a href="settings" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=$_SESSION['user_fname'];?></a>
-  <a href="logout" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Logout</a>
+  <!-- Navigation Buttons -->
+  <a href="home.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Home</a>
+  
+  <?php if (isset($_SESSION['user_id']) && $_SESSION['user_position'] === 'customer'): ?>
+    <a href="reservation.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Reservation</a>
+  <?php else: ?>
+    <a href="registration.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition" onclick="return showReservationMessage(event)">Reservation</a>
+  <?php endif; ?>
+  
+  <?php if (isset($_SESSION['user_id'])): ?>
+    <a href="settings.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition"><?=htmlspecialchars($_SESSION['user_fname'])?></a>
+    <a href="logout.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Logout</a>
+  <?php else: ?>
+    <a href="login.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Login</a>
+    <a href="registration.php" class="w-full max-w-xs bg-yellow-400 text-black text-lg py-2 rounded-full font-bold text-center hover:bg-yellow-300 transition">Register</a>
+  <?php endif; ?>
 </div>
 
-<!-- JS toggle -->
 <script>
+  // Mobile menu toggle
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
   const closeBtn = document.getElementById('close-menu');
@@ -68,9 +99,44 @@
   closeBtn.addEventListener('click', () => {
     menu.classList.add('hidden');
   });
+
+  // Show reservation message for non-logged-in users
+  function showReservationMessage(event) {
+    event.preventDefault();
+    
+    // Check if SweetAlert2 is loaded
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        title: 'Reservation Access',
+        html: 'To make a reservation, you need to <strong>register as a customer</strong>.<br><br>' +
+              'Our reservation system is available to registered customers only.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Register Now',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d4af37',
+        cancelButtonColor: '#6b7280',
+        background: '#1a1a1a',
+        color: '#e5e5e5'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'registration.php';
+        }
+      });
+    } else {
+      // Fallback to AlertifyJS if SweetAlert2 is not available
+      alertify.confirm(
+        'Reservation Access',
+        'To make a reservation, you need to register as a customer. Our reservation system is available to registered customers only.',
+        function() {
+          window.location.href = 'registration.php';
+        },
+        function() {
+          // Do nothing on cancel
+        }
+      );
+    }
+    
+    return false;
+  }
 </script>
-
-
-
-
-

@@ -1,4 +1,3 @@
-
 <!-- Layout Wrapper -->
 <div class="min-h-screen flex flex-col lg:flex-row">
 
@@ -16,7 +15,7 @@
     <!-- Navigation -->
     <nav class="space-y-4 text-left text-[#CCCCCC]">
       
-      <a href="dashboard" class="nav-link flex items-center space-x-3 hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <a href="dashboard.php" class="nav-link flex items-center space-x-3 hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">dashboard</span>
         <span>Dashboard</span>
       </a>
@@ -32,8 +31,8 @@
 
       <!-- Dropdown Menu -->
       <div id="dealsDropdown" class="ml-8 space-y-2" style="display: none;">
-        <a href="group_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Group Deals</a>
-        <a href="promo_deals" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Promo Deals</a>
+        <a href="group_deals.php" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Group Deals</a>
+        <a href="promo_deals.php" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Promo Deals</a>
       </div>
 
 
@@ -49,12 +48,12 @@
 
       <!-- Dropdown Menu -->
       <div id="reserveDropdown" class="ml-8 space-y-2" style="display: none;">
-        <a href="reserve_request" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Request</a>
-        <a href="all_reserved" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All</a>
+        <a href="reserve_request.php" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">Request</a>
+        <a href="all_reserved.php" class="nav-link block text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">All</a>
       </div>
 
 
-      <a href="menu" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <a href="menu.php" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">local_dining</span>
         <span>Menu</span>
       </a>
@@ -62,12 +61,12 @@
 
 
 
-      <a href="settings" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
+      <a href="settings.php" class="nav-link flex items-center space-x-3 text-[#CCCCCC] hover:text-[#FFD700] hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
         <span class="material-icons">settings</span>
         <span>Settings</span>
       </a>
 
-      <a href="logout">
+      <a href="logout.php">
         <button type="submit" class="cursor-pointer flex items-center space-x-3 text-[#CCCCCC] hover:text-red-500 hover:bg-white/10 px-4 py-2 rounded-md transition-all duration-300">
           <span class="material-icons">logout</span>
           <span>Logout</span>

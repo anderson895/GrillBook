@@ -623,6 +623,77 @@ $("#rescheduleForm").submit(function (e) {
     return;
   }
 
+  // === Reservation Time Validation (cut-off based on day) ===
+  const dayOfWeek = new Date(date).getDay();
+
+  const schedule = {
+    0: { open: "5:00 PM", close: "3:00 AM", cutoff: "1:30 AM" }, // Sunday
+    1: { open: "5:00 PM", close: "2:00 AM", cutoff: "12:30 AM" }, // Monday
+    2: { open: "5:00 PM", close: "2:00 AM", cutoff: "12:30 AM" }, // Tuesday
+    3: { open: "5:00 PM", close: "2:00 AM", cutoff: "12:30 AM" }, // Wednesday
+    4: { open: "5:00 PM", close: "2:00 AM", cutoff: "12:30 AM" }, // Thursday
+    5: { open: "7:00 PM", close: "4:00 AM", cutoff: "2:30 AM" }, // Friday
+    6: { open: "7:00 PM", close: "4:00 AM", cutoff: "2:30 AM" }, // Saturday
+  };
+
+  const { open, close, cutoff } = schedule[dayOfWeek];
+
+  // Get day name from dayOfWeek index
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayName = dayNames[dayOfWeek];
+
+  function parseTime12H(timeStr) {
+    const [timePart, modifier] = timeStr.split(" ");
+    let [hours, minutes] = timePart.split(":").map(Number);
+    if (modifier === "PM" && hours !== 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+    return new Date(`1970-01-01T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`);
+  }
+
+  function to12HourFormat(timeStr) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const suffix = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 || 12;
+    return `${h12}:${m.toString().padStart(2, "0")} ${suffix}`;
+  }
+
+  const selected12h = to12HourFormat(time);
+  const selectedTime = parseTime12H(selected12h);
+  const openTime = parseTime12H(open);
+  const closeTime = parseTime12H(close);
+  const cutoffTime = parseTime12H(cutoff);
+
+  // Handle past midnight
+  if (close.includes("AM")) closeTime.setDate(closeTime.getDate() + 1);
+  if (cutoff.includes("AM")) cutoffTime.setDate(cutoffTime.getDate() + 1);
+  if (selectedTime < openTime && close.includes("AM")) selectedTime.setDate(selectedTime.getDate() + 1);
+
+  // ✅ 1️⃣ Outside business hours
+  if (selectedTime < openTime || selectedTime > closeTime) {
+    $('#spinner').hide();
+    $('#submitReschedule').prop('disabled', false);
+    Swal.fire({
+      icon: "warning",
+      title: "Outside Business Hours",
+     text: `Reservations for ${dayName} are only accepted between ${open} and ${close}.`,
+      confirmButtonColor: "#7C6FF6",
+    });
+    return;
+  }
+
+  // ✅ 2️⃣ Past cutoff but before closing
+  if (selectedTime >= cutoffTime && selectedTime <= closeTime) {
+    $('#spinner').hide();
+    $('#submitReschedule').prop('disabled', false);
+    Swal.fire({
+      icon: "warning",
+      title: "Booking Not Allowed",
+      text: `We only accept reservations until ${cutoff} because we prepare to close at ${close}.`,
+      confirmButtonColor: "#7C6FF6",
+    });
+    return;
+  }
+
   // Step 1: Check Availability
   $.ajax({
     url: "../controller/end-points/controller.php",
@@ -642,7 +713,6 @@ $("#rescheduleForm").submit(function (e) {
       const closeTimeFormatted = formatTime24to12(availability.close_time);
 
       if (availability.available === true) {
-        // Show success alert and confirm to continue
         Swal.fire({
           icon: 'success',
           title: 'Available!',
@@ -655,10 +725,10 @@ $("#rescheduleForm").submit(function (e) {
               ${openTimeFormatted} – ${closeTimeFormatted}
             </span>
           `,
-          confirmButtonText: 'Continue Reservation'
+          confirmButtonText: 'Continue Reservation',
+          confirmButtonColor: "#7C6FF6"
         }).then((result) => {
           if (result.isConfirmed) {
-            // Proceed to submit reschedule form
             submitRescheduleRequest();
           } else {
             $('#spinner').hide();
@@ -667,7 +737,6 @@ $("#rescheduleForm").submit(function (e) {
         });
 
       } else {
-        // Handle not available
         let reasonText = '';
         if (availability.reason === "outside_hours") {
           reasonText = `<p style="color:red"><b>Your chosen time is outside our business hours.</b></p>`;
@@ -700,7 +769,8 @@ $("#rescheduleForm").submit(function (e) {
               ${openTimeFormatted} – ${closeTimeFormatted}
             </span>
           `,
-          confirmButtonText: 'Choose Different Time'
+          confirmButtonText: 'Choose Different Time',
+          confirmButtonColor: "#7C6FF6"
         });
 
         $('#spinner').hide();
@@ -719,7 +789,7 @@ $("#rescheduleForm").submit(function (e) {
     }
   });
 
-  // Step 2: Function to submit final request (only if confirmed)
+  // Step 2: Function to submit final request
   function submitRescheduleRequest() {
     const formData = $("#rescheduleForm").serializeArray();
     formData.push({ name: "requestType", value: "reschedule" });

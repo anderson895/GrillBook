@@ -2457,6 +2457,36 @@
     transform: rotate(360deg);
   }
 }
+
+/* Holiday Management Styles */
+#holidayTab .nav-link {
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px 5px 0 0;
+}
+
+#holidayTab .nav-link.active {
+    background-color: #f8f9fa;
+    border-bottom: 3px solid #007bff;
+}
+
+.tab-content {
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.list-group-item {
+    transition: all 0.2s;
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -2518,4 +2548,174 @@
       --tw-scale-z: 1;
     }
   }
+}
+
+
+/* QR Code Styles */
+.payment-qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.payment-qr-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    object-fit: cover;
+}
+
+.payment-qr-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+    border-color: var(--primary-gold);
+}
+
+/* QR Code Full Picture Modal */
+.qr-full-picture-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    z-index: 10002;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-full-picture-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.qr-full-picture {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+    border: 5px solid var(--primary-gold);
+    animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.qr-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-gold);
+    color: var(--dark-bg);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    z-index: 10003;
+}
+
+.qr-close-btn:hover {
+    background: #ffd700;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .payment-qr-image {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .qr-full-picture {
+        max-width: 95vw;
+        max-height: 80vh;
+    }
+    
+    .qr-close-btn {
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 25px;
+    }
+}
+
+
+/* Action Buttons Responsive */
+.action-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.action-buttons-container .btn-primary,
+.action-buttons-container .inclusionsBtn,
+.action-buttons-container .removeBtn {
+    min-width: auto;
+    padding: 8px 12px;
+    height: 36px;
+    font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .action-buttons-container {
+        flex-direction: row;
+    }
+    
+    .action-buttons-container .btn-primary,
+    .action-buttons-container .inclusionsBtn,
+    .action-buttons-container .removeBtn {
+        min-width: 100px;
+        height: 44px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Status Badge for Active/Inactive */
+.status-active {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-inactive {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
