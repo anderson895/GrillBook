@@ -14,9 +14,9 @@ require_once('../class.php');
 $db = new global_class();
 
 $pdo_host = 'localhost';
-$pdo_dbname = 'grillbook';
-$pdo_username = 'root';
-$pdo_password = '';
+$pdo_dbname = 'u777088444_grillbook';
+$pdo_username = 'u777088444_grillbook';
+$pdo_password = 'Grillbook123@';
 
 try {
     $pdo = new PDO("mysql:host=$pdo_host;dbname=$pdo_dbname", $pdo_username, $pdo_password);
@@ -220,7 +220,7 @@ if (isset($_GET['requestType']) && $_GET['requestType'] === "checkAvailability")
 }
 
 if (isset($_GET['requestType']) && $_GET['requestType'] === "get_realtime_table_status") {
-    // $date = $_GET['date'] ?? date('Y-m-d');
+   
     $date = date('Y-m-d');
     $tableStatusMap = [];
     
