@@ -25,10 +25,19 @@ if (isset($_SESSION['user_id'])) {
     // If still not customer, try to fetch from database
     if (!$userIsCustomer) {
         try {
+
+            /**
+             * $host = 'localhost';
+                $dbname = 'u777088444_grillbook';
+                $username = 'u777088444_grillbook';
+                $password = 'Grillbook123@';
+             * 
+             */
+
             $host = 'localhost';
-            $dbname = 'grillbook';
-            $username = 'root';
-            $password = '';
+            $dbname = 'u777088444_grillbook';
+            $username = 'u777088444_grillbook';
+            $password = 'Grillbook123@';
             
             $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
