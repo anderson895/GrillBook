@@ -2783,13 +2783,13 @@ function isNonReservableFacility($tableName) {
     }
 
     function updateTableStatuses() {
-        if (!CONTROLLER_URL) {
-            console.error("CONTROLLER_URL is not defined");
+        if (typeof CONTROLLER_URL === "undefined" || !CONTROLLER_URL) {
+            console.error("❌ CONTROLLER_URL is not defined");
             return;
         }
-        
+
         const today = new Date().toISOString().split('T')[0];
-        
+
         $.ajax({
             url: CONTROLLER_URL,
             method: "GET",
@@ -2798,16 +2798,38 @@ function isNonReservableFacility($tableName) {
                 date: today
             },
             dataType: "json",
+
             success: function(response) {
-                if (response.status === 'success' && response.data) {
-                    updateTableColors(response.data);
+                console.log("✔ AJAX Response:", response);
+
+                if (!response) {
+                    console.error("❌ Empty response from server");
+                    return;
                 }
+
+                if (response.status !== 'success') {
+                    console.error("❌ Server error:", response.message ?? "Unknown error");
+                    return;
+                }
+
+                if (!response.data) {
+                    console.error("❌ No data returned from server");
+                    return;
+                }
+
+                updateTableColors(response.data);
             },
+
             error: function(xhr, status, error) {
-                console.error('Error updating table statuses:', error);
+                console.error("❌ AJAX Error:", { 
+                    xhr: xhr.responseText, 
+                    status, 
+                    error 
+                });
             }
         });
     }
+
 
     function updateTableColors(tableStatusMap) {
         if (!tableStatusMap || typeof tableStatusMap !== 'object') {
