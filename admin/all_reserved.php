@@ -1,9 +1,9 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_request'])) {
     $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "grillbook";
+    $username = "u777088444_grillbook";
+    $password = "Grillbook123@";
+    $database = "u777088444_grillbook";
     $conn = new mysqli($host, $username, $password, $database);
 
     if ($conn->connect_error) {
@@ -1138,7 +1138,7 @@ body {
 </div>
 
 <div id="payment_img_modal" class="fixed inset-0 z-50 flex items-center justify-center modal-backdrop hidden">
-    <div class="enhanced-modal w-full max-w-2xl mx-4 p-4 relative">
+    <div class="enhanced-modal w-full max-w-md mx-4 p-4 relative">
         <button id="close_modal" class="absolute top-3 right-3 text-black hover:text-gray-800 text-xl font-bold transition focus:outline-none focus:ring-2 focus:ring-[#d97706] rounded-full p-1">
             <i class="fas fa-times icon-wrapper"></i>
         </button>
@@ -1734,7 +1734,7 @@ class ReservationManager {
     
     viewPaymentProof(imagePath) {
         const modalImg = document.getElementById('modal_img');
-        modalImg.src = `../${imagePath}`;
+        modalImg.src = `../static/upload/payments/${imagePath}`;
         modalImg.alt = 'Payment Receipt';
         this.showModal('payment_img_modal');
     }

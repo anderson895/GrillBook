@@ -7,6 +7,7 @@ $dbname = 'u777088444_grillbook';
 $username = 'u777088444_grillbook';
 $password = 'Grillbook123@';
 
+
 $tableStatusMap = [];
 $dashboardStats = [
     'total_reservations' => 0,

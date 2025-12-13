@@ -22,15 +22,6 @@ if (!$userLoggedIn || !$userIsCustomer) {
 include "../src/components/customer/header.php";
 include "../src/components/customer/nav.php";
 
-
-
-/**
- * 
- *  $username = "u777088444_grillbook";
-    $password = "Grillbook123@";
-    $database = "u777088444_grillbook";
- */
-
 $host = 'localhost';
 $dbname = 'u777088444_grillbook';
 $username = 'u777088444_grillbook';
@@ -1618,7 +1609,7 @@ if (isset($_GET['success'])) {
             </button>
         </div>
         <div class="modal-content">
-            <div style="text-align: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
                 <img id="receiptImage" src="" alt="Payment Receipt" 
                      style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border-gold); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
                 <div style="margin-top: 32px; color: var(--text-light);">
@@ -1996,10 +1987,7 @@ function viewPaymentProof(paymentProofPath) {
     showModal('paymentReceiptModal');
     const image = document.getElementById('receiptImage');
     
-    image.src = `../static/upload/payments/${paymentProofPath}`;
-
-    console.log(paymentProofPath);
-
+    image.src = `../../static/upload/payments/${paymentProofPath}`;
     image.onerror = function() {
         this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWExYTFhIi8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLCAyMDApIj4KICAgIDxwYXRoIGQ9Ik0wLC00MCBBNDAsNDAgMCAxLDEgMCw0MCBBNDAsNDAgMCAxLDEgMCwtNDAgWiIgZmlsbD0iIzI0MjQyNCIvPgogICAgPHBhdGggZD0iTS0yMCwtMTAgTDAsMTAgTDIwLC0xMCBaIiBmaWxsPSIjZDRhZjM3Ii8+CiAgICA8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB5PSI1MCIgZm9udC1mYW1pbHk9IlBvcHBpbnMiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNhM2EzYTMiPlJlY2VpcHQgbm90IGF2YWlsYWJsZTwvdGV4dD4KICA8L2c+Cjwvc3ZnPg==';
     };

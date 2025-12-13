@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-
-
 // Enhanced session validation
 $userLoggedIn = false;
 $userIsCustomer = false;
@@ -25,15 +23,6 @@ if (isset($_SESSION['user_id'])) {
     // If still not customer, try to fetch from database
     if (!$userIsCustomer) {
         try {
-
-            /**
-             * $host = 'localhost';
-                $dbname = 'u777088444_grillbook';
-                $username = 'u777088444_grillbook';
-                $password = 'Grillbook123@';
-             * 
-             */
-
             $host = 'localhost';
             $dbname = 'u777088444_grillbook';
             $username = 'u777088444_grillbook';
@@ -104,12 +93,7 @@ $host = 'localhost';
 $dbname = 'grillbook';
 $username = 'root';
 $password = '';
-date_default_timezone_set('Asia/Manila');
- $today = date('Y-m-d');
-// $currentDateTime = date('Y-m-d H:i:s');
-
-
-
+$today = date('Y-m-d');
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -226,7 +210,6 @@ try {
 }
 
 function getStatusClass($status) {
-    
     switch($status) {
         case 'confirmed':
             return 'bg-success';
@@ -686,6 +669,167 @@ function isNonReservableFacility($tableName) {
             border-color: #9CA3AF !important;
         }
 
+        /* Facility Color Classes */
+        .table-item.facility-item.bg-entrance {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+            color: white !important;
+            border-color: #3b82f6 !important;
+        }
+
+        .table-item.facility-item.bg-entrance:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #3b82f6 !important;
+        }
+
+        .table-item.facility-item.bg-exit {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white !important;
+            border-color: #ef4444 !important;
+        }
+
+        .table-item.facility-item.bg-exit:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #ef4444 !important;
+        }
+
+        .table-item.facility-item.bg-performance {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+            color: white !important;
+            border-color: #8b5cf6 !important;
+        }
+
+        .table-item.facility-item.bg-performance:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #8b5cf6 !important;
+        }
+
+        .table-item.facility-item.bg-billiards {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            border-color: #10b981 !important;
+        }
+
+        .table-item.facility-item.bg-billiards:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #10b981 !important;
+        }
+
+        .table-item.facility-item.bg-service-counter {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            color: white !important;
+            border-color: #f59e0b !important;
+        }
+
+        .table-item.facility-item.bg-service-counter:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #f59e0b !important;
+        }
+
+        .table-item.facility-item.bg-kitchen-area {
+            background: linear-gradient(135deg, #ec4899, #be185d) !important;
+            color: white !important;
+            border-color: #ec4899 !important;
+        }
+
+        .table-item.facility-item.bg-kitchen-area:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #ec4899 !important;
+        }
+
+        .bg-entrance {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+            color: white !important;
+            border-color: #3b82f6 !important;
+        }
+
+        .bg-entrance.active {
+            box-shadow: 0 0 15px #3b82f6;
+            border-color: #93c5fd !important;
+        }
+
+        .bg-exit {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white !important;
+            border-color: #ef4444 !important;
+        }
+
+        .bg-exit.active {
+            box-shadow: 0 0 15px #ef4444;
+            border-color: #fca5a5 !important;
+        }
+
+        .bg-performance {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+            color: white !important;
+            border-color: #8b5cf6 !important;
+        }
+
+        .bg-performance.active {
+            box-shadow: 0 0 15px #8b5cf6;
+            border-color: #d8b4fe !important;
+        }
+
+        .bg-billiards {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            border-color: #10b981 !important;
+        }
+
+        .bg-billiards.active {
+            box-shadow: 0 0 15px #10b981;
+            border-color: #6ee7b7 !important;
+        }
+
+        .bg-service-counter {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            color: white !important;
+            border-color: #f59e0b !important;
+        }
+
+        .bg-service-counter.active {
+            box-shadow: 0 0 15px #f59e0b;
+            border-color: #fcd34d !important;
+        }
+
+        .bg-kitchen-area {
+            background: linear-gradient(135deg, #ec4899, #be185d) !important;
+            color: white !important;
+            border-color: #ec4899 !important;
+        }
+
+        .bg-kitchen-area.active {
+            box-shadow: 0 0 15px #ec4899;
+            border-color: #f472b6 !important;
+        }
+
+        /* Accessibility: facility label contrast helpers (preserve font-size)
+           Remove dark outline and heavy shadows so white text appears bright */
+        .facility-label,
+        .table-item.facility-item {
+            color: #ffffff !important; /* pure white */
+            font-weight: 700 !important; /* keep bold for clarity */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-stroke: 0 !important; /* remove dark stroke */
+            text-shadow: 0 1px 1px rgba(0,0,0,0.32) !important; /* subtle shadow only */
+            filter: none !important; /* remove drop-shadow which darkened text */
+            font-size: 0.85rem !important; /* original table size */
+        }
+
+        /* Ensure facility-label is block-level and readable */
+        .facility-label {
+            display: block;
+            line-height: 1.1;
+            letter-spacing: 0.2px !important;
+            color: #ffffff !important; /* reinforce pure white */
+        }
+
         .col-start-1 { grid-column-start: 1; }
         .col-start-2 { grid-column-start: 2; }
         .col-start-3 { grid-column-start: 3; }
@@ -761,6 +905,8 @@ function isNonReservableFacility($tableName) {
             background: rgba(26, 26, 26, 0.5);
             border-radius: 10px;
             border: 1px solid rgba(212, 175, 55, 0.2);
+            justify-content: center;
+            text-align: center;
         }
 
         .legend-item {
@@ -1539,6 +1685,11 @@ function isNonReservableFacility($tableName) {
         </div>
 
         <div class="legend-container animate-fadeInUp" style="animation-delay: 0.1s">
+            <!-- Reservation Status Separator -->
+            <div style="width: 100%; margin: 16px 0; padding: 12px 0; border-top: 2px solid rgba(212, 175, 55, 0.4); border-bottom: 2px solid rgba(212, 175, 55, 0.4); text-align: center;">
+                <div style="font-size: 0.8rem; color: rgba(212, 175, 55, 0.8); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">━━ RESERVATION STATUS ━━</div>
+            </div>
+            
             <div class="legend-item">
                 <div class="legend-color bg-white"></div>
                 <span class="text-white text-sm">Available</span>
@@ -1563,9 +1714,34 @@ function isNonReservableFacility($tableName) {
                 <div class="legend-color bg-orange"></div>
                 <span class="text-white text-sm">Request Cancel</span>
             </div>
+            <!-- Facility Areas Separator -->
+            <div style="width: 100%; margin: 16px 0; padding: 12px 0; border-top: 2px solid rgba(212, 175, 55, 0.4); border-bottom: 2px solid rgba(212, 175, 55, 0.4); text-align: center;">
+                <div style="font-size: 0.8rem; color: rgba(212, 175, 55, 0.8); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">━━ FACILITY AREAS ━━</div>
+            </div>
+            
             <div class="legend-item">
-                <div class="legend-color bg-gray"></div>
-                <span class="text-white text-sm">Unavailable/Facility</span>
+                <div class="legend-color bg-entrance"></div>
+                <span class="text-white text-sm">Entrance</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color bg-exit"></div>
+                <span class="text-white text-sm">Exit</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color bg-performance"></div>
+                <span class="text-white text-sm">Performance</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color bg-billiards"></div>
+                <span class="text-white text-sm">Billiards</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color bg-service-counter"></div>
+                <span class="text-white text-sm">Service Counter</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color bg-kitchen-area"></div>
+                <span class="text-white text-sm">Kitchen Area</span>
             </div>
         </div>
 
@@ -1608,7 +1784,7 @@ function isNonReservableFacility($tableName) {
                     <?php
                     $tableName = 'ENTRANCE';
                     $isNonReservable = isNonReservableFacility($tableName);
-                    $statusClass = $isNonReservable ? 'facility-item bg-gray' : getStatusClass('available');
+                    $statusClass = $isNonReservable ? 'facility-item bg-entrance' : getStatusClass('available');
                     $isClickable = isTableClickable($tableName, 'available');
                     $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                     $onclick = $isClickable ? "onclick=\"handleTableClick('" . htmlspecialchars($tableName) . "', 'available')\"" : '';
@@ -1626,7 +1802,7 @@ function isNonReservableFacility($tableName) {
                     <?php
                     $tableName = 'EXIT';
                     $isNonReservable = isNonReservableFacility($tableName);
-                    $statusClass = $isNonReservable ? 'facility-item bg-gray' : getStatusClass('available');
+                    $statusClass = $isNonReservable ? 'facility-item bg-exit' : getStatusClass('available');
                     $isClickable = isTableClickable($tableName, 'available');
                     $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                     $onclick = $isClickable ? "onclick=\"handleTableClick('" . htmlspecialchars($tableName) . "', 'available')\"" : '';
@@ -1725,7 +1901,18 @@ function isNonReservableFacility($tableName) {
                         $isFacility = isset($pos['facility']) && $pos['facility'];
                         $isNonReservable = isNonReservableFacility($tableName);
                         $status = isset($tableStatusMap[$tableName]) ? $tableStatusMap[$tableName] : 'available';
-                        $statusClass = $isFacility || $isNonReservable ? 'facility-item bg-gray' : getStatusClass($status);
+                        
+                        // Determine specific color class for facilities
+                        if ($isFacility || $isNonReservable) {
+                            if ($tableName === 'PERFORMANCE') {
+                                $statusClass = 'facility-item bg-performance';
+                            } else {
+                                $statusClass = 'facility-item bg-gray';
+                            }
+                        } else {
+                            $statusClass = getStatusClass($status);
+                        }
+                        
                         $isClickable = ($isFacility || $isNonReservable) ? false : isTableClickable($tableName, $status);
                         $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                         $colspan = isset($pos['colspan']) ? "grid-column: {$pos['col']} / " . ($pos['col'] + $pos['colspan']) . ";" : "grid-column: {$pos['col']} / " . ($pos['col'] + 1) . ";";
@@ -1860,7 +2047,18 @@ function isNonReservableFacility($tableName) {
                         $isFacility = isset($pos['facility']) && $pos['facility'];
                         $isNonReservable = isNonReservableFacility($tableName);
                         $status = isset($tableStatusMap[$tableName]) ? $tableStatusMap[$tableName] : 'available';
-                        $statusClass = $isFacility || $isNonReservable ? 'facility-item bg-gray' : getStatusClass($status);
+                        
+                        // Determine specific color class for facilities
+                        if ($isFacility || $isNonReservable) {
+                            if ($tableName === 'BILLIARDS') {
+                                $statusClass = 'facility-item bg-billiards';
+                            } else {
+                                $statusClass = 'facility-item bg-gray';
+                            }
+                        } else {
+                            $statusClass = getStatusClass($status);
+                        }
+                        
                         $isClickable = ($isFacility || $isNonReservable) ? false : isTableClickable($tableName, $status);
                         $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                         $colspan = isset($pos['colspan']) ? "grid-column: {$pos['col']} / " . ($pos['col'] + $pos['colspan']) . ";" : "grid-column: {$pos['col']} / " . ($pos['col'] + 1) . ";";
@@ -1982,7 +2180,7 @@ function isNonReservableFacility($tableName) {
                     <?php
                     $tableName = 'SERVICE COUNTER';
                     $isNonReservable = isNonReservableFacility($tableName);
-                    $statusClass = $isNonReservable ? 'facility-item bg-gray' : getStatusClass('available');
+                    $statusClass = $isNonReservable ? 'facility-item bg-service-counter' : getStatusClass('available');
                     $isClickable = isTableClickable($tableName, 'available');
                     $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                     $onclick = $isClickable ? "onclick=\"handleTableClick('" . htmlspecialchars($tableName) . "', 'available')\"" : '';
@@ -2001,7 +2199,7 @@ function isNonReservableFacility($tableName) {
                     <?php
                     $tableName = 'KITCHEN AREA';
                     $isNonReservable = isNonReservableFacility($tableName);
-                    $statusClass = $isNonReservable ? 'facility-item bg-gray' : getStatusClass('available');
+                    $statusClass = $isNonReservable ? 'facility-item bg-kitchen-area' : getStatusClass('available');
                     $isClickable = isTableClickable($tableName, 'available');
                     $clickClass = $isClickable ? 'clickable' : 'non-clickable';
                     $onclick = $isClickable ? "onclick=\"handleTableClick('" . htmlspecialchars($tableName) . "', 'available')\"" : '';
@@ -2129,13 +2327,11 @@ function isNonReservableFacility($tableName) {
 
                 <section class="py-8 px-4 bg-[#1A1A1A] relative" id="menu_section">
                     <div class="max-w-5xl mx-auto">
-                        <h2 class="text-2xl text-center font-bold text-[#FFD700] uppercase mb-6">Menu & Deals</h2>
+                        <h2 class="text-2xl text-center font-bold text-[#FFD700] uppercase mb-6">Selection of Food and Beverages</h2>
                         
                         <div class="menu-category-tabs">
                             <div class="menu-category-tab active" data-category="food">🍽️ Food Menu</div>
                             <div class="menu-category-tab" data-category="alcoholic">🍺 Alcoholic Drinks</div>
-                            <div class="menu-category-tab" data-category="promo" hidden>🎉 Promo Deals</div>
-                            <div class="menu-category-tab" data-category="group" hidden>👥 Group Deals</div>
                         </div>
 
                         <div class="menu-category-content active" id="food-content">
@@ -2353,8 +2549,6 @@ function isNonReservableFacility($tableName) {
                     <div class="menu-category-tabs">
                         <div class="menu-category-tab active" data-category="food">🍽️ Food Menu</div>
                         <div class="menu-category-tab" data-category="alcoholic">🍺 Alcoholic Drinks</div>
-                        <div class="menu-category-tab" data-category="promo">🎉 Promo Deals</div>
-                        <div class="menu-category-tab" data-category="group">👥 Group Deals</div>
                     </div>
 
                     <div class="menu-category-content active" id="menu-only-food-content">
@@ -2433,7 +2627,7 @@ function isNonReservableFacility($tableName) {
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    const CONTROLLER_URL = "../controller/end-points/controller.php";
+    const CONTROLLER_URL = "../../controller/end-points/controller.php";
     console.log("Controller URL:", CONTROLLER_URL);
     
     // JavaScript version of getStatusClass()
@@ -2783,13 +2977,13 @@ function isNonReservableFacility($tableName) {
     }
 
     function updateTableStatuses() {
-        if (typeof CONTROLLER_URL === "undefined" || !CONTROLLER_URL) {
-            console.error("❌ CONTROLLER_URL is not defined");
+        if (!CONTROLLER_URL) {
+            console.error("CONTROLLER_URL is not defined");
             return;
         }
-
+        
         const today = new Date().toISOString().split('T')[0];
-
+        
         $.ajax({
             url: CONTROLLER_URL,
             method: "GET",
@@ -2798,38 +2992,16 @@ function isNonReservableFacility($tableName) {
                 date: today
             },
             dataType: "json",
-
             success: function(response) {
-                console.log("✔ AJAX Response:", response);
-
-                if (!response) {
-                    console.error("❌ Empty response from server");
-                    return;
+                if (response.status === 'success' && response.data) {
+                    updateTableColors(response.data);
                 }
-
-                if (response.status !== 'success') {
-                    console.error("❌ Server error:", response.message ?? "Unknown error");
-                    return;
-                }
-
-                if (!response.data) {
-                    console.error("❌ No data returned from server");
-                    return;
-                }
-
-                updateTableColors(response.data);
             },
-
             error: function(xhr, status, error) {
-                console.error("❌ AJAX Error:", { 
-                    xhr: xhr.responseText, 
-                    status, 
-                    error 
-                });
+                console.error('Error updating table statuses:', error);
             }
         });
     }
-
 
     function updateTableColors(tableStatusMap) {
         if (!tableStatusMap || typeof tableStatusMap !== 'object') {
@@ -4603,7 +4775,7 @@ function isNonReservableFacility($tableName) {
         const seatsWarning = document.createElement('p');
         seatsWarning.className = 'text-red-400 text-xs mt-1';
         seatsWarning.id = 'seats-warning';
-        seatsWarning.textContent = 'Please enter number of seats.';
+        seatsWarning.textContent = '';
         seatsInput.parentNode.appendChild(seatsWarning);
 
         seatsInput.addEventListener('input', function() {
@@ -4811,6 +4983,4 @@ $(document).ready(function() {
 
 </html>
 
-
-<!-- <script src="static/js/customer/table_design.js"></script> -->
 <?php include "../src/components/customer/footer.php"; ?>

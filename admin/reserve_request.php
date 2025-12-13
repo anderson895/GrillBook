@@ -1274,7 +1274,7 @@ include "../src/components/admin/nav.php";
     </div>
 
     <div id="payment_img_modal" class="fixed inset-0 z-50 flex items-center justify-center modal-backdrop hidden">
-        <div class="enhanced-modal w-full max-w-2xl mx-4 p-4 relative">
+        <div class="enhanced-modal w-full max-w-md mx-4 p-4 relative">
             <button id="close_modal" class="absolute top-3 right-3 text-gray-600 hover:text-gray-800 text-xl font-bold transition focus:outline-none focus:ring-2 focus:ring-[#d97706] rounded-full p-1">
                 <i class="fas fa-times icon-wrapper"></i>
             </button>
@@ -1766,13 +1766,13 @@ include "../src/components/admin/nav.php";
                         ` : '<div><h4 class="font-semibold mb-2 text-sm">Menus</h4><p class="text-gray-600 text-sm">No menus</p></div>'}
                         
                         ${promosList ? `
-                        <div >
+                        <div>
                             <h4 class="font-semibold mb-2 text-sm">Promos</h4>
                             <ul class="list-disc list-inside space-y-1 text-sm">
                                 ${promosList}
                             </ul>
                         </div>
-                        ` : '<div hidden><h4 class="font-semibold mb-2 text-sm">Promos</h4><p class="text-gray-600 text-sm">No promos</p></div>'}
+                        ` : '<div><h4 class="font-semibold mb-2 text-sm">Promos</h4><p class="text-gray-600 text-sm">No promos</p></div>'}
                         
                         ${groupsList ? `
                         <div>
@@ -1781,7 +1781,7 @@ include "../src/components/admin/nav.php";
                                 ${groupsList}
                             </ul>
                         </div>
-                        ` : '<div hidden><h4 class="font-semibold mb-2 text-sm">Groups</h4><p class="text-gray-600 text-sm">No groups</p></div>'}
+                        ` : '<div><h4 class="font-semibold mb-2 text-sm">Groups</h4><p class="text-gray-600 text-sm">No groups</p></div>'}
                     </div>
                 </div>
                 
