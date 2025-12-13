@@ -492,27 +492,27 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
             data: formData,
             processData: false,
             contentType: false,
-            dataType: 'json',
+            dataType: 'text',
             success: function(data) {
-                console.log('Login response:', data);
+                console.log(data);
 
-                if (data.status === 'success') {
-                    showAlert(data.message, 'success');
-                    setTimeout(function() {
-                        if (data.user_position === 'customer') {
-                            window.location.href = 'customer/home.php';
-                        } else if (data.user_position === 'admin') {
-                            window.location.href = 'admin/dashboard.php';
-                        } else if (data.user_position === 'headstaff') {
-                            window.location.href = 'headstaff/dashboard.php';
-                        } else {
-                            window.location.href = 'customer/home.php';
-                        }
-                    }, 1000);
-                } else {
-                    showAlert(data.message, 'error');
-                    $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
-                }
+                // if (data.status === 'success') {
+                //     showAlert(data.message, 'success');
+                //     setTimeout(function() {
+                //         if (data.user_position === 'customer') {
+                //             window.location.href = 'customer/home.php';
+                //         } else if (data.user_position === 'admin') {
+                //             window.location.href = 'admin/dashboard.php';
+                //         } else if (data.user_position === 'headstaff') {
+                //             window.location.href = 'headstaff/dashboard.php';
+                //         } else {
+                //             window.location.href = 'customer/home.php';
+                //         }
+                //     }, 1000);
+                // } else {
+                //     showAlert(data.message, 'error');
+                //     $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
+                // }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
