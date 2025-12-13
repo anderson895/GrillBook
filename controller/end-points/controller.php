@@ -7,6 +7,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
+date_default_timezone_set('Asia/Manila');
+
 require_once('../class.php');
 $db = new global_class();
 
@@ -217,7 +220,8 @@ if (isset($_GET['requestType']) && $_GET['requestType'] === "checkAvailability")
 }
 
 if (isset($_GET['requestType']) && $_GET['requestType'] === "get_realtime_table_status") {
-    $date = $_GET['date'] ?? date('Y-m-d');
+   
+    $date = date('Y-m-d');
     $tableStatusMap = [];
     
     $walkinStmt = $pdo->prepare("SELECT walkin_table_code, walkin_status FROM walkin_tables WHERE DATE(walkin_created_at) = ?");
