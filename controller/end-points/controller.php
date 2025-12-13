@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -2978,4 +2978,4 @@ try {
     error_log("API Error: " . $e->getMessage());
     sendError('Internal server error', 500);
 }
-?>
+?> -->

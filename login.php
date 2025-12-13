@@ -54,7 +54,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
                 </div>
             </div>
 
-            <form method="POST" class="space-y-6" id="loginForm">
+            <form class="space-y-6" id="loginForm">
                 <input type="hidden" name="login" value="1">
                 
                 <div>
