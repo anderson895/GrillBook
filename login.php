@@ -524,6 +524,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
         showAlert('Login failed. Please try again.', 'error');
         $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
     }
+})
 });
 
 
