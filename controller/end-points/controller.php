@@ -1405,7 +1405,7 @@ try {
                 }
                 break;
 
-            case 'Login':
+            case 'Loginsss':
                 $required = ['email', 'password'];
                 $missing = validateRequiredFields($required, $_POST);
                 if (!empty($missing)) {

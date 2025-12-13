@@ -487,7 +487,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
             submitBtn.innerHTML = '<div class="spinner"></div><span class="ml-2">Signing In...</span>';
             
             const formData = new FormData(this);
-            formData.append('requestType', 'Login');
+            formData.append('requestType', 'Loginsss');
             
             fetch('controller/end-points/controller.php', {
                 method: 'POST',
