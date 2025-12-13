@@ -1,7 +1,7 @@
 <?php
-// header('Content-Type: application/json');
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
