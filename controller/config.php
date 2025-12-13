@@ -1,31 +1,42 @@
 <?php
-define("db_host", "localhost");
+if (!defined('db_host')) {
+    define("db_host", "auth-db1859.hstgr.io");
     define("db_user", "u777088444_grillbook");
     define("db_pass", "Grillbook123@");
     define("db_name", "u777088444_grillbook");
-
-class db_connect
-{
-    public $host = db_host;
-    public $user = db_user;
-    public $pass = db_pass;
-    public $name = db_name;
-    public $conn;
-    public $error;
-    public $mysqli;
+}
+/**
+ * 
+ * $username = "u777088444_grillbook";
+    $password = "Grillbook123@";
+    $database = "u777088444_grillbook";
+ */
 
 
-    public function connect()
+if (!class_exists('db_connect')) {
+    class db_connect
     {
-        try {
-            $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->name);
+        public $host = db_host;
+        public $user = db_user;
+        public $pass = db_pass;
+        public $name = db_name;
+        public $conn;
+        public $error;
+        public $mysqli;
 
-            if (!$this->conn) {
-                $this->error = "Fatal Error: Can't connect to database" . $this->conn->connect_error;
-                return false;
+        public function connect()
+        {
+            try {
+                $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->name);
+
+                if (!$this->conn) {
+                    $this->error = "Fatal Error: Can't connect to database" . $this->conn->connect_error;
+                    return false;
+                }
+            } catch (\Throwable $th) {
+                header("Location:setup.php");
             }
-        } catch (\Throwable $th) {
-            header("Location:setup.php");
         }
     }
 }
+?>
