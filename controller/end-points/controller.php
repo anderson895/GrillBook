@@ -1,7 +1,7 @@
 <?php
 
 echo "<pre>";
-print_r($_GET);
+print_r($_POST);
 echo "</pre>";
 
 // header('Content-Type: application/json');
