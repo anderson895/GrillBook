@@ -454,58 +454,51 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
     </style>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            let isValid = true;
+        $(document).ready(function() {
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
 
-            document.getElementById('emailError').classList.remove('show');
-            document.getElementById('passwordError').classList.remove('show');
+        const $submitBtn = $('#submitBtn');
+        const email = $('#email').val().trim();
+        const password = $('#password').val().trim();
+        let isValid = true;
 
-            if (!email) {
-                document.getElementById('emailError').textContent = 'Email is required';
-                document.getElementById('emailError').classList.add('show');
-                isValid = false;
-            } else if (!/\S+@\S+\.\S+/.test(email)) {
-                document.getElementById('emailError').textContent = 'Please enter a valid email address';
-                document.getElementById('emailError').classList.add('show');
-                isValid = false;
-            }
+        $('#emailError, #passwordError').removeClass('show').text('');
 
-            if (!password) {
-                document.getElementById('passwordError').textContent = 'Password is required';
-                document.getElementById('passwordError').classList.add('show');
-                isValid = false;
-            }
+        // Validation
+        if (!email) {
+            $('#emailError').text('Email is required').addClass('show');
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            $('#emailError').text('Please enter a valid email address').addClass('show');
+            isValid = false;
+        }
 
-            if (!isValid) return;
+        if (!password) {
+            $('#passwordError').text('Password is required').addClass('show');
+            isValid = false;
+        }
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<div class="spinner"></div><span class="ml-2">Signing In...</span>';
-            
-            const formData = new FormData(this);
-            formData.append('requestType', 'Loginsss');
-            
-            fetch('../controller/end-points/controller.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
+        if (!isValid) return;
+
+        $submitBtn.prop('disabled', true).html('<div class="spinner"></div><span class="ml-2">Signing In...</span>');
+
+        const formData = new FormData(this);
+        formData.append('requestType', 'Loginsss');
+
+        $.ajax({
+            url: 'controller/end-points/controller.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(data) {
                 console.log('Login response:', data);
-                
+
                 if (data.status === 'success') {
                     showAlert(data.message, 'success');
-                    
-                    setTimeout(() => {
+                    setTimeout(function() {
                         if (data.user_position === 'customer') {
                             window.location.href = 'customer/home.php';
                         } else if (data.user_position === 'admin') {
@@ -518,47 +511,38 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
                     }, 1000);
                 } else {
                     showAlert(data.message, 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<span class="material-icons mr-2">login</span><span>Sign In</span>';
+                    $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
                 }
-            })
-            .catch(error => {
+            },
+            error: function(xhr, status, error) {
                 console.error('Error:', error);
                 showAlert('Login failed. Please try again.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span class="material-icons mr-2">login</span><span>Sign In</span>';
-            });
+                $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
+            }
         });
+    });
 
-        function showAlert(message, type) {
-            document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
-            
-            const alert = document.createElement('div');
-            alert.className = `alert-message alert-${type}`;
-            
-            const icon = document.createElement('span');
-            icon.className = 'material-icons';
-            icon.textContent = type === 'error' ? 'error' : 'check_circle';
-            
-            alert.appendChild(icon);
-            alert.appendChild(document.createTextNode(message));
-            
-            document.body.appendChild(alert);
-            
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
-        }
+    function showAlert(message, type) {
+        $('.alert-message').remove();
 
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('animate-pulse');
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.classList.remove('animate-pulse');
-            });
-        });
+        const $alert = $('<div>').addClass(`alert-message alert-${type}`);
+        const $icon = $('<span>').addClass('material-icons').text(type === 'error' ? 'error' : 'check_circle');
+
+        $alert.append($icon).append(document.createTextNode(message));
+        $('body').append($alert);
+
+        setTimeout(function() {
+            $alert.remove();
+        }, 5000);
+    }
+
+    // Input focus animation
+    $('.form-input').on('focus', function() {
+        $(this).parent().addClass('animate-pulse');
+    }).on('blur', function() {
+        $(this).parent().removeClass('animate-pulse');
+    });
+});
     </script>
 </body>
 </html>
