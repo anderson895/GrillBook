@@ -487,40 +487,45 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
         formData.append('requestType', 'Login');
 
         $.ajax({
-            url: '../controller/end-points/controller.php',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'text',
-            success: function(data) {
-                console.log(data);
+    url: '../controller/end-points/controller.php',
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    dataType: 'text', // expecting plain text
+    success: function(data) {
+        console.log(data);
 
-                // if (data.status === 'success') {
-                //     showAlert(data.message, 'success');
-                //     setTimeout(function() {
-                //         if (data.user_position === 'customer') {
-                //             window.location.href = 'customer/home.php';
-                //         } else if (data.user_position === 'admin') {
-                //             window.location.href = 'admin/dashboard.php';
-                //         } else if (data.user_position === 'headstaff') {
-                //             window.location.href = 'headstaff/dashboard.php';
-                //         } else {
-                //             window.location.href = 'customer/home.php';
-                //         }
-                //     }, 1000);
-                // } else {
-                //     showAlert(data.message, 'error');
-                //     $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
-                // }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                showAlert('Login failed. Please try again.', 'error');
-                $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
-            }
-        });
-    });
+        // Assuming server returns something like "success|customer" or "error|Invalid credentials"
+        const parts = data.split('|');
+        const status = parts[0];
+        const messageOrPosition = parts[1];
+
+        if (status === 'success') {
+            showAlert('Login successful!', 'success');
+            setTimeout(function() {
+                if (messageOrPosition === 'customer') {
+                    window.location.href = 'customer/home.php';
+                } else if (messageOrPosition === 'admin') {
+                    window.location.href = 'admin/dashboard.php';
+                } else if (messageOrPosition === 'headstaff') {
+                    window.location.href = 'headstaff/dashboard.php';
+                } else {
+                    window.location.href = 'customer/home.php';
+                }
+            }, 1000);
+        } else {
+            showAlert(messageOrPosition, 'error');
+            $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', error);
+        showAlert('Login failed. Please try again.', 'error');
+        $submitBtn.prop('disabled', false).html('<span class="material-icons mr-2">login</span><span>Sign In</span>');
+    }
+});
+
 
     function showAlert(message, type) {
         $('.alert-message').remove();
