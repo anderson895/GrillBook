@@ -489,7 +489,11 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
             const formData = new FormData(this);
             formData.append('requestType', 'Login');
             
-            fetch('controller/end-points/controller.php', { method: 'POST', body: formData }).then(response => {
+            fetch('controller/end-points/controller.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
