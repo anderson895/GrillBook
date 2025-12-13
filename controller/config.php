@@ -1,6 +1,6 @@
 <?php
 if (!defined('db_host')) {
-    define("db_host", "auth-db1859.hstgr.io");
+    define("db_host", "grillbook.online");
     define("db_user", "u777088444_grillbook");
     define("db_pass", "Grillbook123@");
     define("db_name", "u777088444_grillbook");
