@@ -497,7 +497,8 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json();
+                // return response.json();
+                console.log(response);
             })
             .then(data => {
                 console.log('Login response:', data);
