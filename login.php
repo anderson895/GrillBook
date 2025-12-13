@@ -484,10 +484,10 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_position']) && !isset($
         $submitBtn.prop('disabled', true).html('<div class="spinner"></div><span class="ml-2">Signing In...</span>');
 
         const formData = new FormData(this);
-        formData.append('requestType', 'Loginsss');
+        formData.append('requestType', 'Login');
 
         $.ajax({
-            url: 'controller/end-points/controller.php',
+            url: '../controller/end-points/controller.php',
             method: 'POST',
             data: formData,
             processData: false,
